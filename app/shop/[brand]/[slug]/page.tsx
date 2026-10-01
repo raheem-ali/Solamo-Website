@@ -1190,11 +1190,36 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                 <div className="mb-3 text-[13px] font-bold text-[#6b7280] uppercase">
                   Featured {brand.name} Collection
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px_300px] gap-4 items-center">
-                  <div className="overflow-hidden rounded-lg shadow-xs">
-                    <BrandAdBanner brand={brand.slug} video="/ads/banner-2.mp4.mp4" />
-                  </div>
-                  <div className="hidden lg:grid grid-cols-2 col-span-2 gap-4">
+                {(() => {
+                  const numCards = promoProducts.length;
+                  const gridClass =
+                    numCards === 2
+                      ? "grid-cols-1 lg:grid-cols-[1fr_220px_220px] xl:grid-cols-[1fr_240px_240px]"
+                      : numCards === 1
+                      ? "grid-cols-1 lg:grid-cols-[1fr_220px] xl:grid-cols-[1fr_240px]"
+                      : "grid-cols-1";
+                  return (
+                    <div className={`grid ${gridClass} gap-4 items-center`}>
+                      <div className="overflow-hidden rounded-lg shadow-xs h-[220px] min-w-0">
+                        <BrandAdBanner brand={brand.slug} video="/ads/banner-2.mp4.mp4" noWrapper />
+                      </div>
+                      {promoProducts.map((p) => (
+                        <div key={p.id} className="hidden lg:flex rounded-lg border border-[#e5e8e1] p-3 items-center gap-3 bg-[#f9faf8] h-[220px]">
+                          <div className="h-24 w-24 shrink-0 flex items-center justify-center bg-white rounded p-1">
+                            <img src={p.image} alt={p.name} className="max-h-full max-w-full object-contain" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[12px] text-[#6b7280]">{brand.name}</div>
+                            <div className="text-[13px] font-medium text-[#1f2937] line-clamp-2">{p.name}</div>
+                            <div className="text-[13px] font-bold text-[#4D7C0F] mt-1">Rs {(p.price ?? 0).toLocaleString()}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
+                {promoProducts.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:hidden gap-4 mt-4">
                     {promoProducts.map((p) => (
                       <div key={p.id} className="rounded-lg border border-[#e5e8e1] p-3 flex items-center gap-3 bg-[#f9faf8]">
                         <div className="h-16 w-16 shrink-0 flex items-center justify-center bg-white rounded p-1">
@@ -1208,7 +1233,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                       </div>
                     ))}
                   </div>
-                </div>
+                )}
               </div>
             </div>
           )}

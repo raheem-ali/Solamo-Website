@@ -13,6 +13,7 @@ interface BrandAdBannerProps {
   mobileVideo?: string;
   href?: string;
   alt?: string;
+  noWrapper?: boolean;
 }
 
 export default function BrandAdBanner({
@@ -23,6 +24,7 @@ export default function BrandAdBanner({
   mobileVideo,
   href,
   alt = "Brand advertisement",
+  noWrapper,
 }: BrandAdBannerProps) {
   const [videoError, setVideoError] = useState(false);
   const [mobileVideoError, setMobileVideoError] = useState(false);
@@ -169,10 +171,31 @@ export default function BrandAdBanner({
   };
 
   const containerClasses = hasMobileCreative
-    ? "relative w-full aspect-[3/1] md:aspect-auto md:h-[140px] lg:h-[180px] bg-[#F9FAFB] border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center"
+    ? `relative w-full aspect-[3/1] md:aspect-auto ${noWrapper ? 'h-full md:h-full' : 'md:h-[140px] lg:h-[180px]'} bg-[#F9FAFB] border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center`
     : hasMedia
-    ? "relative w-full aspect-[1200/180] md:aspect-auto md:h-[140px] lg:h-[180px] bg-[#F9FAFB] border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center"
-    : "relative w-full min-h-[100px] md:min-h-0 md:h-[140px] lg:h-[180px] bg-[#F9FAFB] border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center";
+    ? `relative w-full aspect-[1200/180] md:aspect-auto ${noWrapper ? 'h-full md:h-full' : 'md:h-[140px] lg:h-[180px]'} bg-[#F9FAFB] border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center`
+    : `relative w-full min-h-[100px] md:min-h-0 ${noWrapper ? 'h-full md:h-full' : 'md:h-[140px] lg:h-[180px]'} bg-[#F9FAFB] border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center`;
+
+  const content = (
+    <div className={containerClasses}>
+      {/* Desktop Advertisement Label (inside box, md up) */}
+      <div className="hidden md:block absolute top-3 right-3 z-10 bg-gray-200/90 text-gray-600 text-xs font-semibold px-2 py-0.5 rounded tracking-wide uppercase shadow-xs">
+        Advertisement
+      </div>
+      {renderContent()}
+    </div>
+  );
+
+  if (noWrapper) {
+    return (
+      <div className="w-full h-full">
+        <div className="md:hidden text-right text-[9px] uppercase tracking-wide text-gray-500 mb-1 px-1">
+          Advertisement
+        </div>
+        {content}
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6 xl:px-8 my-6">
@@ -180,13 +203,7 @@ export default function BrandAdBanner({
       <div className="md:hidden text-right text-[9px] uppercase tracking-wide text-gray-500 mb-1 px-1">
         Advertisement
       </div>
-      <div className={containerClasses}>
-        {/* Desktop Advertisement Label (inside box, md up) */}
-        <div className="hidden md:block absolute top-3 right-3 z-10 bg-gray-200/90 text-gray-600 text-xs font-semibold px-2 py-0.5 rounded tracking-wide uppercase shadow-xs">
-          Advertisement
-        </div>
-        {renderContent()}
-      </div>
+      {content}
     </div>
   );
 }
