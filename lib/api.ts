@@ -9,6 +9,8 @@ export type Product = {
   id: number;
   name: string;
   slug: string;
+  category_id: number;
+  category_slug: string | null;
   subtitle: string | null;
   description: string | null;
   regular_price: string;
@@ -32,7 +34,14 @@ export type Paginated<T> = {
 };
 
 export type Category = { id: number; name: string; slug: string; parent_id: number | null };
-export type Brand = { id: number; name: string; slug: string; image: string | null; count: number };
+export type Brand = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+  image: string | null;
+  count: number;
+};
 
 async function get<T>(path: string, revalidate = REVALIDATE): Promise<T | null> {
   try {
@@ -62,13 +71,15 @@ export async function getProducts(params: Record<string, string | number | undef
 }
 
 /** Every approved product (the API returns at most 50 per page, so walk the pages). */
-export async function getAllProducts(): Promise<Product[]> {
+export async function getAllProducts(
+  params: Record<string, string | number | undefined> = {},
+): Promise<Product[]> {
   const all: Product[] = [];
   let page = 1;
   let last = 1;
 
   do {
-    const res = await getProducts({ per_page: 50, page });
+    const res = await getProducts({ ...params, per_page: 50, page });
     if (!res) break;
     all.push(...res.data);
     last = res.last_page;

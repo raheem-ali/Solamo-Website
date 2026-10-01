@@ -23,13 +23,32 @@ export type CardProduct = {
   inStock: boolean;
 };
 
+export type BrandOption = { name: string; slug: string };
+
 type Props = {
   products: CardProduct[];
   categories: string[];
-  brands: string[];
+  brands: BrandOption[];
+  // Brands ticked from the start, used on /shop/{brand}
+  initialBrands?: string[];
+  // On /shop/{brand}: show only that brand in the Brands filter
+  lockBrand?: boolean;
+  // On /{category}: show only that category in the Categories filter.
+  // matchNames = the category plus its sub-categories.
+  lockCategory?: { name: string; slug: string; matchNames: string[] };
+  // Heading text, e.g. "Solar Panel" -> "Solar Panel Products"
+  title?: string;
 };
 
-function ShopPageContent({ products, categories, brands }: Props) {
+function ShopPageContent({
+  products,
+  categories,
+  brands,
+  initialBrands: presetBrands = [],
+  lockBrand = false,
+  lockCategory,
+  title,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -37,12 +56,14 @@ function ShopPageContent({ products, categories, brands }: Props) {
   const categoriesParam = searchParams.get("categories");
   const initialCategories = categoriesParam
     ? categoriesParam.split(",").filter(Boolean)
-    : [];
+    : lockCategory
+      ? [lockCategory.name]
+      : [];
 
   const brandsParam = searchParams.get("brands");
   const initialBrands = brandsParam
     ? brandsParam.split(",").filter(Boolean)
-    : [];
+    : presetBrands;
 
   const initialMin = searchParams.get("min") || "";
   const initialMax = searchParams.get("max") || "";
@@ -55,6 +76,14 @@ function ShopPageContent({ products, categories, brands }: Props) {
 
   // State for mobile filter slide-in drawer
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
+
+  const allBrandOptions = brands;
+
+  // Set only on /shop/{brand}
+  const lockedBrand =
+    lockBrand && presetBrands.length === 1
+      ? allBrandOptions.find((b) => b.name === presetBrands[0])
+      : undefined;
 
   // Helper function to update URL query parameters dynamically
   const updateUrlParams = (
@@ -81,16 +110,50 @@ function ShopPageContent({ products, categories, brands }: Props) {
       params.set("max", max);
     }
 
+    // On a category page, stay on it while other filters change: /solar-panels?brands=...
+    if (lockCategory && categories.includes(lockCategory.name)) {
+      params.delete("categories");
+      const q = params.toString();
+      router.push(
+        q ? `/${lockCategory.slug}?${q}` : `/${lockCategory.slug}`,
+        { scroll: false },
+      );
+      return;
+    }
+
+    // On a brand page, stay on it while other filters change: /shop/aiko?categories=...
+    if (lockedBrand && brands.includes(lockedBrand.name)) {
+      params.delete("brands");
+      const q = params.toString();
+      router.push(
+        q ? `/shop/${lockedBrand.slug}?${q}` : `/shop/${lockedBrand.slug}`,
+        { scroll: false },
+      );
+      return;
+    }
+
+    // Only one brand ticked and nothing else -> clean URL: /shop/aiko
+    const onlyBrandSlug =
+      categories.length === 0 && brands.length === 1 && !min && !max
+        ? allBrandOptions.find((b) => b.name === brands[0])?.slug
+        : undefined;
+
     const queryStr = params.toString();
-    const newUrl = queryStr ? `/shop?${queryStr}` : "/shop";
+    const newUrl = onlyBrandSlug
+      ? `/shop/${onlyBrandSlug}`
+      : queryStr
+        ? `/shop?${queryStr}`
+        : "/shop";
 
     router.push(newUrl, { scroll: false });
   };
 
   // Data now comes from the Laravel API (props), not from brand-data
   const allProducts = products;
-  const availableCategories = categories;
-  const availableBrands = brands;
+  const availableCategories = lockCategory ? [lockCategory.name] : categories;
+  const availableBrands = lockedBrand
+    ? [lockedBrand.name]
+    : brands.map((b) => b.name);
 
   // Handle Category checkbox toggle selection
   const handleCategoryChange = (catName: string) => {
@@ -139,10 +202,16 @@ function ShopPageContent({ products, categories, brands }: Props) {
     // Category matching: exact name match (case-insensitive)
     const matchesCategory =
       selectedCategories.length === 0 ||
-      selectedCategories.some(
-        (selectedCat) =>
-          selectedCat.toLowerCase() === product.category.toLowerCase(),
-      );
+      selectedCategories.some((selectedCat) => {
+        // The locked category also covers its sub-categories
+        const names =
+          lockCategory && selectedCat === lockCategory.name
+            ? lockCategory.matchNames
+            : [selectedCat];
+        return names.some(
+          (n) => n.toLowerCase() === product.category.toLowerCase(),
+        );
+      });
 
     // Brand matching: exact name match
     const matchesBrand =
@@ -293,7 +362,8 @@ function ShopPageContent({ products, categories, brands }: Props) {
 
         {/* Heading */}
         <h1 className="text-4xl sm:text-5xl font-bold mb-12 text-gray-900">
-          All <span className="text-lime-500">Products</span>
+          {title ? `${title} ` : "All "}
+          <span className="text-lime-500">Products</span>
         </h1>
 
         {/* Mobile Filter Toggle Button */}
@@ -348,7 +418,7 @@ function ShopPageContent({ products, categories, brands }: Props) {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
                   <ProductCard key={product.id} product={product as any} />
                 ))}

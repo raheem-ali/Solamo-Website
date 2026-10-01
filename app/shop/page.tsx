@@ -11,12 +11,12 @@ export default async function ShopPage() {
   ]);
 
   // Turn the API shape into the shape the design's ProductCard uses.
-  // If ProductCard expects different field names, change them here only.
   const cards: CardProduct[] = products.map((p) => ({
     id: p.id,
     slug: p.slug,
-    link: `/shop/${p.slug}`, // ProductCard's "See Details" button uses this
+    link: `/${p.category_slug ?? "shop"}/${p.slug}`, // "See Details" button
     name: p.name,
+    shortDescription: p.subtitle ?? "",
     price: Number(p.sale_price || p.regular_price || 0),
     regularPrice: Number(p.regular_price),
     salePrice: p.sale_price ? Number(p.sale_price) : null,
@@ -25,14 +25,15 @@ export default async function ShopPage() {
     category: p.category_name ?? "",
     brand: p.brand_name,
     inStock: p.stock_status === "in_stock",
-    shortDescription: p.subtitle ?? "",
   }));
 
   return (
     <ShopClient
       products={cards}
       categories={categories.map((c) => c.name)}
-      brands={brands.map((b) => b.name).sort()}
+      brands={brands
+        .map((b) => ({ name: b.name, slug: b.slug }))
+        .sort((a, b) => a.name.localeCompare(b.name))}
     />
   );
 }
