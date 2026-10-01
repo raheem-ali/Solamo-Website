@@ -4,8 +4,9 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { ChevronLeft, ChevronRight, ArrowUpRight, Zap } from "lucide-react";
-import { brandsData } from "@/lib/brand-data";
+import { brandsData, Product } from "@/lib/brand-data";
 import { DummyProduct } from "@/lib/dummy-products";
+import ProductCard from "./ProductCard";
 import "swiper/css";
 
 interface SolamoProductCarouselProps {
@@ -15,6 +16,8 @@ interface SolamoProductCarouselProps {
   badgeText: string;
   viewAllHref: string;
   dummyProducts?: DummyProduct[];
+  products?: Product[];
+  variant?: "default" | "noon";
 }
 
 export default function SolamoProductCarousel({
@@ -24,25 +27,41 @@ export default function SolamoProductCarousel({
   badgeText,
   viewAllHref,
   dummyProducts,
+  products,
+  variant = "default",
 }: SolamoProductCarouselProps) {
   const sliderRef = useRef<SwiperRef>(null);
 
-  const productsToDisplay = dummyProducts
-    ? dummyProducts.slice(0, 12)
-    : Object.values(brandsData)
-        .flatMap((brand) =>
-          (brand.products || []).map((product) => ({
-            ...product,
-            brandName: brand.name,
-          })),
-        )
-        .filter((product) => {
-          const category = String(product.category || "").toLowerCase();
-          const filter = (categoryFilter || "").toLowerCase();
-          return category.includes(filter);
-        })
-        .filter((product) => Number(product.price) > 0)
-        .slice(0, 12);
+  let productsToDisplay: (Product & { brandName?: string })[] = [];
+
+  if (products) {
+    productsToDisplay = products.slice(0, 12);
+  } else if (dummyProducts) {
+    productsToDisplay = dummyProducts.slice(0, 12).map((dp) => ({
+      id: dp.id,
+      name: dp.name,
+      price: dp.price,
+      image: dp.image,
+      link: dp.link,
+      category: "Accessories" as const,
+      brandName: dp.brandName,
+    }));
+  } else {
+    productsToDisplay = Object.values(brandsData)
+      .flatMap((brand) =>
+        (brand.products || []).map((product) => ({
+          ...product,
+          brandName: brand.name,
+        })),
+      )
+      .filter((product) => {
+        const category = String(product.category || "").toLowerCase();
+        const filter = (categoryFilter || "").toLowerCase();
+        return category.includes(filter);
+      })
+      .filter((product) => Number(product.price) > 0)
+      .slice(0, 12);
+  }
 
   if (productsToDisplay.length === 0) return null;
 
@@ -107,67 +126,11 @@ export default function SolamoProductCarousel({
               className="!px-8 sm:!px-7"
             >
               {productsToDisplay.map((product, index) => (
-                <SwiperSlide key={`${product.id}-${index}`}>
-                  <Link
-                    href={product.link}
-                    className="group block bg-white border border-gray-200 rounded-md overflow-hidden h-full hover:shadow-md hover:border-gray-300 transition"
-                  >
-                    <div className="relative h-[145px] sm:h-[165px] lg:h-[180px] bg-white flex items-center justify-center p-3">
-                      <span className="absolute left-2 top-2 z-10 inline-flex items-center gap-1 bg-[#84CC16] text-black font-black text-[8px] px-2 py-1 rounded-sm">
-                        <Zap className="w-2.5 h-2.5 fill-current" />
-                        {badgeText}
-                      </span>
-
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        loading="lazy"
-                        className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.04]"
-                      />
-                    </div>
-
-                    <div className="px-3 pb-3">
-                      <span className="text-[9px] uppercase font-bold text-gray-400">
-                        {product.brandName}
-                      </span>
-                      <h3 className="mt-0.5 text-[11px] sm:text-[12px] font-medium text-[#222] leading-[1.35] line-clamp-2 min-h-[32px]">
-                        {product.name}
-                      </h3>
-
-                      <div className="mt-3">
-                        <span className="block text-[9px] text-gray-400 uppercase font-semibold">
-                          Pricing
-                        </span>
-                        {product.priceOnRequest ? (
-                          <span className="block text-[14px] sm:text-[15px] font-bold text-gray-700 mt-0.5">
-                            Price on request
-                          </span>
-                        ) : (
-                          <span className="block text-[15px] sm:text-[16px] font-black text-[#111] mt-0.5">
-                            Rs {Number(product.price).toLocaleString()}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="mt-3 w-full h-[32px] bg-[#84CC16] text-black rounded-sm flex items-center justify-center text-[9px] sm:text-[10px] font-bold group-hover:bg-[#65A30D] transition">
-                        View Details
-                      </div>
-                    </div>
-                  </Link>
+                <SwiperSlide key={`${product.id}-${index}`} className="h-auto">
+                  <ProductCard product={product} variant={variant} badgeText={badgeText} />
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
-
-          <div className="sm:hidden px-4 pb-5">
-            <Link
-              href={viewAllHref}
-              className="w-full h-[38px] bg-[#111] text-[#84CC16] rounded-md flex items-center justify-center gap-1 text-[10px] font-bold"
-            >
-              View All {title}
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
         </div>
       </div>

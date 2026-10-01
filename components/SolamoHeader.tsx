@@ -13,7 +13,9 @@ import {
   User,
   ShoppingCart,
   Globe,
+  Heart,
 } from "lucide-react";
+import { getWishlist } from "@/lib/wishlist";
 
 const CITIES = [
   "Karachi",
@@ -31,7 +33,21 @@ export default function SolamoHeader() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState("Karachi");
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(0);
   const cityDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setWishlistCount(getWishlist().length);
+    const handleWishlistUpdate = () => {
+      setWishlistCount(getWishlist().length);
+    };
+    window.addEventListener("storage", handleWishlistUpdate);
+    window.addEventListener("wishlistUpdated", handleWishlistUpdate as EventListener);
+    return () => {
+      window.removeEventListener("storage", handleWishlistUpdate);
+      window.removeEventListener("wishlistUpdated", handleWishlistUpdate as EventListener);
+    };
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -206,6 +222,24 @@ focus:ring-[#84CC16]
               >
                 <User className="w-5 h-5" />
                 <span className="hidden lg:inline text-sm">Account</span>
+              </Link>
+
+              <div className="hidden sm:block h-5 w-px bg-[#4D7C0F]/40" />
+
+              {/* WISHLIST */}
+              <Link
+                href="/wishlist"
+                onClick={closeMobileMenu}
+                className="relative flex items-center gap-1.5 hover:opacity-70 transition"
+                aria-label="Wishlist"
+              >
+                <Heart className="w-5 h-5 sm:w-[22px] sm:h-[22px]" />
+                <span className="hidden lg:inline text-sm">Wishlist</span>
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-2 -right-2 sm:-right-2.5 bg-black text-[#84CC16] text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
               </Link>
 
               <div className="hidden sm:block h-5 w-px bg-[#4D7C0F]/40" />
@@ -791,6 +825,30 @@ focus:ring-[#84CC16]
                   "
                 >
                   Shop
+                </Link>
+
+                <Link
+                  href="/wishlist"
+                  onClick={closeMobileMenu}
+                  className="
+                    py-3.5
+                    text-base
+                    sm:text-lg
+                    font-semibold
+                    text-gray-900
+                    border-b
+                    border-gray-100
+                    flex
+                    items-center
+                    justify-between
+                  "
+                >
+                  <span>Wishlist</span>
+                  {wishlistCount > 0 && (
+                    <span className="bg-[#79B900] text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      {wishlistCount}
+                    </span>
+                  )}
                 </Link>
 
                 <Link
