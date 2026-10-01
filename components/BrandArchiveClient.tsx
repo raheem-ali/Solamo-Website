@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import { BrandData, Product } from "@/lib/brand-data";
 import { SlidersHorizontal, X } from "lucide-react";
 import Header from "@/components/Header";
@@ -220,12 +221,12 @@ export default function BrandArchiveClient({ brand }: BrandArchiveClientProps) {
                         </div>
 
                         {/* See Details button */}
-                        <a
+                        <Link
                           href={product.link}
                           className="block w-full text-center bg-[#79B900] hover:bg-[#689e00] text-white font-semibold py-2.5 rounded-full text-sm transition-colors"
                         >
                           See Details
-                        </a>
+                        </Link>
                       </div>
                     </article>
                   ))}

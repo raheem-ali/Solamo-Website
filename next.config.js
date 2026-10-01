@@ -2,19 +2,22 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      // Laravel backend (local)
+      {
+        protocol: "https",
+        hostname: "solamoenergy.com",
+      },
       {
         protocol: "http",
-        hostname: "localhost",
-        port: "8000",
-        pathname: "/uploads/**",
+        hostname: "solamoenergy.com",
       },
-
-      // Your existing entries
-      { protocol: "https", hostname: "solamoenergy.com" },
-      { protocol: "http", hostname: "solamoenergy.com" },
-      { protocol: "https", hostname: "sahirgogari.com" },
-      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      {
+        protocol: "https",
+        hostname: "sahirgogari.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
   typescript: {
