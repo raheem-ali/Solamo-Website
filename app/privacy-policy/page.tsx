@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import PrivacyPolicyContent from "@/components/PrivacyPolicyContent";
 
 export const metadata = {
@@ -11,11 +11,11 @@ export const metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-white text-[#172217] font-['Albert_Sans',sans-serif]">
-      <Header />
+      <SolamoHeader />
 
       <PrivacyPolicyContent />
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

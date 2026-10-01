@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import {
   Building2,
   ShoppingBag,
@@ -413,7 +413,7 @@ export default function CommercialSolarWhoWeServePage() {
       `}</style>
 
       {/* Shared Header with Hover-intent Mega Menu Support */}
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow">
         {/* 1. WHO WE SERVE SECTION */}
@@ -793,7 +793,7 @@ export default function CommercialSolarWhoWeServePage() {
         </div>
       )}
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

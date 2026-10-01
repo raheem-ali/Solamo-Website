@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 
 // Reusable Intersection Observer hook for strict once-only scroll-trigger
 function useScrollReveal(threshold = 0.15) {
@@ -223,7 +223,7 @@ export default function SolarBatteryStoragePage() {
       `}</style>
 
       {/* Header */}
-      <Header />
+      <SolamoHeader />
 
       {/* Main Content Area */}
       <main className="flex-grow w-full">
@@ -556,7 +556,7 @@ export default function SolarBatteryStoragePage() {
       )}
 
       {/* Footer */}
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

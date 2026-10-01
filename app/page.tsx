@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import SolamoHeader from "@/components/SolamoHeader";
 import Hero from "@/components/Hero";
 import WhyFounder from "@/components/WhyFounder";
 import MarqueeSection from "@/components/MarqueeSection";
@@ -7,14 +7,14 @@ import TrustedBrands from "@/components/TrustedBrands";
 import WhyChoose from "@/components/WhyChoose";
 import CtaBanner from "@/components/CtaBanner";
 import Testimonials from "@/components/Testimonials";
-import Footer from "@/components/Footer";
+import SolamoFooter from "@/components/SolamoFooter";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import ServiceSection from "@/components/ServiceSection";
 
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col">
-      <Header />
+      <SolamoHeader />
       <Hero />
       <WhyFounder />
       <ServiceSection />
@@ -24,7 +24,7 @@ export default function Home() {
       <WhyChoose />
       <CtaBanner />
       <Testimonials />
-      <Footer />
+      <SolamoFooter />
       <WhatsAppFloat />
     </main>
   );

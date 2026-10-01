@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 
 // Reusable Intersection Observer hook for strict once-only scroll-trigger
 function useScrollReveal(threshold = 0.1) {
@@ -406,7 +406,7 @@ export default function FranchisePage() {
         }
       `}</style>
 
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow w-full">
         {/* Section 1 — Why a Solamo Energy Franchise? */}
@@ -753,7 +753,7 @@ export default function FranchisePage() {
         </div>
       )}
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }
