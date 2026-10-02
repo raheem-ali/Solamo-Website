@@ -280,12 +280,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
       <div
         className={`${helvetica.className} [&_:is(h1,h2,h3,h4,h5,h6,p,span,a,button,input,table,th,td,li,label)]:![font-family:inherit] min-h-screen bg-white text-[#1f2937] pb-24 sm:pb-0 overflow-x-clip`}
       >
-        {/* PHASE 1 - Item 1: Ad strip between header and breadcrumb */}
-        <div className="mx-auto max-w-[1800px] px-4 pt-3 md:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-[10px] shadow-xs">
-            <BrandAdBanner video="/ads/banner-1.mp4.mp4" />
-          </div>
-        </div>
+       
 
         <main className="w-full min-w-0">
           {/* =========================
@@ -769,7 +764,12 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
 
           {/* Light gray full-width separator band */}
           <div className="h-3 w-full bg-[#f3f4f0]" />
-
+ {/* PHASE 1 - Item 1: Ad strip between header and breadcrumb */}
+        <div className="mx-auto max-w-[1800px] px-4 pt-3 md:px-6 lg:px-8">
+          <div className="overflow-hidden rounded-[10px] shadow-xs">
+            <BrandAdBanner video="/ads/banner-1.mp4.mp4" />
+          </div>
+        </div>
           {/* =========================
               TABS & PRODUCT OVERVIEW
           ========================== */}
