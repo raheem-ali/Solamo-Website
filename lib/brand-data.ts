@@ -1,4 +1,4 @@
-export interface Product {
+﻿export interface Product {
   id: string;
   name: string;
   price: number;
@@ -32,7 +32,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 28800,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/aiko/aiko-665watt/",
+        link: "/shop/aiko/aiko-665watt",
         category: "Solar Panel",
         description: "High-efficiency AIKO N-type ABC solar panel.",
       },
@@ -42,7 +42,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 22900,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-2.webp",
-        link: "https://solamoenergy.com/shop/aiko/aiko-bf-590/",
+        link: "/shop/aiko/aiko-bf-590",
         category: "Solar Panel",
         description: "Bifacial AIKO solar module with high low-light output.",
       },
@@ -52,7 +52,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 27800,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-3.webp",
-        link: "https://solamoenergy.com/shop/aiko/aiko-bf-640w/",
+        link: "/shop/aiko/aiko-bf-640w",
         category: "Solar Panel",
         description:
           "High-wattage bifacial AIKO panel for commercial/residential.",
@@ -72,7 +72,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 21500,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-8.webp",
-        link: "https://solamoenergy.com/shop/astronergy/aestro-energy-575watt/",
+        link: "/shop/astronergy/aestro-energy-575watt",
         category: "Solar Panel",
         description:
           "Astro Energy 575W N-Type TOPCon dual-glass solar panel features 22.3% efficiency, bifacial yield, and 30-year warranty.",
@@ -83,7 +83,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 23700,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-11-1-2.webp",
-        link: "https://solamoenergy.com/shop/astronergy/astro-585w/",
+        link: "/shop/astronergy/astro-585w",
         category: "Solar Panel",
         description:
           "High-efficiency Astronergy Astro 585W N-type TOPCon bifacial solar panel engineered for maximum dual-sided power yield.",
@@ -94,7 +94,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 23900,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-13-1.webp",
-        link: "https://solamoenergy.com/shop/astronergy/astronergy-astro-590w-16bb/",
+        link: "/shop/astronergy/astronergy-astro-590w-16bb",
         category: "Solar Panel",
         description:
           "High-efficiency Astronergy Astro 590W 16BB N-type TOPCon panel engineered for maximum dual-sided power output.",
@@ -105,7 +105,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 24700,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-14-1.webp",
-        link: "https://solamoenergy.com/shop/astronergy/astronergy-astro-620w/",
+        link: "/shop/astronergy/astronergy-astro-620w",
         category: "Solar Panel",
         description:
           "High-efficiency Astronergy Astro 620W N-type TOPCon bifacial solar panel engineered for maximum dual-sided power yield.",
@@ -116,7 +116,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 28400,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-15-1.webp",
-        link: "https://solamoenergy.com/shop/astronergy/astronergy-astro-715w/",
+        link: "/shop/astronergy/astronergy-astro-715w",
         category: "Solar Panel",
         description:
           "High-efficiency Astronergy Astro 715W N-type TOPCon bifacial solar panel engineered for ultra-high dual-sided power yield.",
@@ -127,7 +127,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 28600,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-16.webp",
-        link: "https://solamoenergy.com/shop/astronergy/astronergy-astro-720w/",
+        link: "/shop/astronergy/astronergy-astro-720w",
         category: "Solar Panel",
         description:
           "High-efficiency Astronergy Astro 720W N-type TOPCon bifacial solar panel engineered for maximum dual-sided power yield.",
@@ -147,7 +147,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 626000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-14.webp",
-        link: "https://solamoenergy.com/shop/dyness/dyness-16kw-ip21-lcd/",
+        link: "/shop/dyness/dyness-16kw-ip21-lcd",
         category: "Batteries",
         description:
           "DYNESS 16KW IP21 LCD LiFePO4 battery delivers 16kWh indoor lithium storage with live display monitoring.",
@@ -158,7 +158,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 671000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-11-1-1.webp",
-        link: "https://solamoenergy.com/shop/dyness/dyness-16kw-ip65/",
+        link: "/shop/dyness/dyness-16kw-ip65",
         category: "Batteries",
         description:
           "DYNESS 16KW IP65 LiFePO4 battery delivers 16kWh weatherproof lithium storage for high capacity power backup.",
@@ -169,7 +169,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 136000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-6.webp",
-        link: "https://solamoenergy.com/shop/dyness/dyness-24v-100ah/",
+        link: "/shop/dyness/dyness-24v-100ah",
         category: "Batteries",
         description:
           "Dyness 24V 100Ah LiFePO4 lithium battery offers 2.56kWh storage, 6000+ cycles, and smart BMS.",
@@ -180,7 +180,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 236000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/dyness/dyness-5kw-51v-100ah-lithium/",
+        link: "/shop/dyness/dyness-5kw-51v-100ah-lithium",
         category: "Batteries",
         description:
           "Dyness 5kW 51.2V 100Ah LiFePO4 lithium solar battery features 6000+ cycles and smart BMS protection.",
@@ -200,7 +200,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25070,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1-4.webp",
-        link: "https://solamoenergy.com/shop/canadian-solar/canadian-585w/",
+        link: "/shop/canadian-solar/canadian-585w",
         category: "Solar Panel",
         description:
           "High-efficiency Canadian Solar 585W N-type TOPCon panel engineered for high output and heat resistance.",
@@ -211,7 +211,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 26950,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-3-2.webp",
-        link: "https://solamoenergy.com/shop/canadian-solar/canadian-615w/",
+        link: "/shop/canadian-solar/canadian-615w",
         category: "Solar Panel",
         description:
           "High-efficiency Canadian Solar 615W N-type TOPCon bifacial panel engineered for high output and heat resistance.",
@@ -222,7 +222,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 26750,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-5-1.webp",
-        link: "https://solamoenergy.com/shop/canadian-solar/canadian-620w/",
+        link: "/shop/canadian-solar/canadian-620w",
         category: "Solar Panel",
         description:
           "High-efficiency Canadian Solar 620W N-type TOPCon bifacial panel engineered for high output and heat resistance.",
@@ -233,7 +233,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 26750,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-4-1.webp",
-        link: "https://solamoenergy.com/shop/canadian-solar/canadian-625w/",
+        link: "/shop/canadian-solar/canadian-625w",
         category: "Solar Panel",
         description:
           "High-efficiency Canadian Solar 625W N-type TOPCon bifacial panel engineered for maximum output and heat tolerance.",
@@ -244,7 +244,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 29600,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-6-2.webp",
-        link: "https://solamoenergy.com/shop/canadian-solar/canadian-710w/",
+        link: "/shop/canadian-solar/canadian-710w",
         category: "Solar Panel",
         description:
           "High-efficiency Canadian Solar 710W N-type TOPCon bifacial panel engineered for ultra-high power output and heat performance.",
@@ -255,7 +255,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 29800,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-8-2.webp",
-        link: "https://solamoenergy.com/shop/canadian-solar/canadian-715w/",
+        link: "/shop/canadian-solar/canadian-715w",
         category: "Solar Panel",
         description:
           "High-efficiency Canadian Solar 715W N-type TOPCon bifacial panel engineered for ultra-high output and heat performance.",
@@ -275,7 +275,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 126000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-7.webp",
-        link: "https://solamoenergy.com/shop/genix-green/genix-green-24v-100ah/",
+        link: "/shop/genix-green/genix-green-24v-100ah",
         category: "Batteries",
         description:
           "Genix Green 24V 100Ah LiFePO4 lithium battery offers 2.56kWh storage, 4000+ cycles, and smart BMS.",
@@ -286,7 +286,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 223000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1-1.webp",
-        link: "https://solamoenergy.com/shop/genix-green/genix-green-51v-100ah/",
+        link: "/shop/genix-green/genix-green-51v-100ah",
         category: "Batteries",
         description:
           "Genix Green 51V 100Ah LiFePO4 lithium battery offers 5.12kWh capacity, 6000+ cycles, and smart BMS.",
@@ -306,7 +306,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 697000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/goodwe/goodwe-14kw-lithium-battery/",
+        link: "/shop/goodwe/goodwe-14kw-lithium-battery",
         category: "Batteries",
         description:
           "GoodWe 14.3kWh LiFePO4 lithium battery delivers high-capacity storage with 6,500+ cycles and smart BMS.",
@@ -317,7 +317,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 746000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/goodwe/goodwe-16kw-lithium-battery/",
+        link: "/shop/goodwe/goodwe-16kw-lithium-battery",
         category: "Batteries",
         description:
           "GoodWe 16.1kWh 314Ah LiFePO4 battery delivers ultra-heavy-duty storage with 10,000+ cycles and IP65 rating.",
@@ -337,7 +337,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 22500,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-14-2.webp",
-        link: "https://solamoenergy.com/shop/osda/osda-585w-scannable/",
+        link: "/shop/osda/osda-585w-scannable",
         category: "Solar Panel",
         description:
           "High-efficiency OSDA 585W N-type TOPCon scannable solar panel engineered for verified maximum power yield.",
@@ -348,7 +348,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 27700,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-15-2.webp",
-        link: "https://solamoenergy.com/shop/osda/osda-720w/",
+        link: "/shop/osda/osda-720w",
         category: "Solar Panel",
         description:
           "High-efficiency OSDA 720W N-type TOPCon bifacial solar panel engineered for maximum dual-sided energy yield.",
@@ -377,7 +377,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 271000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/inverex-ip21-51v-100ah/",
+        link: "/shop/inverex/inverex-ip21-51v-100ah",
         category: "Batteries",
         description: "Inverex IP21 51V 100Ah lithium battery.",
       },
@@ -387,7 +387,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 575000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-11-8kwh-48v-230amp-ip21/",
+        link: "/shop/inverex/lithium-battery-11-8kwh-48v-230amp-ip21",
         category: "Batteries",
         description: "High-capacity 11.8kWh IP21 lithium storage.",
       },
@@ -397,7 +397,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 75000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-12v-100ah-ip20/",
+        link: "/shop/inverex/lithium-battery-12v-100ah-ip20",
         category: "Batteries",
         description: "IP20 12V 100Ah lithium battery.",
       },
@@ -407,7 +407,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 160000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-12v-200ah-ip20/",
+        link: "/shop/inverex/lithium-battery-12v-200ah-ip20",
         category: "Batteries",
         description: "IP20 12V 200Ah lithium battery.",
       },
@@ -417,7 +417,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 750000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-16kwh-48v-314amp-ip21/",
+        link: "/shop/inverex/lithium-battery-16kwh-48v-314amp-ip21",
         category: "Batteries",
         description: "Heavy-duty 16kWh 48V 314A IP21 lithium battery.",
       },
@@ -427,7 +427,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 184000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-2-5kwh-24v-100amp-ip21/",
+        link: "/shop/inverex/lithium-battery-2-5kwh-24v-100amp-ip21",
         category: "Batteries",
         description: "Compact 2.5kWh 24V IP21 lithium battery.",
       },
@@ -437,7 +437,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 195000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-2-6kwh-24v-100amp-ip65/",
+        link: "/shop/inverex/lithium-battery-2-6kwh-24v-100amp-ip65",
         category: "Batteries",
         description: "Weatherproof IP65 2.6kWh 24V lithium battery.",
       },
@@ -447,7 +447,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 270000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-5-1kwh-48v-100amp-ip21/",
+        link: "/shop/inverex/lithium-battery-5-1kwh-48v-100amp-ip21",
         category: "Batteries",
         description: "5.1kWh 48V IP21 lithium battery.",
       },
@@ -457,7 +457,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 330000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/lithium-battery-5-3kwh-48v-100amp-ip65/",
+        link: "/shop/inverex/lithium-battery-5-3kwh-48v-100amp-ip65",
         category: "Batteries",
         description: "5.3kWh 48V IP65 weatherproof lithium battery.",
       },
@@ -467,7 +467,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 28000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/inverex-jollywood-630w-solar-panel/",
+        link: "/shop/inverex/inverex-jollywood-630w-solar-panel",
         category: "Solar Panel",
         description: "Inverex Jollywood 630W high-efficiency solar module.",
       },
@@ -477,7 +477,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 26400,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/inverex-mustang-620w-solar-panel/",
+        link: "/shop/inverex/inverex-mustang-620w-solar-panel",
         category: "Solar Panel",
         description: "Inverex Mustang 620W solar module.",
       },
@@ -487,7 +487,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 31200,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/inverex-mustang-720w-solar-panel/",
+        link: "/shop/inverex/inverex-mustang-720w-solar-panel",
         category: "Solar Panel",
         description: "Inverex Mustang 720W ultra-high power solar module.",
       },
@@ -497,7 +497,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 440000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/nitrox-10-kw-inverter-ip65/",
+        link: "/shop/inverex/nitrox-10-kw-inverter-ip65",
         category: "Inverters",
         description: "Nitrox 10kW IP65 hybrid inverter.",
       },
@@ -507,7 +507,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 775000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/nitrox-13kw-h-3phs-inverter-ip65/",
+        link: "/shop/inverex/nitrox-13kw-h-3phs-inverter-ip65",
         category: "Inverters",
         description: "Nitrox 13kW 3-phase hybrid IP65 inverter.",
       },
@@ -517,7 +517,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 950000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/nitrox-16kw-h-3phs-inverter-ip65/",
+        link: "/shop/inverex/nitrox-16kw-h-3phs-inverter-ip65",
         category: "Inverters",
         description: "Nitrox 16kW 3-phase hybrid IP65 inverter.",
       },
@@ -527,7 +527,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 1125000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/inverex/nitrox-20kw-h-3phs-inverter-ip65/",
+        link: "/shop/inverex/nitrox-20kw-h-3phs-inverter-ip65",
         category: "Inverters",
         description: "Nitrox 20kW 3-phase hybrid IP65 inverter.",
       },
@@ -546,7 +546,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 21500,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-7-1.webp",
-        link: "https://solamoenergy.com/shop/ja-solar/ja-solar-565w/",
+        link: "/shop/ja-solar/ja-solar-565w",
         category: "Solar Panel",
         description:
           "JA Solar 565W half-cell mono PERC panel offers 21.9% efficiency, shade tolerance, and 25-year warranty.",
@@ -557,7 +557,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 21500,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-23.webp",
-        link: "https://solamoenergy.com/shop/ja-solar/ja-solar-565w-2/",
+        link: "/shop/ja-solar/ja-solar-565w-2",
         category: "Solar Panel",
         description:
           "High-efficiency JA Solar 565W Mono PERC half-cell solar panel engineered for reliable high-wattage power output.",
@@ -568,7 +568,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 24100,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-9-2.webp",
-        link: "https://solamoenergy.com/shop/ja-solar/ja-solar-590w/",
+        link: "/shop/ja-solar/ja-solar-590w",
         category: "Solar Panel",
         description:
           "High-efficiency JA Solar 590W N-type TOPCon panel engineered for superior output and heat tolerance.",
@@ -579,7 +579,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25500,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-10.webp",
-        link: "https://solamoenergy.com/shop/ja-solar/ja-solar-bifacial-625w/",
+        link: "/shop/ja-solar/ja-solar-bifacial-625w",
         category: "Solar Panel",
         description:
           "High-efficiency JA Solar 625W N-type TOPCon bifacial solar panel engineered for maximum dual-sided power yield.",
@@ -608,7 +608,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25400,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-9-1.webp",
-        link: "https://solamoenergy.com/shop/jinko-solar/jinko-585w/",
+        link: "/shop/jinko-solar/jinko-585w",
         category: "Solar Panel",
         description:
           "Global Tier-1 Jinko 585W solar module featuring high yield and low degradation.",
@@ -619,7 +619,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 31300,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-11.webp",
-        link: "https://solamoenergy.com/shop/jinko-solar/jinko-655w/",
+        link: "/shop/jinko-solar/jinko-655w",
         category: "Solar Panel",
         description: "High-wattage Jinko 655W high-yield solar module.",
       },
@@ -629,7 +629,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 27350,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-10-1.webp",
-        link: "https://solamoenergy.com/shop/jinko-solar/jinko-bf-645w/",
+        link: "/shop/jinko-solar/jinko-bf-645w",
         category: "Solar Panel",
         description:
           "Bifacial Jinko BF 645W 3.0 dual-sided power generation module.",
@@ -667,7 +667,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 27300,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-6-1.webp",
-        link: "https://solamoenergy.com/shop/longi/longi-645watt/",
+        link: "/shop/longi/longi-645watt",
         category: "Solar Panel",
         description: "LONGi high-efficiency 645W solar module.",
       },
@@ -677,7 +677,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 27900,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-18.webp",
-        link: "https://solamoenergy.com/shop/longi/longi-hi-mo-x10-645w/",
+        link: "/shop/longi/longi-hi-mo-x10-645w",
         category: "Solar Panel",
         description: "LONGi Hi-MO X10 645W high-efficiency solar module.",
       },
@@ -697,7 +697,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25100,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-19-2.webp",
-        link: "https://solamoenergy.com/shop/tcl-solar/tcl-615w-tcl-615w-n-type-bifacial-solar-panel/",
+        link: "/shop/tcl-solar/tcl-615w-tcl-615w-n-type-bifacial-solar-panel",
         category: "Solar Panel",
         description:
           "High-efficiency TCL 615W N-type TOPCon bifacial solar panel engineered for maximum dual-glass energy yield.",
@@ -708,7 +708,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25300,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-21.webp",
-        link: "https://solamoenergy.com/shop/tcl-solar/tcl-620w-n-type-bifacial-solar-panel/",
+        link: "/shop/tcl-solar/tcl-620w-n-type-bifacial-solar-panel",
         category: "Solar Panel",
         description:
           "High-efficiency TCL 620W N-type TOPCon bifacial solar panel engineered for maximum dual-glass energy yield.",
@@ -728,7 +728,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 24900,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-17-1.webp",
-        link: "https://solamoenergy.com/shop/trina-solar/trina-620w/",
+        link: "/shop/trina-solar/trina-620w",
         category: "Solar Panel",
         description:
           "High-efficiency Trina Vertex N 620W N-type i-TOPCon solar panel engineered for maximum dual-sided energy yield.",
@@ -739,7 +739,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25450,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-18-1.webp",
-        link: "https://solamoenergy.com/shop/trina-solar/trina-630w/",
+        link: "/shop/trina-solar/trina-630w",
         category: "Solar Panel",
         description:
           "High-efficiency Trina Vertex N 630W N-type i-TOPCon solar panel engineered for maximum dual-sided energy yield.",
@@ -750,7 +750,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 0,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/trina-solar/trina-720w/",
+        link: "/shop/trina-solar/trina-720w",
         category: "Solar Panel",
         description:
           "High performance Trina Vertex N 720W N-type TOPCon bifacial solar panel engineered for maximum energy yield.",
@@ -761,7 +761,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 0,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/trina-solar/trina-725w/",
+        link: "/shop/trina-solar/trina-725w",
         category: "Solar Panel",
         description:
           "High performance Trina Vertex N 725W N-type TOPCon bifacial solar panel engineered for maximum energy yield.",
@@ -781,7 +781,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 260500,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1-2.webp",
-        link: "https://solamoenergy.com/shop/volnex/volnex-ip65-51-2v-100ah/",
+        link: "/shop/volnex/volnex-ip65-51-2v-100ah",
         category: "Batteries",
         description:
           "Volnex IP65 51.2V 100Ah weatherproof lithium battery offers 5.12kWh storage, 6000+ cycles, and smart BMS.",
@@ -801,7 +801,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 555000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-3-1.webp",
-        link: "https://solamoenergy.com/shop/cn-green/cn-green-16kw/",
+        link: "/shop/cn-green/cn-green-16kw",
         category: "Batteries",
         description:
           "CN Green 16kW (16.08kWh) 314Ah LiFePO4 battery features smart BMS, 6000+ cycles, and 200A fast discharge.",
@@ -821,7 +821,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 23700,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/cora-dawn/cora-dawn-615w/",
+        link: "/shop/cora-dawn/cora-dawn-615w",
         category: "Solar Panel",
         description: "Elegant residential smart-roof panel with 615W output.",
       },
@@ -831,7 +831,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/cora-dawn/cora-dawn-645w/",
+        link: "/shop/cora-dawn/cora-dawn-645w",
         category: "Solar Panel",
         description: "Elegant residential smart-roof panel with 645W output.",
       },
@@ -841,7 +841,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 25400,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-1.webp",
-        link: "https://solamoenergy.com/shop/cora-dawn/cora-dawn-655w/",
+        link: "/shop/cora-dawn/cora-dawn-655w",
         category: "Solar Panel",
         description: "Elegant residential smart-roof panel with 655W output.",
       },
@@ -877,7 +877,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 250000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-21-1.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/all-in-one-2-5kw-hybrid-inverter-with-2kwh-lithium-battery-ip20/",
+        link: "/shop/sunsynk/all-in-one-2-5kw-hybrid-inverter-with-2kwh-lithium-battery-ip20",
         category: "Inverters",
         description:
           "All-in-one LifeLynk S 2.5kW hybrid inverter with 2kWh LiFePO4 battery and built-in MPPT charger.",
@@ -888,7 +888,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 495000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-23-1.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/all-in-one-xls-6kw-hybrid-inverter-with-5-1kwh-lithium-battery-ip40/",
+        link: "/shop/sunsynk/all-in-one-xls-6kw-hybrid-inverter-with-5-1kwh-lithium-battery-ip40",
         category: "Inverters",
         description:
           "All-in-one XLS 6kW hybrid inverter with 5.1kWh LiFePO4 battery and dual MPPT solar charger.",
@@ -899,7 +899,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 495000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-24.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/all-in-one-xls-8kw-hybrid-inverter-with-5-1kwh-lithium-battery-ip40/",
+        link: "/shop/sunsynk/all-in-one-xls-8kw-hybrid-inverter-with-5-1kwh-lithium-battery-ip40",
         category: "Inverters",
         description:
           "All-in-one XLS 8kW hybrid inverter with 5.1kWh LiFePO4 battery and dual MPPT solar charger.",
@@ -910,7 +910,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 150000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-20-1-1-1.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/sunsynk-contour-2000-1kw-inverter-with-2kwh-lithium-battery-ip20/",
+        link: "/shop/sunsynk/sunsynk-contour-2000-1kw-inverter-with-2kwh-lithium-battery-ip20",
         category: "Inverters",
         description:
           "All-in-one Sunsynk Contour 2000 IP20 portable trolley with 1kW inverter and 2kWh LiFePO4 battery.",
@@ -921,7 +921,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 175000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-25.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/sunsynk-lifelynk-lynks-6kw-hybrid-inverter-ip41/",
+        link: "/shop/sunsynk/sunsynk-lifelynk-lynks-6kw-hybrid-inverter-ip41",
         category: "Inverters",
         description:
           "Compact 6kW LifeLynk Lynks IP41 hybrid inverter with 8kW MPPT solar capacity and 48V battery support.",
@@ -932,7 +932,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 210000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-26.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/sunsynk-lifelynk-lynx-pro-6kw-ip65-hybrid-inverter/",
+        link: "/shop/sunsynk/sunsynk-lifelynk-lynx-pro-6kw-ip65-hybrid-inverter",
         category: "Inverters",
         description:
           "Weather-proof 6kW Lynx Pro IP65 hybrid inverter with 8kW MPPT solar and 48V battery support.",
@@ -943,7 +943,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 555000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-30.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/sunsynk-x-series-10-24kwh-8000-cycles-ip65-lithium-battery/",
+        link: "/shop/sunsynk/sunsynk-x-series-10-24kwh-8000-cycles-ip65-lithium-battery",
         category: "Batteries",
         description:
           "Heavy-duty 10.24kWh IP65 LiFePO4 battery providing 8000 cycles, 200A continuous output, and 51.2V support.",
@@ -954,7 +954,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 295000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-29.webp",
-        link: "https://solamoenergy.com/shop/sunsynk/sunsynk-x-series-5-12kwh-8000-cycles-ip65-lithium-battery/",
+        link: "/shop/sunsynk/sunsynk-x-series-5-12kwh-8000-cycles-ip65-lithium-battery",
         category: "Batteries",
         description:
           "Durable 5.12kWh IP65 LiFePO4 battery delivering 8000 cycles, 100A continuous output, and 48V system compatibility.",
@@ -974,7 +974,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 22800,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-16-1.webp",
-        link: "https://solamoenergy.com/shop/jesko/jesko-585w/",
+        link: "/shop/jesko/jesko-585w",
         category: "Solar Panel",
         description:
           "High-efficiency Jesko 585W N-type TOPCon bifacial solar panel engineered for maximum dual-glass energy yield.",
@@ -985,7 +985,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 24000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-17-3.webp",
-        link: "https://solamoenergy.com/shop/jesko/jesko-615w/",
+        link: "/shop/jesko/jesko-615w",
         category: "Solar Panel",
         description:
           "High-efficiency Jesko 615W N-type TOPCon bifacial solar panel engineered for maximum dual-glass energy yield.",
@@ -996,7 +996,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 24200,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-18-2.webp",
-        link: "https://solamoenergy.com/shop/jesko/jesko-620w/",
+        link: "/shop/jesko/jesko-620w",
         category: "Solar Panel",
         description:
           "High-efficiency Jesko 620W N-type TOPCon bifacial solar panel engineered for maximum dual-glass energy yield.",
@@ -1016,7 +1016,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 601000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-15.webp",
-        link: "https://solamoenergy.com/shop/itel/itel-16kw-51-2v-314ah-lithium-battery/",
+        link: "/shop/itel/itel-16kw-51-2v-314ah-lithium-battery",
         category: "Batteries",
         description:
           "ITEL 51.2V 314Ah LiFePO4 battery provides 16kWh high-capacity storage with smart BMS protection.",
@@ -1027,7 +1027,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 131000,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-9.webp",
-        link: "https://solamoenergy.com/shop/itel/itel-24v-100ah/",
+        link: "/shop/itel/itel-24v-100ah",
         category: "Batteries",
         description:
           "High-performance ITEL 24V 100Ah LiFePO4 lithium battery with 2.4kWh capacity and smart BMS protection.",
@@ -1047,7 +1047,7 @@ export const brandsData: Record<string, BrandData> = {
         price: 26450,
         image:
           "https://solamoenergy.com/wp-content/uploads/2026/08/Website-Listing-9-3.webp",
-        link: "https://solamoenergy.com/shop/yingli/yingli-panda-3-0-630w/",
+        link: "/shop/yingli/yingli-panda-3-0-630w",
         category: "Solar Panel",
         description:
           "High efficiency Yingli Panda 3.0 630W N-type TOPCon bifacial solar panel engineered for maximum yield.",

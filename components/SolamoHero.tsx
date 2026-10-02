@@ -9,14 +9,15 @@ import {
   ArrowRight,
   ArrowUpRight,
   BatteryCharging,
-  Building2,
-  Home,
-  Settings,
+  Cable,
+  Package,
+  ShieldAlert,
   ShieldCheck,
   ShoppingBag,
+  Smartphone,
   Sun,
-  Wrench,
   Zap,
+  Flame,
 } from "lucide-react";
 
 import "swiper/css";
@@ -54,35 +55,31 @@ const heroSlides: HeroSlide[] = [
     mediaType: "video",
   },
   {
-    badge: "Limited Time Offer",
+    badge: "Free Service",
     heading: (
       <>
-        Zero Down Payment on <span className="text-[#84CC16]">Hybrid</span>{" "}
-        Solar Systems
+        Get a Free <span className="text-[#84CC16]">Site Assessment</span>
       </>
     ),
     description:
-      "Flexible installment plans on 5kW to 15kW hybrid systems. Book a free site survey this month and lock in today's rate.",
-    primaryCta: { label: "Check Eligibility", href: "/free-quote" },
-    secondaryCta: { label: "View Packages", href: "/shop" },
+      "Our team visits your location, evaluates your roof and power needs, and gives you a custom system recommendation, no cost, no obligation.",
+    primaryCta: { label: "Book Free Assessment", href: "/free-quote" },
+    secondaryCta: { label: "WhatsApp Us", href: "https://wa.me/923141349717" },
     media: "https://solamoenergy.com/wp-content/uploads/2026/05/Karachi-1.mp4",
     mediaType: "video",
   },
   {
-    badge: "Now In Stock",
+    badge: "Aftercare",
     heading: (
       <>
-        N-Type Bifacial Panels — <span className="text-[#84CC16]">More</span>{" "}
-        Power, Less Roof
+        Keep Your System Running at{" "}
+        <span className="text-[#84CC16]">Full Output</span>
       </>
     ),
     description:
-      "Higher yield per square foot with 25-year performance warranty. Available for residential and commercial rooftops.",
-    primaryCta: { label: "Shop Panels", href: "/shop/bifacial" },
-    secondaryCta: {
-      label: "Talk to an Expert",
-      href: "https://wa.me/923141349717",
-    },
+      "Dust and grime can cut solar output by up to 20%. Book professional cleaning and maintenance to protect your investment.",
+    primaryCta: { label: "Book Maintenance Visit", href: "/free-quote" },
+    secondaryCta: { label: "View Plans", href: "/shop" },
     media: "https://solamoenergy.com/wp-content/uploads/2026/05/Karachi-1.mp4",
     mediaType: "video",
   },
@@ -103,29 +100,34 @@ export default function SolamoHero() {
       bg: "bg-[#e5f5e8]",
     },
     {
-      title: "Hybrid Systems",
-      icon: Settings,
-      href: "/services",
+      title: "Power Banks",
+      icon: Smartphone,
+      href: "/shop",
       bg: "bg-[#fff1d4]",
     },
-    { title: "Residential", icon: Home, href: "/services", bg: "bg-[#e8f1ff]" },
     {
-      title: "Commercial",
-      icon: Building2,
-      href: "/services",
+      title: "Cables & Wiring",
+      icon: Cable,
+      href: "/shop",
+      bg: "bg-[#e8f1ff]",
+    },
+    {
+      title: "Breakers & Protection",
+      icon: ShieldAlert,
+      href: "/shop",
       bg: "bg-[#f4eafa]",
     },
     {
-      title: "Installation",
-      icon: Wrench,
-      href: "/services",
+      title: "Accessories",
+      icon: Package,
+      href: "/shop",
       bg: "bg-[#e6f4f0]",
     },
     {
-      title: "Warranty",
-      icon: ShieldCheck,
-      href: "/contact-us",
-      bg: "bg-[#f1f1f1]",
+      title: "Fire Extinguisher",
+      icon: Flame,
+      href: "/shop",
+      bg: "bg-[#fff1f2]",
     },
   ];
 
@@ -314,7 +316,7 @@ export default function SolamoHero() {
           {/* RIGHT: FEATURE CARD (static) */}
           <div
             className="
-              relative overflow-hidden bg-[#F7FEE7]
+              hidden md:block relative overflow-hidden bg-[#F7FEE7]
               min-h-[300px] sm:min-h-[310px] md:h-[300px] md:min-h-0
             "
           >
@@ -439,7 +441,7 @@ export default function SolamoHero() {
         {/* =========================================================
             4. CONTENT MODULES
         ========================================================= */}
-        <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="hidden md:grid mt-4 grid-cols-1 lg:grid-cols-3 gap-4">
           {/* MORE REASONS */}
           <div>
             <h2 className="text-[19px] sm:text-[21px] lg:text-[22px] font-bold text-[#111] mb-3 px-1">

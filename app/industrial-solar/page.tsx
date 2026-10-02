@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import { Zap } from "lucide-react";
 
 /* =========================================================
@@ -571,7 +571,7 @@ export default function IndustrialSolarPage() {
         }
       `}</style>
 
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow">
         {/* =====================================================
@@ -916,7 +916,7 @@ export default function IndustrialSolarPage() {
         </section>
       </main>
 
-      <Footer />
+      <SolamoFooter />
 
       {/* =====================================================
           POPUP FORM

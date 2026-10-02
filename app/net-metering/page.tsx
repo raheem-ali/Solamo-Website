@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 
 // Custom hook for intersection observer (runs once per element)
 function useScrollAnimation(threshold = 0.1) {
@@ -167,7 +167,7 @@ export default function NetMeteringCompletePage() {
         }
       `}</style>
 
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow">
         {/* SECTION 1: WHAT IS NET METERING? */}
@@ -768,7 +768,7 @@ export default function NetMeteringCompletePage() {
         </div>
       )}
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

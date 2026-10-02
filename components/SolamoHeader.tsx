@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,11 +13,61 @@ import {
   User,
   ShoppingCart,
   Globe,
+  Heart,
 } from "lucide-react";
+import { getWishlist } from "@/lib/wishlist";
+
+const CITIES = [
+  "Karachi",
+  "Lahore",
+  "Islamabad",
+  "Rawalpindi",
+  "Faisalabad",
+  "Multan",
+  "Peshawar",
+  "Quetta",
+];
 
 export default function SolamoHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [selectedCity, setSelectedCity] = useState("Karachi");
+  const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const cityDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setWishlistCount(getWishlist().length);
+    const handleWishlistUpdate = () => {
+      setWishlistCount(getWishlist().length);
+    };
+    window.addEventListener("storage", handleWishlistUpdate);
+    window.addEventListener("wishlistUpdated", handleWishlistUpdate as EventListener);
+    return () => {
+      window.removeEventListener("storage", handleWishlistUpdate);
+      window.removeEventListener("wishlistUpdated", handleWishlistUpdate as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        cityDropdownRef.current &&
+        !cityDropdownRef.current.contains(event.target as Node)
+      ) {
+        setCityDropdownOpen(false);
+      }
+    };
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setCityDropdownOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -67,19 +117,38 @@ export default function SolamoHeader() {
             </Link>
 
             {/* LOCATION - DESKTOP ONLY */}
-            <div className="hidden xl:flex items-center gap-2 shrink-0 text-xs cursor-pointer rounded-md px-2 py-1.5 hover:bg-[#65A30D] transition">
+            <div
+              ref={cityDropdownRef}
+              className="hidden xl:flex items-center gap-2 shrink-0 text-xs cursor-pointer rounded-md px-2 py-1.5 hover:bg-[#65A30D] transition relative"
+              onClick={() => setCityDropdownOpen(!cityDropdownOpen)}
+            >
               <MapPin className="w-5 h-5 text-black shrink-0" />
 
               <div className="leading-tight">
-                <p className="text-gray-700 text-[11px]">
-                  Installation Location
-                </p>
+                <p className="text-gray-700 text-[11px]">Installation Location</p>
 
                 <p className="font-bold text-black flex items-center gap-1">
-                  Pakistan
+                  {selectedCity}
                   <span className="text-[9px]">▼</span>
                 </p>
               </div>
+
+              {cityDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-[100] py-1">
+                  {CITIES.map((city) => (
+                    <div
+                      key={city}
+                      className="px-3 py-2 hover:bg-gray-100 text-black"
+                      onClick={() => {
+                        setSelectedCity(city);
+                        setCityDropdownOpen(false);
+                      }}
+                    >
+                      {city}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* SEARCH */}
@@ -153,6 +222,24 @@ focus:ring-[#84CC16]
               >
                 <User className="w-5 h-5" />
                 <span className="hidden lg:inline text-sm">Account</span>
+              </Link>
+
+              <div className="hidden sm:block h-5 w-px bg-[#4D7C0F]/40" />
+
+              {/* WISHLIST */}
+              <Link
+                href="/wishlist"
+                onClick={closeMobileMenu}
+                className="relative flex items-center gap-1.5 hover:opacity-70 transition"
+                aria-label="Wishlist"
+              >
+                <Heart className="w-5 h-5 sm:w-[22px] sm:h-[22px]" />
+                <span className="hidden lg:inline text-sm">Wishlist</span>
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-2 -right-2 sm:-right-2.5 bg-black text-[#84CC16] text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
               </Link>
 
               <div className="hidden sm:block h-5 w-px bg-[#4D7C0F]/40" />
@@ -741,6 +828,30 @@ focus:ring-[#84CC16]
                 </Link>
 
                 <Link
+                  href="/wishlist"
+                  onClick={closeMobileMenu}
+                  className="
+                    py-3.5
+                    text-base
+                    sm:text-lg
+                    font-semibold
+                    text-gray-900
+                    border-b
+                    border-gray-100
+                    flex
+                    items-center
+                    justify-between
+                  "
+                >
+                  <span>Wishlist</span>
+                  {wishlistCount > 0 && (
+                    <span className="bg-[#79B900] text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Link>
+
+                <Link
                   href="/blog"
                   onClick={closeMobileMenu}
                   className="
@@ -773,27 +884,23 @@ focus:ring-[#84CC16]
                 </Link>
 
                 {/* MOBILE LOCATION */}
-                <div
-                  className="
-                    mt-5
-                    flex
-                    items-center
-                    gap-3
-                    rounded-lg
-                    bg-gray-50
-                    border
-                    border-gray-100
-                    p-4
-                  "
-                >
-                  <MapPin className="w-5 h-5 shrink-0" />
-
-                  <div>
-                    <p className="text-xs text-gray-500">
-                      Installation Location
-                    </p>
-
-                    <p className="text-sm font-bold text-black">Pakistan</p>
+                <div className="mt-5 rounded-lg bg-gray-50 border border-gray-100 p-4">
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-5 h-5 shrink-0" />
+                    <div>
+                      <p className="text-xs text-gray-500">Installation Location</p>
+                      <select
+                        className="text-sm font-bold text-black bg-transparent w-full"
+                        value={selectedCity}
+                        onChange={(e) => setSelectedCity(e.target.value)}
+                      >
+                        {CITIES.map((city) => (
+                          <option key={city} value={city}>
+                            {city}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
 

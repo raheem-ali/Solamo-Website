@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import { BrandData, Product } from "@/lib/brand-data";
 import { SlidersHorizontal, X } from "lucide-react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 
 interface BrandArchiveClientProps {
   brand: BrandData;
@@ -108,7 +109,7 @@ export default function BrandArchiveClient({ brand }: BrandArchiveClientProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white text-[#172217]">
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow pb-24">
         {/* Top Banner Image (Dynamic per brand) */}
@@ -220,12 +221,12 @@ export default function BrandArchiveClient({ brand }: BrandArchiveClientProps) {
                         </div>
 
                         {/* See Details button */}
-                        <a
+                        <Link
                           href={product.link}
                           className="block w-full text-center bg-[#79B900] hover:bg-[#689e00] text-white font-semibold py-2.5 rounded-full text-sm transition-colors"
                         >
                           See Details
-                        </a>
+                        </Link>
                       </div>
                     </article>
                   ))}
@@ -236,7 +237,7 @@ export default function BrandArchiveClient({ brand }: BrandArchiveClientProps) {
         </div>
       </main>
 
-      <Footer />
+      <SolamoFooter />
 
       <style jsx global>{`
         .e-loop-item {

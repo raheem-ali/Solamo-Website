@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import CompatibleEvCarousel from "@/components/CompatibleEvCarousel";
 
 // Reusable Intersection Observer hook for strict once-only scroll-trigger
@@ -172,7 +172,7 @@ export default function EVChargingStationPage() {
         }
       `}</style>
 
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow">
         {/* SECTION 1: THE EV OPPORTUNITY IN PAKISTAN */}
@@ -861,7 +861,7 @@ export default function EVChargingStationPage() {
         </div>
       )}
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

@@ -88,26 +88,7 @@ export default function SolamoFooter() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full lg:w-auto">
-            <a
-              href="https://help.solamoenergy.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 bg-[#f8f9fa] hover:bg-gray-100 p-3 rounded-lg border border-gray-100 transition"
-            >
-              <span className="w-9 h-9 rounded-full bg-[#84CC16] flex items-center justify-center shrink-0">
-                <Info className="w-4 h-4 text-black" />
-              </span>
-              <div>
-                <div className="text-[10px] text-gray-400 font-bold uppercase">
-                  Help Center
-                </div>
-                <div className="text-sm font-bold text-[#111]">
-                  help.solamoenergy.com
-                </div>
-              </div>
-            </a>
-
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full lg:w-auto">
             <a
               href="mailto:info@Solamoenergy.com"
               className="flex items-center gap-3 bg-[#f8f9fa] hover:bg-gray-100 p-3 rounded-lg border border-gray-100 transition"

@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import TermsOfServiceContent from "@/components/TermsOfServiceContent";
 
 export const metadata = {
@@ -11,9 +11,9 @@ export const metadata = {
 export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <SolamoHeader />
       <TermsOfServiceContent />
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

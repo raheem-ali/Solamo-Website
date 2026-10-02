@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import {
   Check,
   ArrowUpRight,
@@ -388,7 +388,7 @@ export default function ResidentialSolarCombinedPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow">
         {/* 1. THE PROBLEM WE SOLVE SECTION */}
@@ -886,7 +886,7 @@ export default function ResidentialSolarCombinedPage() {
         </div>
       )}
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

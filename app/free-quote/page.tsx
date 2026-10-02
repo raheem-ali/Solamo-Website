@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import FreeQuoteClient from "@/components/FreeQuoteClient";
 
 export const metadata = {
@@ -11,11 +11,11 @@ export const metadata = {
 export default function FreeQuotePage() {
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <SolamoHeader />
 
       <FreeQuoteClient />
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

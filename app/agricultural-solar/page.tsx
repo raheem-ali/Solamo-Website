@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 
 // Custom hook to trigger once per element when entering viewport
 function useScrollAnimation() {
@@ -134,7 +134,7 @@ export default function AgriculturalSolarPage() {
         }
       `}</style>
 
-      <Header />
+      <SolamoHeader />
 
       <main className="flex-grow">
         {/* 1. THE AGRICULTURAL ENERGY PROBLEM (Section 1 pattern: Left fadeInLeft, Right fadeInRight) */}
@@ -661,7 +661,7 @@ export default function AgriculturalSolarPage() {
         </div>
       )}
 
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }

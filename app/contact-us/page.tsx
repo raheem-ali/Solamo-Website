@@ -1,16 +1,16 @@
 import React from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SolamoHeader from "@/components/SolamoHeader";
+import SolamoFooter from "@/components/SolamoFooter";
 import ContactSection from "@/components/ContactSection";
 
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#F8F9F5] flex flex-col">
-      <Header />
+      <SolamoHeader />
       <main className="flex-grow">
         <ContactSection />
       </main>
-      <Footer />
+      <SolamoFooter />
     </div>
   );
 }
