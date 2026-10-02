@@ -88,7 +88,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
       try {
         const saved = localStorage.getItem(`solamo_helpful_${r.id}`);
         if (saved === "true") map[r.id] = true;
-      } catch {}
+      } catch { }
     });
     setHelpfulCounts(counts);
     setHelpfulMap(map);
@@ -207,7 +207,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
     }));
     try {
       localStorage.setItem(`solamo_helpful_${reviewId}`, String(next));
-    } catch {}
+    } catch { }
   };
 
   const filteredReviews = rawReviews.filter((r) => {
@@ -573,7 +573,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                         </div>
                       </div>
                       <a href="#apply" className="flex-none ml-2 font-medium text-[#4D7C0F] underline hover:text-[#5f9200]">
-                        Apply now
+                        Coming Soon
                       </a>
                     </div>
 
@@ -589,7 +589,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                         </div>
                       </div>
                       <a href="#apply" className="flex-none ml-2 font-medium text-[#4D7C0F] underline hover:text-[#5f9200]">
-                        Apply now
+                        Coming Soon
                       </a>
                     </div>
                   </ScrollRow>
@@ -599,88 +599,13 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                 <div className="mt-5 flex flex-col gap-3">
                   {/* Banner 1 */}
                   <div className="relative flex min-h-[110px] sm:min-h-[120px] items-center justify-between overflow-hidden rounded-[12px] bg-gradient-to-r from-[#4D7C0F] to-[#79B900] p-5 text-white shadow-sm">
-                    <div className="relative z-10 max-w-[70%]">
-                      <div className="text-[11px] uppercase opacity-90 font-medium">Limited Offer</div>
-                      <div className="mt-1 text-[18px] sm:text-[20px] font-bold leading-tight">Get 15% Cashback</div>
-                      <div className="mt-1 text-[13px] opacity-90">No Minimum Order requirement across all solar systems</div>
-                    </div>
-                    <div className="relative z-10 shrink-0 rounded-[6px] bg-white/25 backdrop-blur-sm px-3 py-1.5 font-mono text-[12px] font-bold text-white border border-white/30">
-                      CODE: SOLAR15
-                    </div>
+                 <h1>video ad</h1>
+                   
                   </div>
 
                   {/* Banner 2 */}
                   <div className="relative flex min-h-[110px] sm:min-h-[120px] items-center justify-between overflow-hidden rounded-[12px] bg-gradient-to-r from-[#1f2937] to-[#344034] p-5 text-white shadow-sm">
-                    <div className="relative z-10 max-w-[70%]">
-                      <div className="text-[11px] uppercase opacity-90 font-medium text-[#79B900]">Solamo Express</div>
-                      <div className="mt-1 text-[18px] sm:text-[20px] font-bold leading-tight">Free Site Survey</div>
-                      <div className="mt-1 text-[13px] opacity-90">Book professional inspection &amp; energy audit today</div>
-                    </div>
-                    <div className="relative z-10 shrink-0 rounded-[6px] bg-[#79B900] px-3 py-1.5 text-[12px] font-bold text-white">
-                      Book Now
-                    </div>
-                  </div>
-                </div>
-
-                {/* Frequently Bought Together Section (Phase 1 - Item 3) */}
-                <div className="mt-6 rounded-[12px] border border-[#e5e8e1] bg-[#f9faf8] p-4">
-                  <div className="mb-3 flex items-center justify-between">
-                    <div className="text-[13px] font-bold text-[#6b7280] tracking-[0.02em] uppercase">
-                      FREQUENTLY BOUGHT TOGETHER
-                    </div>
-                    <div className="text-[14px] font-bold text-[#1f2937]">
-                      Total: <span className="text-[#4D7C0F]">Rs {fbtTotalPrice.toLocaleString()}</span>
-                    </div>
-                  </div>
-
-                  <ScrollRow className="items-center gap-2">
-                    {fbtProducts.map((p, idx) => {
-                      const key = `${p.id}-${idx}`;
-                      const isChecked = fbtChecked[key] ?? true;
-                      return (
-                        <React.Fragment key={key}>
-                          {idx > 0 && (
-                            <div className="flex-none flex items-center justify-center h-8 w-8 text-[#6b7280] font-bold text-[18px]">
-                              +
-                            </div>
-                          )}
-                          <div className={`w-[150px] flex-none snap-start relative rounded-[8px] bg-white p-3 flex flex-col items-center text-center border ${isChecked ? 'border-[#79B900]' : 'border-[#e5e8e1] opacity-60'}`}>
-                            <input
-                              type="checkbox"
-                              checked={isChecked}
-                              onChange={(e) =>
-                                setFbtChecked((prev) => ({ ...prev, [key]: e.target.checked }))
-                              }
-                              className="absolute top-2 left-2 accent-[#79B900]"
-                              aria-label={`Select ${p.name}`}
-                            />
-                            <div className="h-20 w-20 flex items-center justify-center my-2">
-                              <img src={p.image} alt={p.name} className="max-h-full max-w-full object-contain" />
-                            </div>
-                            <div className="text-[14px] font-bold text-[#1f2937] mt-1">
-                              Rs {(p.price ?? 150000).toLocaleString()}
-                            </div>
-                            <div className="text-[13px] text-[#6b7280] line-clamp-2 mt-1 leading-tight">
-                              {p.name}
-                            </div>
-                          </div>
-                        </React.Fragment>
-                      );
-                    })}
-                  </ScrollRow>
-
-                  <div className="mt-4 flex items-center justify-between border-t border-[#e5e8e1] pt-3">
-                    <div className="text-[13px] text-[#6b7280]">
-                      {Object.values(fbtChecked).filter(Boolean).length} items selected
-                    </div>
-                    <a
-                      href={fbtWhatsAppUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-[6px] bg-[#79B900] px-4 py-2 text-[13px] font-bold text-white hover:bg-[#5f9200] transition-colors"
-                    >
-                      Get Quote for All
-                    </a>
+                    video ad
                   </div>
                 </div>
               </div>
@@ -964,9 +889,8 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                       <button
                         key={row.stars}
                         onClick={() => setReviewFilter(reviewFilter === row.stars ? null : row.stars)}
-                        className={`w-full flex items-center gap-2 text-xs transition hover:opacity-80 p-1 rounded ${
-                          reviewFilter === row.stars ? "bg-[#f2f9e6]" : ""
-                        }`}
+                        className={`w-full flex items-center gap-2 text-xs transition hover:opacity-80 p-1 rounded ${reviewFilter === row.stars ? "bg-[#f2f9e6]" : ""
+                          }`}
                       >
                         <span className="w-12 text-left font-medium text-[#1f2937]">{row.stars} ★</span>
                         <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -1074,11 +998,10 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
 
                               <button
                                 onClick={() => handleHelpfulToggle(rev.id)}
-                                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded border transition ${
-                                  isHelpful
+                                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded border transition ${isHelpful
                                     ? "bg-[#f2f9e6] border-[#79B900] text-[#4D7C0F] font-bold"
                                     : "bg-white border-[#d8ddd3] text-[#6b7280] hover:text-[#1f2937]"
-                                }`}
+                                  }`}
                               >
                                 <span>Helpful ({currentCount})</span>
                               </button>
@@ -1187,34 +1110,21 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
           {brand.bannerImage && (
             <div className="mx-auto max-w-[1800px] px-4 py-6 md:px-6 lg:px-8">
               <div className="rounded-[12px] border border-[#e5e8e1] bg-white p-4 shadow-sm">
-                <div className="mb-3 text-[13px] font-bold text-[#6b7280] uppercase">
-                  Featured {brand.name} Collection
-                </div>
+
                 {(() => {
                   const numCards = promoProducts.length;
                   const gridClass =
                     numCards === 2
-                      ? "grid-cols-1 lg:grid-cols-[1fr_220px_220px] xl:grid-cols-[1fr_240px_240px]"
+                      ? ""
                       : numCards === 1
-                      ? "grid-cols-1 lg:grid-cols-[1fr_220px] xl:grid-cols-[1fr_240px]"
-                      : "grid-cols-1";
+                        ? ""
+                        : "grid-cols-1";
                   return (
                     <div className={`grid ${gridClass} gap-4 items-center`}>
                       <div className="overflow-hidden rounded-lg shadow-xs h-[220px] min-w-0">
                         <BrandAdBanner brand={brand.slug} video="/ads/banner-2.mp4.mp4" noWrapper />
                       </div>
-                      {promoProducts.map((p) => (
-                        <div key={p.id} className="hidden lg:flex rounded-lg border border-[#e5e8e1] p-3 items-center gap-3 bg-[#f9faf8] h-[220px]">
-                          <div className="h-24 w-24 shrink-0 flex items-center justify-center bg-white rounded p-1">
-                            <img src={p.image} alt={p.name} className="max-h-full max-w-full object-contain" />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="text-[12px] text-[#6b7280]">{brand.name}</div>
-                            <div className="text-[13px] font-medium text-[#1f2937] line-clamp-2">{p.name}</div>
-                            <div className="text-[13px] font-bold text-[#4D7C0F] mt-1">Rs {(p.price ?? 0).toLocaleString()}</div>
-                          </div>
-                        </div>
-                      ))}
+                     
                     </div>
                   );
                 })()}
