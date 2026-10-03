@@ -366,7 +366,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                 </h1>
 
                 {/* Rating Row (Phase 3 - Item 11: hidden when no reviews or flag false) */}
-                {reviewStats && reviewStats.count > 0 && (
+                {/* {reviewStats && reviewStats.count > 0 && (
                   <div className="mt-2 flex flex-wrap items-center gap-2">
                     <span className="text-[14px] font-medium text-[#1f2937]">{reviewStats.rating}</span>
                     <div className="flex items-center text-[#4D7C0F]">
@@ -383,7 +383,7 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                       {reviewStats.count} Ratings
                     </a>
                   </div>
-                )}
+                )} */}
 
                 {/* Price Block */}
                 <div className="mt-4 border-b border-[#e7eae4] pb-4">
@@ -632,32 +632,9 @@ export default function ProductDetailPage({ params }: PDPPageProps) {
                         Sold by <span className="font-bold">Solamo Energy</span> &gt;
                       </div>
                       <div className="text-[13px] font-medium text-[#4D7C0F] mt-0.5">
-                        4.7 ★ | 95% Positive
+                        Trusted Partner ★ | Solamo Energy
                       </div>
                     </div>
-                  </div>
-
-                  {/* Two rounded stat pills */}
-                  <div className="px-3 py-3 bg-white border-b border-[#e5e8e1] flex flex-col gap-[6px] text-[14px]">
-                    <div className="flex items-center justify-between rounded-md bg-[#f3f4f0] px-3 py-2">
-                      <span className="text-[#6b7280] font-normal">Item as shown</span>
-                      <span className="font-bold text-[#4D7C0F]">90%</span>
-                    </div>
-                    <div className="flex items-center justify-between rounded-md bg-[#f3f4f0] px-3 py-2">
-                      <span className="text-[#6b7280] font-normal">Partner since</span>
-                      <span className="font-bold text-[#4D7C0F]">3+ Y</span>
-                    </div>
-                  </div>
-
-                  {/* More offers button */}
-                  <div className="p-3 border-b border-[#e5e8e1]">
-                    <a
-                      href="#offers"
-                      className="flex items-center justify-between rounded-[6px] border border-[#d8ddd3] bg-white px-3 py-2 text-[14px] font-medium text-[#4D7C0F] hover:bg-[#f9faf8]"
-                    >
-                      <span>More offers from other sellers</span>
-                      <span>&gt;</span>
-                    </a>
                   </div>
 
                   {/* Rows with icons */}
