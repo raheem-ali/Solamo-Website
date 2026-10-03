@@ -1,23 +1,47 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { ChevronLeft, ChevronRight, ArrowUpRight, Zap } from "lucide-react";
 import { brandsData, Product } from "@/lib/brand-data";
 import { DummyProduct } from "@/lib/dummy-products";
+import { getAllProducts, toCardProduct } from "@/lib/api-products";
 import ProductCard from "./ProductCard";
+// @ts-expect-error Swiper's stylesheet is a side-effect import without module types.
 import "swiper/css";
+
+const MAX_ITEMS = 1200;
+
+// Set to true only if you want old static brandsData to appear
+// when there are no real products and no dummy products.
+const USE_STATIC_FALLBACK = false;
+
+type CarouselProduct = Product & { brandName?: string };
 
 interface SolamoProductCarouselProps {
   title: string;
   subtitle: string;
+  /** Matches category_name (case-insensitive). Several allowed: "Power Banks,Charge Controllers" */
   categoryFilter?: string;
   badgeText: string;
   viewAllHref: string;
   dummyProducts?: DummyProduct[];
   products?: Product[];
   variant?: "default" | "noon";
+}
+
+function dummyToProduct(dp: DummyProduct): CarouselProduct {
+  return {
+    id: dp.id,
+    name: dp.name,
+    price: dp.price,
+    image: dp.image,
+    link: dp.link,
+    category: "Accessories" as const,
+    brandName: dp.brandName,
+    priceOnRequest: dp.priceOnRequest,
+  } as unknown as CarouselProduct;
 }
 
 export default function SolamoProductCarousel({
@@ -31,36 +55,80 @@ export default function SolamoProductCarousel({
   variant = "default",
 }: SolamoProductCarouselProps) {
   const sliderRef = useRef<SwiperRef>(null);
+  const [realProducts, setRealProducts] = useState<CarouselProduct[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
-  let productsToDisplay: (Product & { brandName?: string })[] = [];
+  // Load real products from the API (skipped when `products` is passed directly)
+  useEffect(() => {
+    if (products) {
+      setLoaded(true);
+      return;
+    }
+
+    let cancelled = false;
+    const filters = (categoryFilter || "")
+      .toLowerCase()
+      .split(",")
+      .map((f) => f.trim())
+      .filter(Boolean);
+
+    getAllProducts()
+      .then((all) => {
+        if (cancelled) return;
+        const matched = all
+          .filter((p) => {
+            if (filters.length === 0) return true;
+            const cat = String(p.category_name || "").toLowerCase();
+            return filters.some((f) => cat.includes(f));
+          })
+          .map((p) => toCardProduct(p) as unknown as CarouselProduct);
+        setRealProducts(matched);
+      })
+      .catch(() => {
+        if (!cancelled) setRealProducts([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoaded(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [categoryFilter, products]);
+
+  let productsToDisplay: CarouselProduct[] = [];
 
   if (products) {
-    productsToDisplay = products.slice(0, 12);
-  } else if (dummyProducts) {
-    productsToDisplay = dummyProducts.slice(0, 12).map((dp) => ({
-      id: dp.id,
-      name: dp.name,
-      price: dp.price,
-      image: dp.image,
-      link: dp.link,
-      category: "Accessories" as const,
-      brandName: dp.brandName,
-    }));
+    productsToDisplay = products.slice(0, MAX_ITEMS);
   } else {
-    productsToDisplay = Object.values(brandsData)
-      .flatMap((brand) =>
-        (brand.products || []).map((product) => ({
-          ...product,
-          brandName: brand.name,
-        })),
-      )
-      .filter((product) => {
-        const category = String(product.category || "").toLowerCase();
-        const filter = (categoryFilter || "").toLowerCase();
-        return category.includes(filter);
-      })
-      .filter((product) => Number(product.price) > 0)
-      .slice(0, 12);
+    // Wait for the API so dummy items don't flash before real ones
+    if (!loaded) return null;
+
+    productsToDisplay = [...realProducts];
+
+    // Fill the rest with dummy products (if provided)
+    if (dummyProducts && productsToDisplay.length < MAX_ITEMS) {
+      const needed = MAX_ITEMS - productsToDisplay.length;
+      productsToDisplay.push(...dummyProducts.slice(0, needed).map(dummyToProduct));
+    }
+
+    // Optional old static fallback
+    if (productsToDisplay.length === 0 && USE_STATIC_FALLBACK) {
+      const filter = (categoryFilter || "").toLowerCase();
+      productsToDisplay = Object.values(brandsData)
+        .flatMap((brand) =>
+          (brand.products || []).map((product) => ({
+            ...product,
+            brandName: brand.name,
+          })),
+        )
+        .filter((product) =>
+          String(product.category || "").toLowerCase().includes(filter),
+        )
+        .filter((product) => Number(product.price) > 0);
+    }
+
+    productsToDisplay = productsToDisplay.slice(0, MAX_ITEMS);
   }
 
   if (productsToDisplay.length === 0) return null;
@@ -127,7 +195,11 @@ export default function SolamoProductCarousel({
             >
               {productsToDisplay.map((product, index) => (
                 <SwiperSlide key={`${product.id}-${index}`} className="h-auto">
-                  <ProductCard product={product} variant={variant} badgeText={badgeText} />
+                  <ProductCard
+                    product={product}
+                    variant={variant}
+                    badgeText={badgeText}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>

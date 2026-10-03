@@ -49,42 +49,36 @@ export default function SolamoHomePage() {
       />
       {/* Dummy Product Sections (Temporary until real listings are available) */}
       <SolamoProductCarousel
-        title="Cables & Wiring"
+        title="Charge Controllers"
         subtitle="Solar DC cables & high-performance wiring"
+        categoryFilter="Charge Controllers"
         badgeText="CABLES"
         viewAllHref="/shop"
-        dummyProducts={dummyProductsData.cables}
       />
       <BrandAdBanner video="/ads/banner-2.mp4.mp4" /> {/* Ad Slot: After Cables & Wiring */}
       <SolamoProductCarousel
-        title="Breakers & Protection"
+        title="Power Banks"
         subtitle="DC breakers, SPDs & electrical safety"
+        categoryFilter="Power Banks"
         badgeText="BREAKER"
         viewAllHref="/shop"
-        dummyProducts={dummyProductsData.breakers}
       />
       <SolamoProductCarousel
-        title="Accessories"
+        title="Mounting Structures"
         subtitle="Mounting hardware, connectors & monitoring tools"
+        categoryFilter="Mounting Structures"
         badgeText="ACCESSORY"
         viewAllHref="/shop"
-        dummyProducts={dummyProductsData.accessories}
       />
       <BrandAdBanner video="/ads/banner-1.mp4.mp4" /> {/* Ad Slot: After Accessories */}
       <SolamoProductCarousel
-        title="Power Banks (All-in-One)"
+        title="Cables & Accessories"
         subtitle="Portable power stations & solar generators"
         badgeText="POWER BANK"
+        categoryFilter="Cables & Accessories"
         viewAllHref="/shop"
-        dummyProducts={dummyProductsData.powerBanks}
       />
-      <SolamoProductCarousel
-        title="Fire Extinguisher"
-        subtitle="Fire safety equipment for solar & electrical installations"
-        badgeText="FIRE SAFETY"
-        viewAllHref="/shop"
-        dummyProducts={dummyProductsData.fireExtinguishers}
-      />
+     
       <BrandAdBanner video="/ads/banner-2.mp4.mp4" /> {/* Ad Slot: After Fire Extinguisher */}
       <SolamoBrands /> {/* noon: Brand/Store highlights (with product counts) */}
       <SolamoWhySolamo /> {/* WhyChoose + ServiceSection (combined) */}
