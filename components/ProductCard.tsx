@@ -196,7 +196,7 @@ export default function ProductCard({ product, variant = "default", badgeText = 
         </span>
       )}
 
-      <h3 className="line-clamp-2 min-h-[2.2em] text-[12px] font-medium leading-snug text-gray-900 sm:text-[14px]">
+      <h3 className="line-clamp-2  text-[12px] font-medium leading-snug text-gray-900 sm:text-[14px]">
         {product?.name}
       </h3>
 
@@ -213,8 +213,8 @@ export default function ProductCard({ product, variant = "default", badgeText = 
           )}
         </div>
 
-        <span className="block w-full rounded-md bg-[#66CC33] py-2 text-center text-[12px] font-semibold text-white transition-colors group-hover:bg-[#57b32a] sm:py-2.5 sm:text-sm">
-          Grab Deal
+        <span className="block w-full rounded-md bg-[#84CC17] py-2 text-center text-[12px] font-semibold text-white transition-colors group-hover:bg-[#57b32a] sm:py-2.5 sm:text-sm">
+          View Details
         </span>
       </div>
     </Link>
