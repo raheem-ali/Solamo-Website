@@ -53,6 +53,13 @@ export default function ProductCard({ product, variant = "default", badgeText = 
   const reviewStats = SHOW_DEMO_CONTENT ? getReviewStats(product.id) : null;
   const extras = SHOW_DEMO_CONTENT ? getProductExtras(product.id) : null;
 
+  // Optional fields from the API (adjust key names if your API differs)
+  const p = product as any;
+  const brand: string = p?.brand || p?.brandName || "";
+  const apiOldPrice: number = Number(p?.oldPrice ?? p?.originalPrice ?? p?.regularPrice ?? 0);
+  const showOld = hasPrice && apiOldPrice > price;
+  const discountPct = showOld ? Math.round(((apiOldPrice - price) / apiOldPrice) * 100) : 0;
+
   if (variant === "noon") {
     return (
       <Link
@@ -161,38 +168,55 @@ export default function ProductCard({ product, variant = "default", badgeText = 
     );
   }
 
-  // Default variant (homepage)
+  // Default variant (homepage / deal card)
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
-      <div className="flex-1 flex items-center justify-center mb-4 min-h-[180px]">
+    <Link
+      href={product?.link || "#"}
+      className="group relative flex h-full flex-col rounded-xl border border-gray-200 bg-white p-2 shadow-sm transition-shadow hover:shadow-md sm:p-3"
+    >
+      {/* Image */}
+      <div className="relative mb-2 aspect-square w-full overflow-hidden rounded-lg bg-white">
+        {discountPct > 0 && (
+          <span className="absolute left-0 top-0 z-10 rounded-br-md rounded-tl-md bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white sm:px-2 sm:text-[10px]">
+            {discountPct}% OFF
+          </span>
+        )}
         <img
           src={product?.image || "https://solamoenergy.com/wp-content/uploads/2026/07/default-banner.png"}
           alt={product?.name || "Solar Product"}
-          className="max-h-44 w-auto object-contain"
+          loading="lazy"
+          className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </div>
 
-      <h3 className="font-semibold text-[15px] text-gray-900 mb-3 leading-snug line-clamp-2 min-h-[42px]">
+      {/* Info */}
+      {brand && (
+        <span className="mb-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 sm:text-[10px]">
+          {brand}
+        </span>
+      )}
+
+      <h3 className="line-clamp-2 min-h-[2.2em] text-[12px] font-medium leading-snug text-gray-900 sm:text-[14px]">
         {product?.name}
       </h3>
 
-      <div className="mt-auto">
-        <div className="mb-4">
-          <span className="text-sm text-gray-600">Price</span>
-          <div className="text-lime-600 font-bold text-xl">
-            {product?.price && product.price > 0
-              ? `Rs ${product.price.toLocaleString()}`
-              : "Price on Request"}
-          </div>
+      {/* Price + button */}
+      <div className="mt-auto pt-2 sm:pt-3">
+        <div className="mb-2 flex flex-wrap items-baseline gap-x-1.5 sm:mb-3">
+          <span className="text-[14px] font-bold text-gray-900 sm:text-[18px]">
+            {hasPrice ? `Rs ${price.toLocaleString()}` : "Price on Request"}
+          </span>
+          {showOld && (
+            <span className="text-[10px] text-gray-400 line-through sm:text-[11px]">
+              Rs {apiOldPrice.toLocaleString()}
+            </span>
+          )}
         </div>
 
-        <Link
-          href={product?.link || "#"}
-          className="block w-full text-center bg-lime-500 hover:bg-lime-600 text-white py-2.5 rounded-md font-medium transition-colors"
-        >
-          See Details
-        </Link>
+        <span className="block w-full rounded-md bg-[#66CC33] py-2 text-center text-[12px] font-semibold text-white transition-colors group-hover:bg-[#57b32a] sm:py-2.5 sm:text-sm">
+          Grab Deal
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }
