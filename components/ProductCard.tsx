@@ -207,13 +207,13 @@ export default function ProductCard({ product, variant = "default", badgeText = 
             {hasPrice ? `Rs ${price.toLocaleString()}` : "Price on Request"}
           </span>
           {showOld && (
-            <span className="text-[10px] text-gray-400 line-through sm:text-[11px]">
+            <span className="text-[10px] text-red-400 line-through sm:text-[11px]">
               Rs {apiOldPrice.toLocaleString()}
             </span>
           )}
         </div>
 
-        <span className="block w-full rounded-md bg-[#84CC17] py-2 text-center text-[12px] font-semibold text-white transition-colors group-hover:bg-[#57b32a] sm:py-2.5 sm:text-sm">
+        <span className="block w-full rounded-md bg-[#84CC17] py-2 text-center text-[12px] font-semibold text-white transition-colors group-hover:bg-[#00942C] sm:py-2.5 sm:text-sm">
           View Details
         </span>
       </div>
