@@ -16,25 +16,58 @@ import {
   Heart,
 } from "lucide-react";
 import { getWishlist } from "@/lib/wishlist";
+import { API_URL } from "@/app/context/CityContext";
 
-const CITIES = [
-  "Karachi",
-  "Lahore",
-  "Islamabad",
-  "Rawalpindi",
-  "Faisalabad",
-  "Multan",
-  "Peshawar",
-  "Quetta",
-];
+const STORAGE_KEY = "solamo_city";
 
 export default function SolamoHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [selectedCity, setSelectedCity] = useState("Karachi");
-  const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
   const cityDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Selected city ("" = All Cities) and the list of cities that have shops
+  const [selectedCity, setSelectedCity] = useState("");
+  const [cities, setCities] = useState<string[]>([]);
+
+  // Read the saved city once in the browser
+  useEffect(() => {
+    try {
+      setSelectedCity(localStorage.getItem(STORAGE_KEY) || "");
+    } catch {}
+  }, []);
+
+  // Load the cities that have approved shops
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API_URL}/products/cities`, { headers: { Accept: "application/json" } })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((list) => {
+        if (!cancelled && Array.isArray(list)) setCities(list);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Save the city, then reload so every section loads with it
+  const chooseCity = (c: string) => {
+    console.log("[city] CHOOSE clicked:", JSON.stringify(c));
+    try {
+      if (c) localStorage.setItem(STORAGE_KEY, c);
+      else localStorage.removeItem(STORAGE_KEY); // "All Cities"
+      console.log("[city] stored value now:", localStorage.getItem(STORAGE_KEY));
+    } catch (e) {
+      console.error("[city] localStorage failed", e);
+    }
+    setSelectedCity(c);
+    setCityDropdownOpen(false);
+    setTimeout(() => window.location.reload(), 150);
+  };
+
+  const cityOptions = ["", ...cities]; // "" = All Cities
 
   useEffect(() => {
     setWishlistCount(getWishlist().length);
@@ -120,7 +153,7 @@ export default function SolamoHeader() {
             <div
               ref={cityDropdownRef}
               className="hidden xl:flex items-center gap-2 shrink-0 text-xs cursor-pointer rounded-md px-2 py-1.5 hover:bg-[#65A30D] transition relative"
-              onClick={() => setCityDropdownOpen(!cityDropdownOpen)}
+              onClick={() => setCityDropdownOpen((o) => !o)}
             >
               <MapPin className="w-5 h-5 text-black shrink-0" />
 
@@ -128,25 +161,32 @@ export default function SolamoHeader() {
                 <p className="text-gray-700 text-[11px]">Installation Location</p>
 
                 <p className="font-bold text-black flex items-center gap-1">
-                  {selectedCity}
+                  {selectedCity || "All Cities"}
                   <span className="text-[9px]">▼</span>
                 </p>
               </div>
 
               {cityDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-[100] py-1">
-                  {CITIES.map((city) => (
+                <div className="absolute top-full left-0 mt-1 w-40 max-h-72 overflow-y-auto bg-white border border-gray-200 rounded-md shadow-lg z-[100] py-1">
+                  {cityOptions.map((c) => (
                     <div
-                      key={city}
-                      className="px-3 py-2 hover:bg-gray-100 text-black"
-                      onClick={() => {
-                        setSelectedCity(city);
-                        setCityDropdownOpen(false);
+                      key={c || "all"}
+                      className={`px-3 py-2 hover:bg-gray-100 text-black ${
+                        c === selectedCity ? "bg-gray-100 font-bold" : ""
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        chooseCity(c);
                       }}
                     >
-                      {city}
+                      {c || "All Cities"}
                     </div>
                   ))}
+                  {cities.length === 0 && (
+                    <div className="px-3 py-2 text-xs text-gray-400">
+                      No cities available yet
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -887,16 +927,16 @@ focus:ring-[#84CC16]
                 <div className="mt-5 rounded-lg bg-gray-50 border border-gray-100 p-4">
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 shrink-0" />
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs text-gray-500">Installation Location</p>
                       <select
                         className="text-sm font-bold text-black bg-transparent w-full"
                         value={selectedCity}
-                        onChange={(e) => setSelectedCity(e.target.value)}
+                        onChange={(e) => chooseCity(e.target.value)}
                       >
-                        {CITIES.map((city) => (
-                          <option key={city} value={city}>
-                            {city}
+                        {cityOptions.map((c) => (
+                          <option key={c || "all"} value={c}>
+                            {c || "All Cities"}
                           </option>
                         ))}
                       </select>

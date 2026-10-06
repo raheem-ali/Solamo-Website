@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, Package, Store, Info, ArrowUpRight } from "lucide-react";
+import { Search, Package, LayoutGrid, Info, ArrowUpRight } from "lucide-react";
 
 import SolamoHeader from "@/components/SolamoHeader";
 import SolamoFooter from "@/components/SolamoFooter";
@@ -16,62 +16,56 @@ import {
   type ApiProductLite,
 } from "@/lib/api-products";
 
-type BrandCard = {
+type CategoryCard = {
   slug: string;
   name: string;
   image: string;
-  hasLogo: boolean;
   count: number;
 };
 
-// list endpoint also returns the brand logo (brands.logo_url as brand_logo)
-type ProductWithLogo = ApiProductLite & { brand_logo?: string | null };
-
-export default function AllBrandsPage() {
+export default function AllCategoriesPage() {
   // Selected city from the header ("" = All Cities)
   const { city } = useCity();
 
-  const [brands, setBrands] = useState<BrandCard[]>([]);
+  const [categories, setCategories] = useState<CategoryCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
 
-  // Every brand that has products (getAllProducts uses the city saved by the header)
+  // Every category that has products (getAllProducts uses the city saved by the header)
   useEffect(() => {
     let alive = true;
     setLoading(true);
     getAllProducts()
-      .then((all) => {
-        const map = new Map<string, BrandCard>();
-        for (const p of all as ProductWithLogo[]) {
-          if (!p.brand_name) continue;
-          const slug = slugify(p.brand_name);
+      .then((all: ApiProductLite[]) => {
+        const map = new Map<string, CategoryCard>();
+        for (const p of all) {
+          if (!p.category_name) continue;
+          const slug = slugify(p.category_name);
           const existing = map.get(slug);
           if (existing) {
             existing.count += 1;
-            if (!existing.hasLogo && p.brand_logo) {
-              existing.image = p.brand_logo;
-              existing.hasLogo = true;
+            // use the first real product image we find
+            if (existing.image === PLACEHOLDER && p.images?.[0]) {
+              existing.image = p.images[0];
             }
           } else {
             map.set(slug, {
               slug,
-              name: p.brand_name,
-              image: p.brand_logo || p.images?.[0] || PLACEHOLDER,
-              hasLogo: !!p.brand_logo,
+              name: p.category_name,
+              image: p.images?.[0] || PLACEHOLDER,
               count: 1,
             });
           }
         }
         if (alive) {
-          // All brands, A to Z (no limit)
-          setBrands(
+          setCategories(
             Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name)),
           );
         }
       })
       .catch((e) => {
-        if (alive) setError(e?.message || "Could not load brands");
+        if (alive) setError(e?.message || "Could not load categories");
       })
       .finally(() => alive && setLoading(false));
     return () => {
@@ -81,8 +75,8 @@ export default function AllBrandsPage() {
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return q ? brands.filter((b) => b.name.toLowerCase().includes(q)) : brands;
-  }, [brands, query]);
+    return q ? categories.filter((c) => c.name.toLowerCase().includes(q)) : categories;
+  }, [categories, query]);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col justify-between">
@@ -95,14 +89,14 @@ export default function AllBrandsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#84CC16] flex items-center justify-center shrink-0">
-                  <Store className="w-5 h-5 text-black" />
+                  <LayoutGrid className="w-5 h-5 text-black" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-900">All Brands</h1>
+                  <h1 className="text-2xl font-bold text-slate-900">All Categories</h1>
                   <p className="text-xs text-slate-500 mt-1">
                     {loading
-                      ? "Loading brands..."
-                      : `${brands.length} ${brands.length === 1 ? "brand" : "brands"}${
+                      ? "Loading categories..."
+                      : `${categories.length} ${categories.length === 1 ? "category" : "categories"}${
                           city ? ` available in ${city}` : " available"
                         }`}
                   </p>
@@ -113,7 +107,7 @@ export default function AllBrandsPage() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="Search brands..."
+                  placeholder="Search categories..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8BC34A]"
@@ -123,21 +117,21 @@ export default function AllBrandsPage() {
           </div>
         </div>
 
-        {/* Brand grid */}
+        {/* Category grid */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {loading ? (
             <div className="bg-white rounded-xl p-12 text-center border border-slate-200 text-sm text-slate-500">
-              Loading brands...
+              Loading categories...
             </div>
           ) : error ? (
             <div className="bg-white rounded-xl p-12 text-center border border-red-200 text-sm text-red-600">
               {error}
             </div>
-          ) : brands.length === 0 ? (
+          ) : categories.length === 0 ? (
             <div className="bg-white rounded-xl p-12 text-center border border-slate-200">
               <Info className="w-10 h-10 text-slate-400 mx-auto mb-3" />
               <h3 className="text-lg font-semibold">
-                {city ? `No brands found in ${city}` : "No brands available right now"}
+                {city ? `No categories found in ${city}` : "No categories available right now"}
               </h3>
               {city && (
                 <p className="text-sm text-slate-500 mt-1">
@@ -154,9 +148,9 @@ export default function AllBrandsPage() {
           ) : visible.length === 0 ? (
             <div className="bg-white rounded-xl p-12 text-center border border-slate-200">
               <Info className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-              <h3 className="text-lg font-semibold">No brands found</h3>
+              <h3 className="text-lg font-semibold">No categories found</h3>
               <p className="text-sm text-slate-500 mt-1">
-                No brand matches &ldquo;{query}&rdquo;.
+                No category matches &ldquo;{query}&rdquo;.
               </p>
               <button
                 onClick={() => setQuery("")}
@@ -167,17 +161,17 @@ export default function AllBrandsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
-              {visible.map((brand) => (
+              {visible.map((cat) => (
                 <Link
-                  key={brand.slug}
-                  href={`/brand/${brand.slug}`}
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
                   className="group block bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-[#8BC34A] hover:shadow-md transition"
                 >
                   <div className="h-[110px] sm:h-[130px] bg-slate-50 flex items-center justify-center overflow-hidden p-3">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={brand.image}
-                      alt={`${brand.name} solar products`}
+                      src={cat.image}
+                      alt={`${cat.name} products`}
                       loading="lazy"
                       className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
@@ -185,12 +179,12 @@ export default function AllBrandsPage() {
 
                   <div className="px-3 py-3 border-t border-slate-100">
                     <h3 className="text-[13px] font-bold text-slate-900 truncate">
-                      {brand.name}
+                      {cat.name}
                     </h3>
                     <div className="flex items-center justify-between mt-1">
                       <span className="flex items-center gap-1 text-[11px] text-slate-500">
                         <Package className="w-3 h-3 text-slate-400 shrink-0" />
-                        {brand.count} {brand.count === 1 ? "Product" : "Products"}
+                        {cat.count} {cat.count === 1 ? "Product" : "Products"}
                       </span>
                       <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#6da02f] transition-colors" />
                     </div>

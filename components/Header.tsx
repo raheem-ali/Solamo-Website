@@ -14,7 +14,7 @@ import {
   Zap,
   Battery,
 } from "lucide-react";
-import CitySelector from "../app/context/CitySelector"; // NEW
+import CitySelector from "@/app/context/CitySelector"; // NEW
 
 const SERVICE_LINKS = [
   { href: "/residential-solar", label: "Residential Solar" },

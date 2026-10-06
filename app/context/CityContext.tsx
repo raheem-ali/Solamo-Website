@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 // Change to your Laravel API base (must end WITHOUT a slash)
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api").replace(/\/+$/, "");
 
 const STORAGE_KEY = "solamo_city";
 
@@ -20,8 +20,10 @@ interface CityContextValue {
 const CityContext = createContext<CityContextValue>({
   city: "",
   cities: [],
-  setCity: () => {},
-  ready: false,
+  setCity: () => {
+    console.warn("[city] setCity was called but CityProvider is NOT wrapping this component (or two copies of CityContext exist).");
+  },
+  ready: true, // if the provider is ever missing, do not leave pages waiting forever
 });
 
 export function CityProvider({ children }: { children: React.ReactNode }) {
@@ -53,6 +55,7 @@ export function CityProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const setCity = useCallback((next: string) => {
+    console.log("[city] setCity ->", JSON.stringify(next));
     setCityState(next);
     try {
       if (next) localStorage.setItem(STORAGE_KEY, next);
@@ -62,7 +65,8 @@ export function CityProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CityContext.Provider value={{ city, cities, setCity, ready }}>
-      {children}
+      {/* key = city: when the city changes, every page section remounts and refetches its products */}
+      <React.Fragment key={city || "all"}>{children}</React.Fragment>
     </CityContext.Provider>
   );
 }

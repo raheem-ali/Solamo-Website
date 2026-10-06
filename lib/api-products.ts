@@ -1,6 +1,7 @@
 import type { Product } from "@/lib/brand-data";
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+// Trailing slashes are removed so "/api/" in .env never produces "/api//products"
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api").replace(/\/+$/, "");
 export const PLACEHOLDER = "https://via.placeholder.com/400";
 // Where a product card links to
 export const PRODUCT_LINK_PREFIX = "/shop";
@@ -96,11 +97,14 @@ export function toCardProduct(p: ApiProductLite): CardProduct {
   } as unknown as CardProduct;
 }
 
-/** Loads every page of products (50 per request) */
-async function loadAll(): Promise<ApiProductLite[]> {
+/** Loads every page of products (50 per request). Pass a city to get only that city's shops. */
+async function loadAll(city: string): Promise<ApiProductLite[]> {
   const all: ApiProductLite[] = [];
   for (let page = 1; page <= 40; page++) {
-    const res = await fetch(`${API_URL}/products?per_page=50&page=${page}`, {
+    const qs = new URLSearchParams({ per_page: "50", page: String(page) });
+    if (city) qs.set("city", city);
+
+    const res = await fetch(`${API_URL}/products?${qs.toString()}`, {
       headers: { Accept: "application/json" },
     });
     if (!res.ok) throw new Error(`Products request failed (HTTP ${res.status})`);
@@ -111,15 +115,34 @@ async function loadAll(): Promise<ApiProductLite[]> {
   return all;
 }
 
-// One shared request for the whole page (carousels, flash deals and brands all reuse it)
-let cache: { at: number; promise: Promise<ApiProductLite[]> } | null = null;
+// One shared request per city (carousels, flash deals and brands all reuse it)
+const cache = new Map<string, { at: number; promise: Promise<ApiProductLite[]> }>();
 
-export function getAllProducts(): Promise<ApiProductLite[]> {
-  if (cache && Date.now() - cache.at < 60_000) return cache.promise;
-  const promise = loadAll().catch((e) => {
-    cache = null; // do not cache failures
+/** City saved by the header selector (browser only) */
+function savedCity(): string {
+  if (typeof window === "undefined") return "";
+  try {
+    return localStorage.getItem("solamo_city") || "";
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * @param city selected city. "" = all cities.
+ *             Not passed at all = use the city saved by the header selector,
+ *             so every existing getAllProducts() call is filtered automatically.
+ */
+export function getAllProducts(city?: string): Promise<ApiProductLite[]> {
+  const c = (city ?? savedCity()).trim();
+  const key = c.toLowerCase();
+  const hit = cache.get(key);
+  if (hit && Date.now() - hit.at < 60_000) return hit.promise;
+
+  const promise = loadAll(c).catch((e) => {
+    cache.delete(key); // do not cache failures
     throw e;
   });
-  cache = { at: Date.now(), promise };
+  cache.set(key, { at: Date.now(), promise });
   return promise;
 }

@@ -37,7 +37,7 @@ export default function SolamoHomePage() {
         subtitle="Hybrid & on-grid solar inverters"
         categoryFilter="Inverters"
         badgeText="INVERTER"
-        viewAllHref="/inverters"
+        viewAllHref="category/inverters"
       />
       <BrandAdBanner video="/ads/banner-1.mp4.mp4" /> {/* Ad Slot: After Inverters */}
       <SolamoProductCarousel
@@ -45,7 +45,7 @@ export default function SolamoHomePage() {
         subtitle="High-efficiency photovoltaic modules"
         categoryFilter="Solar Panel"
         badgeText="PANEL"
-        viewAllHref="/solar-panels"
+        viewAllHref="category/solar-panels"
       />
       {/* Dummy Product Sections (Temporary until real listings are available) */}
       <SolamoProductCarousel
@@ -53,7 +53,7 @@ export default function SolamoHomePage() {
         subtitle="Solar DC cables & high-performance wiring"
         categoryFilter="Charge Controllers"
         badgeText="CABLES"
-        viewAllHref="/shop"
+        viewAllHref="category/charge-controllers"
       />
       <BrandAdBanner video="/ads/banner-2.mp4.mp4" /> {/* Ad Slot: After Cables & Wiring */}
       <SolamoProductCarousel
@@ -61,14 +61,14 @@ export default function SolamoHomePage() {
         subtitle="DC breakers, SPDs & electrical safety"
         categoryFilter="Power Banks"
         badgeText="BREAKER"
-        viewAllHref="/shop"
+        viewAllHref="category/power-banks"
       />
       <SolamoProductCarousel
         title="Mounting Structures"
         subtitle="Mounting hardware, connectors & monitoring tools"
         categoryFilter="Mounting Structures"
         badgeText="ACCESSORY"
-        viewAllHref="/shop"
+        viewAllHref="category/mounting-structures"
       />
       <BrandAdBanner video="/ads/banner-1.mp4.mp4" /> {/* Ad Slot: After Accessories */}
       <SolamoProductCarousel
@@ -76,13 +76,13 @@ export default function SolamoHomePage() {
         subtitle="Portable power stations & solar generators"
         badgeText="POWER BANK"
         categoryFilter="Cables & Accessories"
-        viewAllHref="/shop"
+        viewAllHref="category/cables-and-accessories"
       />
       <SolamoProductCarousel
         title="Fire Extinguisher"
         subtitle="Fire safety equipment for solar & electrical installations"
         badgeText="FIRE SAFETY"
-        viewAllHref="/shop"
+        viewAllHref="category/fire-extinguishers"
         dummyProducts={dummyProductsData.fireExtinguishers}
       />
       <BrandAdBanner video="/ads/banner-2.mp4.mp4" /> {/* Ad Slot: After Fire Extinguisher */}

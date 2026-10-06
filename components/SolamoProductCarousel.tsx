@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, ArrowUpRight, Zap } from "lucide-react";
 import { brandsData, Product } from "@/lib/brand-data";
 import { DummyProduct } from "@/lib/dummy-products";
 import { getAllProducts, toCardProduct } from "@/lib/api-products";
+import { useCity } from "../app/context/CityContext";
 import ProductCard from "./ProductCard";
 // @ts-expect-error Swiper's stylesheet is a side-effect import without module types.
 import "swiper/css";
@@ -58,12 +59,17 @@ export default function SolamoProductCarousel({
   const [realProducts, setRealProducts] = useState<CarouselProduct[]>([]);
   const [loaded, setLoaded] = useState(false);
 
-  // Load real products from the API (skipped when `products` is passed directly)
+  // Selected city from the header
+  const { city, ready } = useCity();
+
+  // Load real products from the API (skipped when `products` is passed directly).
+  // Runs again whenever the selected city changes.
   useEffect(() => {
     if (products) {
       setLoaded(true);
       return;
     }
+    if (!ready) return; // wait until the saved city is read from localStorage
 
     let cancelled = false;
     const filters = (categoryFilter || "")
@@ -72,7 +78,7 @@ export default function SolamoProductCarousel({
       .map((f) => f.trim())
       .filter(Boolean);
 
-    getAllProducts()
+    getAllProducts(city)
       .then((all) => {
         if (cancelled) return;
         const matched = all
@@ -94,7 +100,7 @@ export default function SolamoProductCarousel({
     return () => {
       cancelled = true;
     };
-  }, [categoryFilter, products]);
+  }, [categoryFilter, products, city, ready]);
 
   let productsToDisplay: CarouselProduct[] = [];
 
@@ -106,8 +112,9 @@ export default function SolamoProductCarousel({
 
     productsToDisplay = [...realProducts];
 
-    // Fill the rest with dummy products (if provided)
-    if (dummyProducts && productsToDisplay.length < MAX_ITEMS) {
+    // Fill the rest with dummy products (if provided).
+    // Skipped when a city is selected, because dummy products have no city.
+    if (!city && dummyProducts && productsToDisplay.length < MAX_ITEMS) {
       const needed = MAX_ITEMS - productsToDisplay.length;
       productsToDisplay.push(...dummyProducts.slice(0, needed).map(dummyToProduct));
     }
@@ -131,7 +138,11 @@ export default function SolamoProductCarousel({
     productsToDisplay = productsToDisplay.slice(0, MAX_ITEMS);
   }
 
-  if (productsToDisplay.length === 0) return null;
+  const hasProducts = productsToDisplay.length > 0;
+
+  // No city selected and nothing to show: hide the section as before.
+  // City selected and nothing to show: keep the section and say so.
+  if (!hasProducts && !city) return null;
 
   return (
     <section className="w-full bg-[#f5f5f5] py-4 sm:py-5 overflow-hidden">
@@ -162,48 +173,60 @@ export default function SolamoProductCarousel({
             </div>
           </div>
 
-          <div className="relative px-2 sm:px-4 pb-5">
-            <button
-              type="button"
-              aria-label="Previous products"
-              onClick={() => sliderRef.current?.swiper?.slidePrev()}
-              className="absolute left-0 sm:left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition"
-            >
-              <ChevronLeft className="w-4 h-4 text-gray-700" />
-            </button>
+          {hasProducts ? (
+            <div className="relative px-2 sm:px-4 pb-5">
+              <button
+                type="button"
+                aria-label="Previous products"
+                onClick={() => sliderRef.current?.swiper?.slidePrev()}
+                className="absolute left-0 sm:left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition"
+              >
+                <ChevronLeft className="w-4 h-4 text-gray-700" />
+              </button>
 
-            <button
-              type="button"
-              aria-label="Next products"
-              onClick={() => sliderRef.current?.swiper?.slideNext()}
-              className="absolute right-0 sm:right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition"
-            >
-              <ChevronRight className="w-4 h-4 text-gray-700" />
-            </button>
+              <button
+                type="button"
+                aria-label="Next products"
+                onClick={() => sliderRef.current?.swiper?.slideNext()}
+                className="absolute right-0 sm:right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition"
+              >
+                <ChevronRight className="w-4 h-4 text-gray-700" />
+              </button>
 
-            <Swiper
-              ref={sliderRef}
-              spaceBetween={8}
-              slidesPerView={2}
-              breakpoints={{
-                480: { slidesPerView: 2, spaceBetween: 10 },
-                640: { slidesPerView: 3, spaceBetween: 10 },
-                768: { slidesPerView: 4, spaceBetween: 12 },
-                1100: { slidesPerView: 5, spaceBetween: 12 },
-              }}
-              className="!px-8 sm:!px-7"
-            >
-              {productsToDisplay.map((product, index) => (
-                <SwiperSlide key={`${product.id}-${index}`} className="h-auto">
-                  <ProductCard
-                    product={product}
-                    variant={variant}
-                    badgeText={badgeText}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+              <Swiper
+                key={city || "all"} // reset the slider position when the city changes
+                ref={sliderRef}
+                spaceBetween={8}
+                slidesPerView={2}
+                breakpoints={{
+                  480: { slidesPerView: 2, spaceBetween: 10 },
+                  640: { slidesPerView: 3, spaceBetween: 10 },
+                  768: { slidesPerView: 4, spaceBetween: 12 },
+                  1100: { slidesPerView: 5, spaceBetween: 12 },
+                }}
+                className="!px-8 sm:!px-7"
+              >
+                {productsToDisplay.map((product, index) => (
+                  <SwiperSlide key={`${product.id}-${index}`} className="h-auto">
+                    <ProductCard
+                      product={product}
+                      variant={variant}
+                      badgeText={badgeText}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          ) : (
+            <div className="px-4 sm:px-6 lg:px-7 pb-8 pt-2 text-center">
+              <p className="text-sm font-semibold text-[#111]">
+                No products found in {city}
+              </p>
+              <p className="mt-1 text-xs text-gray-500">
+                Try selecting another city from the header.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

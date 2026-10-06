@@ -1,152 +1,82 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import { getAllProducts, slugify, type ApiProductLite } from "@/lib/api-products";
+import { useCity } from "@/app/context/CityContext";
+
 import "swiper/css";
+
+type TrustedBrand = {
+  slug: string;
+  name: string;
+  logo: string | null;
+};
+
+// list endpoint also returns the brand logo (brands.logo_url as brand_logo)
+type ProductWithLogo = ApiProductLite & { brand_logo?: string | null };
 
 export default function TrustedBrands() {
   const swiperRef = useRef<SwiperRef>(null);
 
-  const brands = [
-    {
-      name: "Yingli",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/31.png",
-      link: "/brand/yingli/",
-    },
-    {
-      name: "Volnex",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/29.png",
-      link: "/brand/volnex/",
-    },
-    {
-      name: "Trina Solar",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/17.png",
-      link: "/brand/trina-solar/",
-    },
-    {
-      name: "Sunwoda",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/28.png",
-      link: "/brand/sunwoda/",
-    },
-    {
-      name: "Sunsynk",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/Solamo-Ecommerce-Brands-logo.png",
-      link: "/brand/sunsynk/",
-    },
-    {
-      name: "Sungrow",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/13.png",
-      link: "/brand/sungrow/",
-    },
-    {
-      name: "Solis",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/10.png",
-      link: "/brand/solis/",
-    },
-    {
-      name: "Resin",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/30.png",
-      link: "/brand/resin/",
-    },
-    {
-      name: "PylonTech",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/8-1.png",
-      link: "/brand/pylontech/",
-    },
-    {
-      name: "Osda",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/23.png",
-      link: "/brand/osda/",
-    },
-    {
-      name: "Osaka",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/1-1.png",
-      link: "/brand/osaka/",
-    },
-    {
-      name: "Longi",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/20.png",
-      link: "/brand/longi/",
-    },
-    {
-      name: "Jinko Solar",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/21.png",
-      link: "/brand/jinko-solar/",
-    },
-    {
-      name: "Jesko",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/27.png",
-      link: "/brand/jesko/",
-    },
-    {
-      name: "JA Solar",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/18.png",
-      link: "/brand/ja-solar/",
-    },
-    {
-      name: "Itel",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/26.png",
-      link: "/brand/itel/",
-    },
-    {
-      name: "Inverex",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/9.png",
-      link: "/brand/inverex/",
-    },
-    {
-      name: "Huawei",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/14-1.png",
-      link: "/brand/huawei/",
-    },
-    {
-      name: "Grow Watt",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/12.png",
-      link: "/brand/grow-watt/",
-    },
-    {
-      name: "Goodwe",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/11.png",
-      link: "/brand/goodwe/",
-    },
-    {
-      name: "Genix Green",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/6.png",
-      link: "/brand/genix-green/",
-    },
-    {
-      name: "Dynees",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/7.png",
-      link: "/brand/dynees/",
-    },
-    {
-      name: "Dongjing",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/3.png",
-      link: "/brand/dongjing/",
-    },
-    {
-      name: "Cora Dawn",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/08/24.png",
-      link: "/brand/cora-dawn/",
-    },
-    {
-      name: "Canadian Solar",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/19.png",
-      link: "/brand/canadian-solar/",
-    },
-    {
-      name: "Astronergy",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/15-1.png",
-      link: "/brand/astronergy/",
-    },
-    {
-      name: "Aiko",
-      img: "https://solamoenergy.com/wp-content/uploads/2026/07/16.png",
-      link: "/brand/aiko/",
-    },
-  ];
+  // Selected city from the header ("" = All Cities)
+  const { city, ready } = useCity();
+
+  const [brands, setBrands] = useState<TrustedBrand[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  // Every brand that has products, with its logo. Reloads when the city changes.
+  useEffect(() => {
+    if (!ready) return; // wait until the saved city is read from localStorage
+
+    let cancelled = false;
+    getAllProducts(city)
+      .then((all) => {
+        if (cancelled) return;
+        const map = new Map<string, TrustedBrand>();
+        for (const p of all as ProductWithLogo[]) {
+          if (!p.brand_name) continue;
+          const slug = slugify(p.brand_name);
+          const existing = map.get(slug);
+          if (existing) {
+            if (!existing.logo && p.brand_logo) existing.logo = p.brand_logo;
+          } else {
+            map.set(slug, {
+              slug,
+              name: p.brand_name,
+              logo: p.brand_logo || null,
+            });
+          }
+        }
+        // Brands with a logo first, then A to Z
+        setBrands(
+          Array.from(map.values()).sort((a, b) => {
+            if (!!a.logo !== !!b.logo) return a.logo ? -1 : 1;
+            return a.name.localeCompare(b.name);
+          }),
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setBrands([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoaded(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [city, ready]);
+
+  // Hide the section until loaded, and when there are no brands
+  if (!loaded || brands.length === 0) return null;
+
+  // Loop and autoplay only work smoothly with enough slides
+  const canLoop = brands.length > 6;
 
   return (
     <section className="py-16 bg-white overflow-hidden">
@@ -178,47 +108,47 @@ export default function TrustedBrands() {
 
           {/* Brand Slider */}
           <Swiper
+            key={`${city || "all"}-${brands.length}`} // rebuild when the list changes
             ref={swiperRef}
             modules={[Autoplay]}
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-            loop={true}
+            autoplay={
+              canLoop ? { delay: 2500, disableOnInteraction: false } : false
+            }
+            loop={canLoop}
             spaceBetween={30}
             slidesPerView={2}
             breakpoints={{
-              640: {
-                slidesPerView: 3,
-                spaceBetween: 40,
-              },
-              768: {
-                slidesPerView: 4,
-                spaceBetween: 50,
-              },
-              1024: {
-                slidesPerView: 5,
-                spaceBetween: 60,
-              },
+              640: { slidesPerView: 3, spaceBetween: 40 },
+              768: { slidesPerView: 4, spaceBetween: 50 },
+              1024: { slidesPerView: 5, spaceBetween: 60 },
             }}
             className="w-full flex items-center"
           >
-            {brands.map((brand, idx) => (
+            {brands.map((brand) => (
               <SwiperSlide
-                key={idx}
+                key={brand.slug}
                 className="flex items-center justify-center py-4"
               >
-                <a
-                  href={brand.link}
+                <Link
+                  href={`/brand/${brand.slug}`}
                   aria-label={`View ${brand.name} brand`}
                   className="h-20 w-full flex items-center justify-center transition duration-300 group"
                 >
-                  <img
-                    src={brand.img}
-                    alt={brand.name}
-                    className="max-h-full max-w-[140px] object-contain group-hover:scale-105 transition duration-300"
-                  />
-                </a>
+                  {brand.logo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      loading="lazy"
+                      className="max-h-full max-w-[140px] object-contain group-hover:scale-105 transition duration-300"
+                    />
+                  ) : (
+                    // No logo uploaded for this brand: show its name instead
+                    <span className="text-lg font-bold text-[#172217] group-hover:text-[#79B900] transition duration-300 text-center">
+                      {brand.name}
+                    </span>
+                  )}
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

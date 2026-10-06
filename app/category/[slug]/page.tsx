@@ -13,6 +13,7 @@ import BrandAdBanner from "@/components/BrandAdBanner";
 import SolamoCtaBanner from "@/components/SolamoCtaBanner";
 import SolamoFooter from "@/components/SolamoFooter";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import { useCity } from "@/app/context/CityContext";
 
 import {
   getAllProducts, ApiProductLite, priceInfo, slugify,
@@ -63,17 +64,20 @@ const PriceView = ({ p, large = false }: { p: ApiProductLite; large?: boolean })
   );
 };
 
-export default function BrandShopPage() {
+export default function CategoryShopPage() {
   const params = useParams();
-  const brandSlug = String(params?.brand ?? params?.slug ?? "").toLowerCase();
+  const categorySlug = String(params?.slug ?? params?.category ?? "").toLowerCase();
 
-  const [allBrandProducts, setAllBrandProducts] = useState<ApiProductLite[]>([]);
+  // Selected city from the header ("" = All Cities)
+  const { city } = useCity();
+
+  const [allCategoryProducts, setAllCategoryProducts] = useState<ApiProductLite[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   // Filters
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedStock, setSelectedStock] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -82,40 +86,41 @@ export default function BrandShopPage() {
   const [page, setPage] = useState(1);
   const [modalProduct, setModalProduct] = useState<ApiProductLite | null>(null);
 
-  // Load only this brand's products
+  // Load only this category's products
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     getAllProducts()
       .then((all) => {
         if (cancelled) return;
-        setAllBrandProducts(all.filter((p) => slugify(p.brand_name) === brandSlug));
+        setAllCategoryProducts(
+          all.filter((p) => p.category_name && slugify(p.category_name) === categorySlug),
+        );
       })
       .catch((e) => !cancelled && setError(e.message || "Could not load products"))
       .finally(() => !cancelled && setLoading(false));
     return () => { cancelled = true; };
-  }, [brandSlug]);
+  }, [categorySlug]);
 
-  const brandName =
-    allBrandProducts[0]?.brand_name ||
-    brandSlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  const brandLogo: string | null = (allBrandProducts[0] as any)?.brand_logo || null;
+  const categoryName =
+    allCategoryProducts[0]?.category_name ||
+    categorySlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
-  // Categories come from this brand's real products
-  const categoryOptions = useMemo(() => {
+  // Brands come from this category's real products
+  const brandOptions = useMemo(() => {
     const map = new Map<string, number>();
-    allBrandProducts.forEach((p) => {
-      const c = p.category_name || "Other";
-      map.set(c, (map.get(c) || 0) + 1);
+    allCategoryProducts.forEach((p) => {
+      const b = p.brand_name || "Other";
+      map.set(b, (map.get(b) || 0) + 1);
     });
-    return Array.from(map.entries());
-  }, [allBrandProducts]);
+    return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [allCategoryProducts]);
 
   const toggle = (setter: React.Dispatch<React.SetStateAction<string[]>>, v: string) =>
     setter((prev) => (prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]));
 
   const resetFilters = () => {
-    setSearchQuery(""); setSelectedCategories([]); setSelectedStock([]);
+    setSearchQuery(""); setSelectedBrands([]); setSelectedStock([]);
     setMinPrice(""); setMaxPrice(""); setSortBy("default");
   };
 
@@ -124,12 +129,12 @@ export default function BrandShopPage() {
     const minVal = minPrice !== "" ? Number(minPrice) : 0;
     const maxVal = maxPrice !== "" ? Number(maxPrice) : Infinity;
 
-    return allBrandProducts
+    return allCategoryProducts
       .filter((p) => {
         const price = priceInfo(p).current;
         return (
           (p.name.toLowerCase().includes(q) || (p.subtitle || "").toLowerCase().includes(q)) &&
-          (selectedCategories.length === 0 || selectedCategories.includes(p.category_name || "Other")) &&
+          (selectedBrands.length === 0 || selectedBrands.includes(p.brand_name || "Other")) &&
           (selectedStock.length === 0 || selectedStock.includes(stockLabel(p))) &&
           price >= minVal && price <= maxVal
         );
@@ -140,47 +145,49 @@ export default function BrandShopPage() {
         if (sortBy === "name-asc") return a.name.localeCompare(b.name);
         return 0;
       });
-  }, [allBrandProducts, searchQuery, selectedCategories, selectedStock, minPrice, maxPrice, sortBy]);
+  }, [allCategoryProducts, searchQuery, selectedBrands, selectedStock, minPrice, maxPrice, sortBy]);
 
   // Back to page 1 whenever filters change
-  useEffect(() => { setPage(1); }, [searchQuery, selectedCategories, selectedStock, minPrice, maxPrice, sortBy]);
+  useEffect(() => { setPage(1); }, [searchQuery, selectedBrands, selectedStock, minPrice, maxPrice, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const hasActiveFilters =
-    selectedCategories.length > 0 || selectedStock.length > 0 ||
+    selectedBrands.length > 0 || selectedStock.length > 0 ||
     minPrice !== "" || maxPrice !== "" || searchQuery !== "";
 
-  const productHref = (p: ApiProductLite) => `${PRODUCT_LINK_PREFIX}/${brandSlug}/${p.slug}`;
+  // Product pages live at PRODUCT_LINK_PREFIX/<brand-slug>/<product-slug>
+  const productHref = (p: ApiProductLite) =>
+    `${PRODUCT_LINK_PREFIX}/${slugify(p.brand_name || "")}/${p.slug}`;
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col justify-between">
       <div>
         <SolamoHeader />
 
-        {/* Brand header */}
+        {/* Category header */}
         <div className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 rounded-xl bg-slate-900 text-[#8BC34A] flex items-center justify-center font-bold text-xl border border-slate-700 flex-shrink-0 overflow-hidden">
-                {brandLogo ? (
+                {allCategoryProducts[0]?.images?.[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={brandLogo} alt={brandName} className="w-full h-full object-contain bg-white" />
+                  <img src={allCategoryProducts[0].images[0]} alt={categoryName} className="w-full h-full object-contain bg-white" />
                 ) : (
-                  brandName.slice(0, 3).toUpperCase()
+                  categoryName.slice(0, 3).toUpperCase()
                 )}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">{brandName}</h1>
+                <h1 className="text-2xl font-bold text-slate-900">{categoryName}</h1>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-slate-500">
                   <span className="flex items-center">
                     <Package className="w-3.5 h-3.5 mr-1" />
-                    {allBrandProducts.length} Products
+                    {allCategoryProducts.length} Products
                   </span>
                   <span className="flex items-center">
                     <Layers className="w-3.5 h-3.5 mr-1" />
-                    {categoryOptions.length} Categories
+                    {brandOptions.length} {brandOptions.length === 1 ? "Brand" : "Brands"}
                   </span>
                 </div>
               </div>
@@ -198,13 +205,25 @@ export default function BrandShopPage() {
             <div className="bg-white rounded-xl p-12 text-center border border-red-200 text-sm text-red-600">
               {error}
             </div>
-          ) : allBrandProducts.length === 0 ? (
+          ) : allCategoryProducts.length === 0 ? (
             <div className="bg-white rounded-xl p-12 text-center border border-slate-200">
               <Info className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-              <h3 className="text-lg font-semibold">No products for this brand yet</h3>
-              <Link href="/shop" className="inline-block mt-4 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-lg">
-                Back to shop
-              </Link>
+              <h3 className="text-lg font-semibold">
+                {city ? `No products found in ${city}` : "No products in this category yet"}
+              </h3>
+              {city && (
+                <p className="text-sm text-slate-500 mt-1">
+                  Try selecting another city from the header.
+                </p>
+              )}
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <Link href="/category" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-lg">
+                  All categories
+                </Link>
+                <Link href="/shop" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-lg">
+                  Back to shop
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -254,14 +273,14 @@ export default function BrandShopPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-3">Category</h3>
+                  <h3 className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-3">Brand</h3>
                   <div className="space-y-2.5">
-                    {categoryOptions.map(([cat, count]) => (
-                      <label key={cat} className="flex items-center space-x-2.5 cursor-pointer text-xs font-medium text-slate-700">
-                        <input type="checkbox" checked={selectedCategories.includes(cat)}
-                          onChange={() => toggle(setSelectedCategories, cat)}
+                    {brandOptions.map(([brand, count]) => (
+                      <label key={brand} className="flex items-center space-x-2.5 cursor-pointer text-xs font-medium text-slate-700">
+                        <input type="checkbox" checked={selectedBrands.includes(brand)}
+                          onChange={() => toggle(setSelectedBrands, brand)}
                           className="w-4 h-4 rounded border-slate-300 accent-[#8BC34A]" />
-                        <span>{cat}</span>
+                        <span>{brand}</span>
                         <span className="ml-auto text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">{count}</span>
                       </label>
                     ))}
@@ -278,7 +297,7 @@ export default function BrandShopPage() {
                           className="w-4 h-4 rounded border-slate-300 accent-[#8BC34A]" />
                         <span>{status}</span>
                         <span className="ml-auto text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">
-                          {allBrandProducts.filter((p) => stockLabel(p) === status).length}
+                          {allCategoryProducts.filter((p) => stockLabel(p) === status).length}
                         </span>
                       </label>
                     ))}
@@ -333,7 +352,7 @@ export default function BrandShopPage() {
                         </Link>
                         <div className="flex items-center justify-between gap-2 mb-2">
                           <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-slate-100 text-slate-700 border border-slate-200 truncate">
-                            {p.category_name || "Other"}
+                            {p.brand_name || "Other"}
                           </span>
                           <StockBadge p={p} />
                         </div>
@@ -345,10 +364,6 @@ export default function BrandShopPage() {
                         <div className="border-t border-slate-100 pt-3 mt-auto">
                           <div className="mt-3"><PriceView p={p} /></div>
                           <div className="grid grid-cols-2 gap-2 mt-3">
-                            <button onClick={() => setModalProduct(p)}
-                              className="py-2 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg flex items-center justify-center">
-                              <Eye className="w-3.5 h-3.5 mr-1" /> Quick View
-                            </button>
                             <Link href={productHref(p)}
                               className="py-2 px-2 bg-[#8BC34A] hover:bg-[#7cb33d] text-slate-900 font-semibold text-xs rounded-lg flex items-center justify-center">
                               View Product
@@ -365,7 +380,7 @@ export default function BrandShopPage() {
                         <thead>
                           <tr className="bg-slate-100 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                             <th className="py-3 px-4">Product</th>
-                            <th className="py-3 px-4">Category</th>
+                            <th className="py-3 px-4">Brand</th>
                             <th className="py-3 px-4">Status</th>
                             <th className="py-3 px-4 text-right">Price (PKR)</th>
                             <th className="py-3 px-4 text-center">Action</th>
@@ -386,7 +401,7 @@ export default function BrandShopPage() {
                               </td>
                               <td className="py-3.5 px-4 text-xs">
                                 <span className="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 font-medium">
-                                  {p.category_name || "Other"}
+                                  {p.brand_name || "Other"}
                                 </span>
                               </td>
                               <td className="py-3.5 px-4 text-xs"><StockBadge p={p} /></td>
@@ -470,7 +485,7 @@ export default function BrandShopPage() {
 
             <div className="flex items-center space-x-2 mb-2">
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-slate-100 text-slate-700">
-                {modalProduct.category_name || "Other"}
+                {modalProduct.brand_name || "Other"}
               </span>
               <StockBadge p={modalProduct} />
             </div>

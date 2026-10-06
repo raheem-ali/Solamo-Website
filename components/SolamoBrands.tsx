@@ -95,7 +95,7 @@ export default function SolamoBrands() {
               </div>
 
               <Link
-                href="/shop"
+                href="/brand"
                 className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-[#111] hover:text-gray-600 transition"
               >
                 View All
@@ -141,7 +141,7 @@ export default function SolamoBrands() {
                 {brands.map((brand) => (
                   <SwiperSlide key={brand.slug} className="h-auto">
                     <Link
-                      href={`/shop/${brand.slug}`}
+                      href={`/brand/${brand.slug}`}
                       className="group block h-full bg-white border border-gray-200 rounded-md overflow-hidden hover:border-gray-300 hover:shadow-md transition"
                     >
                       <div className="h-[105px] sm:h-[120px] lg:h-[135px] bg-gray-50 flex items-center justify-center overflow-hidden">
@@ -187,7 +187,7 @@ export default function SolamoBrands() {
           {/* MOBILE VIEW ALL */}
           <div className="sm:hidden px-4 pb-5">
             <Link
-              href="/shop"
+              href="/brand"
               className="w-full h-[38px] bg-[#111] text-[#84CC16] rounded-md flex items-center justify-center gap-1 text-[10px] font-bold hover:bg-gray-900 active:scale-[0.99] transition"
             >
               View All Brands
