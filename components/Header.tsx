@@ -14,6 +14,47 @@ import {
   Zap,
   Battery,
 } from "lucide-react";
+import CitySelector from "../app/context/CitySelector"; // NEW
+
+const SERVICE_LINKS = [
+  { href: "/residential-solar", label: "Residential Solar" },
+  { href: "/commercial-solar", label: "Commercial Solar" },
+  { href: "/industrial-solar", label: "Industrial Solar" },
+  { href: "/agricultural-solar", label: "Agricultural Solar" },
+  { href: "/net-metering", label: "Net Metering" },
+  { href: "/ev-charging-station", label: "EV Charging Station" },
+  { href: "/solar-battery-storage", label: "Solar Battery Storage" },
+  { href: "/franchise", label: "Franchise" },
+];
+
+const BRANDS = [
+  "AIKO",
+  "Astronergy",
+  "Canadian Solar",
+  "Dynees",
+  "Genix Green",
+  "Goodwe",
+  "Grow Watt",
+  "Huawei",
+  "Inverex",
+  "JA Solar",
+  "Jinko Solar",
+  "Longi",
+  "Osaka",
+  "PylonTech",
+  "Solis",
+  "Sungrow",
+  "Trina Solar",
+];
+
+const CATEGORIES = [
+  { href: "/solar-panels", label: "Solar Panels", Icon: Sun },
+  { href: "/inverters", label: "Inverters", Icon: Zap },
+  { href: "/batteries", label: "Batteries", Icon: Battery },
+];
+
+const NAV_LINK_CLASS =
+  "relative px-3 xl:px-4 py-2.5 text-base xl:text-lg font-medium text-[#172217] hover:text-[#5f9200] transition-colors duration-300 after:absolute after:left-3 xl:after:left-4 after:right-3 xl:after:right-4 after:bottom-0 after:h-[2px] after:bg-[#79B900] after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -63,8 +104,13 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Social Links */}
+            {/* City + Social Links */}
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+              {/* NEW: City selector (tablet / desktop). On phones it is inside the menu drawer. */}
+              <div className="hidden sm:block">
+                <CitySelector variant="topbar" />
+              </div>
+
               <span className="hidden sm:inline font-normal">Follow Us –</span>
 
               <div className="flex items-center gap-1.5 sm:gap-2.5">
@@ -168,18 +214,12 @@ export default function Header() {
             ===================================================== */}
             <nav className="hidden lg:flex items-center gap-0 xl:gap-1">
               {/* HOME */}
-              <Link
-                href="/"
-                className="relative px-3 xl:px-4 py-2.5 text-base xl:text-lg font-medium text-[#172217] hover:text-[#5f9200] transition-colors duration-300 after:absolute after:left-3 xl:after:left-4 after:right-3 xl:after:right-4 after:bottom-0 after:h-[2px] after:bg-[#79B900] after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
-              >
+              <Link href="/" className={NAV_LINK_CLASS}>
                 Home
               </Link>
 
               {/* ABOUT */}
-              <Link
-                href="/about-us"
-                className="relative px-3 xl:px-4 py-2.5 text-base xl:text-lg font-medium text-[#172217] hover:text-[#5f9200] transition-colors duration-300 after:absolute after:left-3 xl:after:left-4 after:right-3 xl:after:right-4 after:bottom-0 after:h-[2px] after:bg-[#79B900] after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
-              >
+              <Link href="/about-us" className={NAV_LINK_CLASS}>
                 About Us
               </Link>
 
@@ -191,7 +231,7 @@ export default function Header() {
               >
                 <button
                   type="button"
-                  className="relative px-3 xl:px-4 py-2.5 text-base xl:text-lg font-medium text-[#172217] hover:text-[#5f9200] flex items-center gap-1.5 transition-colors duration-300 after:absolute after:left-3 xl:after:left-4 after:right-3 xl:after:right-4 after:bottom-0 after:h-[2px] after:bg-[#79B900] after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                  className={`${NAV_LINK_CLASS} flex items-center gap-1.5`}
                 >
                   Services{" "}
                   <ChevronDown
@@ -201,64 +241,17 @@ export default function Header() {
                   />
                 </button>
 
-                {/* ORIGINAL SERVICES DROPDOWN */}
                 {servicesOpen && (
                   <div className="absolute top-full left-0 w-64 bg-white shadow-xl rounded-xl p-2 border border-gray-100 py-3">
-                    <Link
-                      href="/residential-solar"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      Residential Solar
-                    </Link>
-
-                    <Link
-                      href="/commercial-solar"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      Commercial Solar
-                    </Link>
-
-                    <Link
-                      href="/industrial-solar"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      Industrial Solar
-                    </Link>
-
-                    <Link
-                      href="/agricultural-solar"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      Agricultural Solar
-                    </Link>
-
-                    <Link
-                      href="/net-metering"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      Net Metering
-                    </Link>
-
-                    <Link
-                      href="/ev-charging-station"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      EV Charging Station
-                    </Link>
-
-                    <Link
-                      href="/solar-battery-storage"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      Solar Battery Storage
-                    </Link>
-
-                    <Link
-                      href="/franchise"
-                      className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
-                    >
-                      Franchise
-                    </Link>
+                    {SERVICE_LINKS.map((s) => (
+                      <Link
+                        key={s.href}
+                        href={s.href}
+                        className="block px-4 py-2.5 rounded-lg text-base font-medium text-[#172217] hover:bg-[#f2f9e6] hover:text-[#5f9200]"
+                      >
+                        {s.label}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>
@@ -271,7 +264,7 @@ export default function Header() {
               >
                 <button
                   type="button"
-                  className="relative px-3 xl:px-4 py-2.5 text-base xl:text-lg font-medium text-[#172217] hover:text-[#5f9200] flex items-center gap-1.5 transition-colors duration-300 after:absolute after:left-3 xl:after:left-4 after:right-3 xl:after:right-4 after:bottom-0 after:h-[2px] after:bg-[#79B900] after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                  className={`${NAV_LINK_CLASS} flex items-center gap-1.5`}
                 >
                   Shop{" "}
                   <ChevronDown
@@ -281,7 +274,6 @@ export default function Header() {
                   />
                 </button>
 
-                {/* ORIGINAL SHOP DROPDOWN */}
                 {shopOpen && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 w-[780px] max-w-[calc(100vw-32px)] bg-white shadow-2xl rounded-2xl p-7 border border-gray-100 z-50">
                     <div className="grid grid-cols-[1.85fr_auto_1fr] gap-7 items-start">
@@ -291,25 +283,7 @@ export default function Header() {
                         </p>
 
                         <div className="grid grid-cols-3 gap-x-3 gap-y-1">
-                          {[
-                            "AIKO",
-                            "Astronergy",
-                            "Canadian Solar",
-                            "Dynees",
-                            "Genix Green",
-                            "Goodwe",
-                            "Grow Watt",
-                            "Huawei",
-                            "Inverex",
-                            "JA Solar",
-                            "Jinko Solar",
-                            "Longi",
-                            "Osaka",
-                            "PylonTech",
-                            "Solis",
-                            "Sungrow",
-                            "Trina Solar",
-                          ].map((brand) => (
+                          {BRANDS.map((brand) => (
                             <Link
                               key={brand}
                               href={`/brand/${brand
@@ -331,44 +305,21 @@ export default function Header() {
                         </p>
 
                         <div className="flex flex-col gap-1">
-                          <Link
-                            href="/solar-panels"
-                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f2f9e6] transition group/cat"
-                          >
-                            <span className="w-8 h-8 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
-                              <Sun className="w-4 h-4" />
-                            </span>
+                          {CATEGORIES.map(({ href, label, Icon }) => (
+                            <Link
+                              key={href}
+                              href={href}
+                              className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f2f9e6] transition group/cat"
+                            >
+                              <span className="w-8 h-8 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
+                                <Icon className="w-4 h-4" />
+                              </span>
 
-                            <span className="font-semibold text-sm group-hover/cat:text-[#5f9200]">
-                              Solar Panels
-                            </span>
-                          </Link>
-
-                          <Link
-                            href="/inverters"
-                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f2f9e6] transition group/cat"
-                          >
-                            <span className="w-8 h-8 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
-                              <Zap className="w-4 h-4" />
-                            </span>
-
-                            <span className="font-semibold text-sm group-hover/cat:text-[#5f9200]">
-                              Inverters
-                            </span>
-                          </Link>
-
-                          <Link
-                            href="/batteries"
-                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f2f9e6] transition group/cat"
-                          >
-                            <span className="w-8 h-8 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
-                              <Battery className="w-4 h-4" />
-                            </span>
-
-                            <span className="font-semibold text-sm group-hover/cat:text-[#5f9200]">
-                              Batteries
-                            </span>
-                          </Link>
+                              <span className="font-semibold text-sm group-hover/cat:text-[#5f9200]">
+                                {label}
+                              </span>
+                            </Link>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -393,10 +344,7 @@ export default function Header() {
               </div>
 
               {/* CONTACT */}
-              <Link
-                href="/contact-us"
-                className="relative px-3 xl:px-4 py-2.5 text-base xl:text-lg font-medium text-[#172217] hover:text-[#5f9200] transition-colors duration-300 after:absolute after:left-3 xl:after:left-4 after:right-3 xl:after:right-4 after:bottom-0 after:h-[2px] after:bg-[#79B900] after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
-              >
+              <Link href="/contact-us" className={NAV_LINK_CLASS}>
                 Contact Us
               </Link>
             </nav>
@@ -439,6 +387,11 @@ export default function Header() {
           <div className="h-full overflow-y-auto overscroll-contain">
             <div className="px-4 sm:px-6 py-4 sm:py-6 pb-8">
               <nav className="flex flex-col">
+                {/* NEW: CITY SELECTOR (mobile) */}
+                <div className="border-b border-gray-100 pt-1 mb-1">
+                  <CitySelector variant="drawer" onSelect={closeMobileMenu} />
+                </div>
+
                 {/* HOME */}
                 <Link
                   href="/"
@@ -488,69 +441,16 @@ export default function Header() {
                     }`}
                   >
                     <div className="ml-3 sm:ml-4 mb-3 pl-4 border-l-2 border-[#79B900] flex flex-col">
-                      <Link
-                        href="/residential-solar"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        Residential Solar
-                      </Link>
-
-                      <Link
-                        href="/commercial-solar"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        Commercial Solar
-                      </Link>
-
-                      <Link
-                        href="/industrial-solar"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        Industrial Solar
-                      </Link>
-
-                      <Link
-                        href="/agricultural-solar"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        Agricultural Solar
-                      </Link>
-
-                      <Link
-                        href="/net-metering"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        Net Metering
-                      </Link>
-
-                      <Link
-                        href="/ev-charging-station"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        EV Charging Station
-                      </Link>
-
-                      <Link
-                        href="/solar-battery-storage"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        Solar Battery Storage
-                      </Link>
-
-                      <Link
-                        href="/franchise"
-                        className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        Franchise
-                      </Link>
+                      {SERVICE_LINKS.map((s) => (
+                        <Link
+                          key={s.href}
+                          href={s.href}
+                          className="flex items-center min-h-[44px] text-[15px] sm:text-base text-[#172217] hover:text-[#5f9200] transition-colors"
+                          onClick={closeMobileMenu}
+                        >
+                          {s.label}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -587,47 +487,22 @@ export default function Header() {
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                          <Link
-                            href="/solar-panels"
-                            className="flex items-center gap-3 p-3 rounded-xl bg-[#f7faef] hover:bg-[#f2f9e6] transition"
-                            onClick={closeMobileMenu}
-                          >
-                            <span className="w-9 h-9 shrink-0 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
-                              <Sun className="w-4 h-4" />
-                            </span>
+                          {CATEGORIES.map(({ href, label, Icon }) => (
+                            <Link
+                              key={href}
+                              href={href}
+                              className="flex items-center gap-3 p-3 rounded-xl bg-[#f7faef] hover:bg-[#f2f9e6] transition"
+                              onClick={closeMobileMenu}
+                            >
+                              <span className="w-9 h-9 shrink-0 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
+                                <Icon className="w-4 h-4" />
+                              </span>
 
-                            <span className="font-semibold text-sm text-[#172217]">
-                              Solar Panels
-                            </span>
-                          </Link>
-
-                          <Link
-                            href="/inverters"
-                            className="flex items-center gap-3 p-3 rounded-xl bg-[#f7faef] hover:bg-[#f2f9e6] transition"
-                            onClick={closeMobileMenu}
-                          >
-                            <span className="w-9 h-9 shrink-0 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
-                              <Zap className="w-4 h-4" />
-                            </span>
-
-                            <span className="font-semibold text-sm text-[#172217]">
-                              Inverters
-                            </span>
-                          </Link>
-
-                          <Link
-                            href="/batteries"
-                            className="flex items-center gap-3 p-3 rounded-xl bg-[#f7faef] hover:bg-[#f2f9e6] transition"
-                            onClick={closeMobileMenu}
-                          >
-                            <span className="w-9 h-9 shrink-0 rounded-lg bg-[#f2f9e6] text-[#5f9200] flex items-center justify-center">
-                              <Battery className="w-4 h-4" />
-                            </span>
-
-                            <span className="font-semibold text-sm text-[#172217]">
-                              Batteries
-                            </span>
-                          </Link>
+                              <span className="font-semibold text-sm text-[#172217]">
+                                {label}
+                              </span>
+                            </Link>
+                          ))}
                         </div>
                       </div>
 

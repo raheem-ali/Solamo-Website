@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Albert_Sans, Josefin_Sans } from "next/font/google";
 import "./globals.css";
+import { CityProvider } from "./context/CityContext";
 
 const albertSans = Albert_Sans({
   subsets: ["latin"],
@@ -35,7 +36,9 @@ export default function RootLayout({
       lang="en-US"
       className={`${albertSans.variable} ${josefinSans.variable}`}
     >
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <CityProvider>{children}</CityProvider>
+      </body>
     </html>
   );
 }
