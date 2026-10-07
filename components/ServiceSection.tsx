@@ -242,8 +242,8 @@ export default function ServicesSection() {
           </div>
 
           <h2 className="text-[38px] sm:text-[44px] lg:text-[50px] leading-[1.15] font-semibold tracking-tight text-[#172217]">
-            Buy Directly From The{" "}
-            <span className="text-[#79B900]">Official Dealer</span>
+            Services We{" "}
+            <span className="text-[#79B900]">Provide</span>
           </h2>
         </div>
 
