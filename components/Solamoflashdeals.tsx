@@ -1,38 +1,23 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { ChevronLeft, ChevronRight, ArrowUpRight, Flame } from "lucide-react";
 
-import { brandsData } from "@/lib/brand-data";
+import { getAllProducts, toCardProduct } from "@/lib/api-products";
+import { useCity } from "../app/context/CityContext";
 
+// @ts-expect-error Swiper CSS is loaded by the bundler and has no TypeScript declarations.
 import "swiper/css";
 
-// =============================================================
-// SELECT REAL PRODUCTS FOR THE DEALS RAIL
-// Pulled straight from brandsData — pick specific product ids here.
-// Swap these ids any time to feature different products.
-// =============================================================
-
-const FEATURED_DEAL_IDS = [
-  "jesko-620w",
-  "ja-solar-565w",
-  "sunwoda-51-2v-100ah", // not present in current data — will be skipped safely if missing
-  "genix-green-24v-100ah",
-  "volnex-ip65-51-2v-100ah",
-  "sunsynk-lifelynk-lynks-6kw-hybrid-inverter-ip41",
-  "trina-620w",
-  "itel-24v-100ah",
-  "cora-dawn-615w",
-  "astro-585w",
-];
-
-// Regular-price comparison shown alongside the real price — a modest,
-// clearly-labelled markup for display only (brandsData has no discount field).
-const MARKUP = 1.1;
+// Only products discounted MORE than this percentage are shown
+const MIN_DISCOUNT = 25;
+// Max number of deals in the rail
+const MAX_DEALS = 20;
 
 type Deal = {
+  id: string;
   name: string;
   brandName: string;
   price: number;
@@ -42,48 +27,29 @@ type Deal = {
   link: string;
 };
 
-function buildFlashDeals(): Deal[] {
-  const allProducts = Object.values(brandsData).flatMap((brand) =>
-    (brand.products || []).map((product) => ({
-      ...product,
-      brandName: brand.name,
-    })),
+// Same field names ProductCard reads for the old price
+function toDeal(raw: any): Deal | null {
+  const p = toCardProduct(raw) as any;
+  const price = Number(p?.price ?? 0);
+  const originalPrice = Number(
+    p?.oldPrice ?? p?.originalPrice ?? p?.regularPrice ?? 0,
   );
 
-  const byId = new Map(allProducts.map((p) => [p.id, p]));
+  if (!(price > 0) || !(originalPrice > price)) return null;
 
-  const picked = FEATURED_DEAL_IDS.map((id) => byId.get(id)).filter(
-    (p): p is (typeof allProducts)[number] =>
-      Boolean(p) && Number(p!.price) > 0,
-  );
+  const exactPct = ((originalPrice - price) / originalPrice) * 100;
+  if (exactPct <= MIN_DISCOUNT) return null;
 
-  // Fallback: if fewer than 5 of the hand-picked ids matched (e.g. ids renamed),
-  // top up with other real, priced products so the rail never looks empty.
-  if (picked.length < 5) {
-    const pickedIds = new Set(picked.map((p) => p.id));
-    for (const p of allProducts) {
-      if (picked.length >= 8) break;
-      if (Number(p.price) > 0 && !pickedIds.has(p.id)) {
-        picked.push(p);
-        pickedIds.add(p.id);
-      }
-    }
-  }
-
-  return picked.map((p) => {
-    const original = Math.round((p.price * MARKUP) / 100) * 100;
-    const discountPct = Math.round(((original - p.price) / original) * 100);
-
-    return {
-      name: p.name,
-      brandName: p.brandName,
-      price: p.price,
-      originalPrice: original,
-      discountPct,
-      image: p.image,
-      link: p.link,
-    };
-  });
+  return {
+    id: String(p.id),
+    name: p.name,
+    brandName: p.brand || p.brandName || "",
+    price,
+    originalPrice,
+    discountPct: Math.round(exactPct),
+    image: p.image,
+    link: p.link,
+  };
 }
 
 // =============================================================
@@ -147,17 +113,43 @@ export default function SolamoFlashdeals() {
   const sliderRef = useRef<SwiperRef>(null);
   const { hours, minutes, seconds } = useCountdown();
 
-  const flashDeals = useMemo(() => buildFlashDeals(), []);
+  const { city, ready } = useCity();
+  const [flashDeals, setFlashDeals] = useState<Deal[]>([]);
 
+  // Load all real products, keep only those discounted > MIN_DISCOUNT.
+  // Re-runs when the selected city changes.
+  useEffect(() => {
+    if (!ready) return;
+
+    let cancelled = false;
+
+    getAllProducts(city)
+      .then((all) => {
+        if (cancelled) return;
+        const deals = all
+          .map(toDeal)
+          .filter((d): d is Deal => d !== null)
+          .sort((a, b) => b.discountPct - a.discountPct) // biggest discount first
+          .slice(0, MAX_DEALS);
+        setFlashDeals(deals);
+      })
+      .catch(() => {
+        if (!cancelled) setFlashDeals([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [city, ready]);
+
+  // Nothing qualifies (or still loading): hide the section
   if (flashDeals.length === 0) return null;
 
   return (
     <section className="w-full bg-[#f5f5f5] py-4 sm:py-5 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="bg-white rounded-lg overflow-hidden border border-[#84CC16]/60">
-          {/* =====================================================
-              HEADER — title + live countdown
-          ===================================================== */}
+          {/* HEADER — title + live countdown */}
           <div className="px-4 sm:px-6 lg:px-7 pt-5 pb-3">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center gap-2">
@@ -170,7 +162,7 @@ export default function SolamoFlashdeals() {
                     Flash Deals
                   </h2>
                   <p className="text-[10px] sm:text-[11px] text-gray-500 mt-1">
-                    Today only — prices drop back at midnight
+                    Over {MIN_DISCOUNT}% off — today only
                   </p>
                 </div>
               </div>
@@ -195,9 +187,7 @@ export default function SolamoFlashdeals() {
             </div>
           </div>
 
-          {/* =====================================================
-              DEALS SLIDER — real products from brandsData
-          ===================================================== */}
+          {/* DEALS SLIDER */}
           <div className="relative px-2 sm:px-4 pb-5">
             <button
               type="button"
@@ -226,6 +216,7 @@ export default function SolamoFlashdeals() {
             </button>
 
             <Swiper
+              key={city || "all"} // reset slider position when city changes
               ref={sliderRef}
               spaceBetween={8}
               slidesPerView={2}
@@ -238,7 +229,7 @@ export default function SolamoFlashdeals() {
               className="!px-8 sm:!px-7"
             >
               {flashDeals.map((deal, index) => (
-                <SwiperSlide key={`${deal.link}-${index}`}>
+                <SwiperSlide key={`${deal.id}-${index}`} className="h-auto">
                   <Link
                     href={deal.link}
                     className="
@@ -247,11 +238,9 @@ export default function SolamoFlashdeals() {
                     "
                   >
                     <div className="relative h-[145px] sm:h-[165px] lg:h-[180px] bg-white flex items-center justify-center p-3">
-                      {deal.discountPct > 0 && (
-                        <span className="absolute left-2 top-2 z-10 bg-[#ef4444] text-white font-black text-[8px] px-2 py-1 rounded-sm">
-                          {deal.discountPct}% OFF
-                        </span>
-                      )}
+                      <span className="absolute left-2 top-2 z-10 bg-[#ef4444] text-white font-black text-[8px] px-2 py-1 rounded-sm">
+                        {deal.discountPct}% OFF
+                      </span>
 
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -263,9 +252,11 @@ export default function SolamoFlashdeals() {
                     </div>
 
                     <div className="px-3 pb-3">
-                      <span className="text-[9px] uppercase font-bold text-gray-400">
-                        {deal.brandName}
-                      </span>
+                      {deal.brandName && (
+                        <span className="text-[9px] uppercase font-bold text-gray-400">
+                          {deal.brandName}
+                        </span>
+                      )}
 
                       <h3 className="mt-0.5 text-[11px] sm:text-[12px] font-medium text-[#222] leading-[1.35] line-clamp-2 min-h-[32px]">
                         {deal.name}
@@ -275,11 +266,9 @@ export default function SolamoFlashdeals() {
                         <span className="block text-[15px] sm:text-[16px] font-black text-[#111]">
                           Rs {deal.price.toLocaleString()}
                         </span>
-                        {deal.originalPrice > deal.price && (
-                          <span className="block text-[10px] text-gray-400 line-through">
-                            Rs {deal.originalPrice.toLocaleString()}
-                          </span>
-                        )}
+                        <span className="block text-[10px] text-gray-400 line-through">
+                          Rs {deal.originalPrice.toLocaleString()}
+                        </span>
                       </div>
 
                       <div className="mt-3 w-full h-[32px] bg-[#84CC16] text-black rounded-sm flex items-center justify-center text-[9px] sm:text-[10px] font-bold group-hover:bg-[#65A30D] transition">

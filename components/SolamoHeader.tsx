@@ -35,7 +35,7 @@ export default function SolamoHeader() {
   useEffect(() => {
     try {
       setSelectedCity(localStorage.getItem(STORAGE_KEY) || "");
-    } catch {}
+    } catch { }
   }, []);
 
   // Load the cities that have approved shops
@@ -46,7 +46,7 @@ export default function SolamoHeader() {
       .then((list) => {
         if (!cancelled && Array.isArray(list)) setCities(list);
       })
-      .catch(() => {});
+      .catch(() => { });
     return () => {
       cancelled = true;
     };
@@ -133,7 +133,7 @@ export default function SolamoHeader() {
               className="shrink-0 flex items-center"
             >
               <Image
-                src="https://solamoenergy.com/wp-content/uploads/2026/05/Logo-2-1-1536x517.png"
+                src="/images/logo.webp?v=2"
                 alt="Solamo Energy"
                 width={160}
                 height={50}
@@ -171,9 +171,8 @@ export default function SolamoHeader() {
                   {cityOptions.map((c) => (
                     <div
                       key={c || "all"}
-                      className={`px-3 py-2 hover:bg-gray-100 text-black ${
-                        c === selectedCity ? "bg-gray-100 font-bold" : ""
-                      }`}
+                      className={`px-3 py-2 hover:bg-gray-100 text-black ${c === selectedCity ? "bg-gray-100 font-bold" : ""
+                        }`}
                       onClick={(e) => {
                         e.stopPropagation();
                         chooseCity(c);
@@ -255,13 +254,13 @@ focus:ring-[#84CC16]
 
               {/* ACCOUNT */}
               <Link
-                href="/my-account"
+                href="https://console.solamoenergy.com"
                 onClick={closeMobileMenu}
                 className="flex items-center gap-1.5 hover:opacity-70 transition"
                 aria-label="Account"
               >
                 <User className="w-5 h-5" />
-                <span className="hidden lg:inline text-sm">Account</span>
+                <span className="hidden lg:inline text-sm">Login</span>
               </Link>
 
               <div className="hidden sm:block h-5 w-px bg-[#4D7C0F]/40" />
@@ -439,7 +438,7 @@ focus:ring-[#84CC16]
           </Link>
 
           {/* SERVICES */}
-          <div
+          {/* <div
             className="py-3 cursor-pointer"
             onMouseEnter={() => setActiveDropdown("services")}
           >
@@ -448,9 +447,8 @@ focus:ring-[#84CC16]
               className="text-gray-700 hover:text-[#5f9200] transition flex items-center gap-1"
             >
               SERVICES
-              <ChevronDown className="w-3.5 h-3.5" />
             </Link>
-          </div>
+          </div> */}
 
           {/* SHOP */}
           <div
@@ -459,19 +457,21 @@ focus:ring-[#84CC16]
           >
             <Link
               href="/shop"
-              className="text-gray-700 hover:text-[#5f9200] transition flex items-center gap-1"
+              className="relative text-gray-700 hover:text-[#5f9200] transition flex items-center gap-1"
             >
               SHOP
-              <ChevronDown className="w-3.5 h-3.5" />
+              <span className="absolute -top-2.5 -right-7 bg-red-600 text-white text-[8px] font-bold leading-none px-1.5 py-0.5 rounded-full uppercase tracking-wide">
+                New
+              </span>
             </Link>
           </div>
-
+          {/* 
           <Link
             href="/blog"
             className="text-gray-700 hover:text-[#5f9200] transition"
           >
             BLOG
-          </Link>
+          </Link> */}
 
           <Link
             href="/contact-us"
@@ -503,7 +503,7 @@ focus:ring-[#84CC16]
             Full-width overlay, centered on the viewport (not on
             the trigger link) so it can never spill off-screen.
         ===================================================== */}
-    
+
       </nav>
 
       {/* =========================================================

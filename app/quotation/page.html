@@ -1,0 +1,2416 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Solamo Energy — Quotation Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --g: #2e7d32;
+        --gm: #4caf50;
+        --gl: #e8f5e9;
+        --gp: #f1f8e9;
+        --o: #ff7a00;
+        --ol: #fff3e0;
+        --n: #0a1628;
+        --nm: #122040;
+        --y: #ffc300;
+        --b: #0057b8;
+        --w: #ffffff;
+        --d: #1a1a1a;
+        --mid: #546e7a;
+        --light: #f5f7fa;
+        --brd: #e0e0e0;
+        --r: #c62828;
+        --rl: #ffebee;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Sora", sans-serif;
+        background: var(--light);
+        color: var(--d);
+        min-height: 100vh;
+      }
+
+      /* ===== SCREEN STYLES ===== */
+      .hdr {
+        background: linear-gradient(135deg, var(--n), var(--nm));
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+      }
+      .hdr img {
+        height: 48px;
+        object-fit: contain;
+      }
+      .hdr-r h1 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        text-align: right;
+      }
+      .hdr-r p {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+        text-align: right;
+        margin-top: 2px;
+      }
+
+      .wrap {
+        max-width: 95%;
+        margin: 0 auto;
+        padding: 24px 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+      }
+      @media (max-width: 920px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .panel {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(46, 125, 50, 0.09);
+        overflow: hidden;
+        margin-bottom: 18px;
+      }
+      .ph {
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .ph.gr {
+        background: linear-gradient(135deg, var(--g), #388e3c);
+      }
+      .ph.nv {
+        background: linear-gradient(135deg, var(--n), var(--nm));
+      }
+      .ph.or {
+        background: linear-gradient(135deg, var(--o), #e65100);
+      }
+      .ph-ic {
+        width: 38px;
+        height: 38px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .ph-t {
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .ph-s {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 2px;
+      }
+      .pb {
+        padding: 18px 22px;
+      }
+
+      .fg {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 12px;
+      }
+      .fg label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--mid);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .fg input,
+      .fg select,
+      .fg textarea {
+        height: 40px;
+        border: 2px solid var(--brd);
+        border-radius: 8px;
+        padding: 0 11px;
+        font-size: 13px;
+        font-family: "Sora", sans-serif;
+        color: var(--d);
+        background: #fff;
+        transition: border-color 0.2s;
+        width: 100%;
+      }
+      .fg textarea {
+        height: 70px;
+        padding: 9px 11px;
+        resize: vertical;
+      }
+      .fg input:focus,
+      .fg select:focus {
+        outline: none;
+        border-color: var(--g);
+      }
+      .fg input[readonly] {
+        background: #f0f4f0;
+        color: var(--g);
+        font-weight: 700;
+        cursor: not-allowed;
+        border-color: var(--gl);
+      }
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 11px;
+      }
+
+      .app-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+      .app-card {
+        border: 2px solid var(--brd);
+        border-radius: 8px;
+        padding: 11px;
+        background: #fafafa;
+        transition: all 0.2s;
+      }
+      .app-card.on {
+        border-color: var(--g);
+        background: var(--gl);
+      }
+      .at {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 9px;
+      }
+      .ae {
+        width: 34px;
+        height: 34px;
+        background: #fff;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+        flex-shrink: 0;
+      }
+      .an {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--d);
+      }
+      .aw {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        font-size: 9px;
+        color: var(--mid);
+      }
+      .w-input {
+        width: 38px;
+        height: 20px;
+        border: 1.5px solid var(--brd);
+        border-radius: 4px;
+        padding: 0 3px;
+        font-size: 9px;
+        font-weight: 700;
+        font-family: "Sora", sans-serif;
+        color: var(--g);
+        text-align: center;
+        background: #fff;
+        transition: border-color 0.2s;
+      }
+      .w-input:focus {
+        outline: none;
+        border-color: var(--g);
+        background: var(--gl);
+      }
+      .ac {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+      }
+      .ac label {
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--mid);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        display: block;
+        margin-bottom: 3px;
+      }
+      .ctr {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 1.5px solid var(--brd);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .cb {
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--g);
+        transition: background 0.15s;
+      }
+      .cb:hover {
+        background: var(--gl);
+      }
+      .cv {
+        flex: 1;
+        text-align: center;
+        font-weight: 700;
+        font-size: 12px;
+        color: var(--d);
+      }
+      .hsl {
+        width: 100%;
+        height: 26px;
+        border: 1.5px solid var(--brd);
+        border-radius: 6px;
+        padding: 0 5px;
+        font-size: 10px;
+        font-family: "Sora", sans-serif;
+        color: var(--d);
+        background: #fff;
+        appearance: none;
+        cursor: pointer;
+      }
+      .kt {
+        margin-top: 7px;
+        padding: 4px 7px;
+        background: var(--g);
+        border-radius: 5px;
+        font-size: 9px;
+        font-weight: 700;
+        color: #fff;
+        text-align: center;
+        display: none;
+      }
+      .app-card.on .kt {
+        display: block;
+      }
+
+      .live {
+        background: linear-gradient(135deg, var(--n), var(--nm));
+        border-radius: 9px;
+        padding: 14px 18px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .ls {
+        text-align: center;
+      }
+      .ls-l {
+        font-size: 8px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.45);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 4px;
+      }
+      .ls-v {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--y);
+        line-height: 1;
+      }
+      .ls-u {
+        font-size: 8px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 2px;
+      }
+
+      .slabel {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--mid);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 14px 0 10px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--gl);
+      }
+      .note {
+        background: var(--gl);
+        border-left: 4px solid var(--g);
+        border-radius: 0 6px 6px 0;
+        padding: 9px 12px;
+        font-size: 10px;
+        color: var(--mid);
+        margin-bottom: 12px;
+      }
+
+      .li-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+      }
+      .li-table thead th {
+        background: var(--n);
+        color: #fff;
+        padding: 8px 10px;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        text-align: left;
+      }
+      .li-table thead th:nth-child(2),
+      .li-table thead th:nth-child(3),
+      .li-table thead th:nth-child(4) {
+        text-align: center;
+      }
+      .li-table thead th:last-child {
+        text-align: center;
+        width: 36px;
+      }
+      .li-table tbody tr {
+        border-bottom: 1px solid var(--brd);
+      }
+      .li-table tbody tr:nth-child(even) {
+        background: #fafafa;
+      }
+      .li-table tbody td {
+        padding: 5px 6px;
+        vertical-align: middle;
+      }
+      .li-table tbody td input {
+        border: 1.5px solid var(--brd);
+        border-radius: 6px;
+        padding: 5px 8px;
+        font-size: 11px;
+        font-family: "Sora", sans-serif;
+        color: var(--d);
+        background: #fff;
+        transition: border-color 0.2s;
+        width: 100%;
+        height: 32px;
+      }
+      .li-table tbody td input:focus {
+        outline: none;
+        border-color: var(--g);
+      }
+      .li-table tbody td.td-desc {
+        width: 40%;
+      }
+      .li-table tbody td.td-qty {
+        width: 12%;
+        text-align: center;
+      }
+      .li-table tbody td.td-qty input {
+        text-align: center;
+      }
+      .li-table tbody td.td-up {
+        width: 20%;
+      }
+      .li-table tbody td.td-up input {
+        text-align: right;
+      }
+      .li-table tbody td.td-tot {
+        width: 20%;
+        text-align: right;
+      }
+      .td-tot-val {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--g);
+        padding-right: 4px;
+      }
+      .li-table tbody td.td-del {
+        width: 36px;
+        text-align: center;
+      }
+      .del-btn {
+        width: 26px;
+        height: 26px;
+        border: none;
+        background: var(--rl);
+        color: var(--r);
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .del-btn:hover {
+        background: var(--r);
+        color: #fff;
+      }
+
+      .add-row-btn {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: var(--gl);
+        border: 2px dashed var(--gm);
+        color: var(--g);
+        border-radius: 8px;
+        padding: 9px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        font-family: "Sora", sans-serif;
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+        transition: all 0.2s;
+        margin-bottom: 12px;
+      }
+      .add-row-btn:hover {
+        background: var(--g);
+        color: #fff;
+        border-color: var(--g);
+      }
+
+      .tot-bar {
+        background: var(--g);
+        border-radius: 8px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+      }
+      .tot-bar span:first-child {
+        font-size: 13px;
+        font-weight: 800;
+        color: #fff;
+      }
+      .tot-bar span:last-child {
+        font-size: 20px;
+        font-weight: 900;
+        color: var(--y);
+      }
+
+      .btn {
+        height: 44px;
+        padding: 0 20px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: "Sora", sans-serif;
+        cursor: pointer;
+        border: none;
+        transition: all 0.25s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .btn-g {
+        background: linear-gradient(135deg, var(--g), #388e3c);
+        color: #fff;
+        width: 100%;
+      }
+      .btn-g:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(46, 125, 50, 0.4);
+      }
+      .btn-o {
+        background: linear-gradient(135deg, var(--o), #e65100);
+        color: #fff;
+        width: 100%;
+      }
+      .btn-o:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4);
+      }
+      .brow {
+        display: flex;
+        gap: 9px;
+        margin-top: 14px;
+      }
+
+      /* SCREEN PREVIEW (hidden on screen, shown for reference) */
+      .prev-wrap {
+        position: sticky;
+        top: 18px;
+      }
+      .prev-label {
+        background: var(--n);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 10px 10px 0 0;
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .psec {
+        padding: 14px 18px;
+        background: var(--gp);
+        display: flex;
+        gap: 9px;
+      }
+
+      /* ============================================
+       PRINT QUOTATION DOCUMENT (hidden on screen)
+       ============================================ */
+      #printDoc {
+        display: none;
+      }
+
+      /* ===== PRINT MEDIA ===== */
+      @media print {
+        @page {
+          size: A4;
+          margin: 0;
+        }
+
+        /* Hide everything except print doc */
+        body > *:not(#printDoc) {
+          display: none !important;
+        }
+        #printDoc {
+          display: block !important;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+
+        /* ---- PRINT DOC STYLES ---- */
+        #printDoc {
+          font-family: "Sora", "Segoe UI", sans-serif;
+          background: #fff;
+          color: #1a1a1a;
+          width: 210mm;
+          min-height: 297mm;
+          font-size: 9pt;
+          line-height: 1.4;
+        }
+
+        /* TOP HEADER */
+        .pd-header {
+          background: #fff;
+          padding: 14pt 20pt;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .pd-header img {
+          height: 36pt;
+          object-fit: contain;
+        }
+        .pd-header-right {
+          text-align: right;
+        }
+        .pd-header-right .title {
+          font-size: 14pt;
+          font-weight: 800;
+          color: #2e7d32;
+          letter-spacing: 0.5pt;
+          text-transform: uppercase;
+        }
+        .pd-header-right .meta {
+          font-size: 7.5pt;
+          color: black;
+          margin-top: 3pt;
+        }
+        .pd-header-right .valid {
+          font-size: 7.5pt;
+          color: #ffc300;
+          font-weight: 700;
+          margin-top: 2pt;
+        }
+
+        /* GREEN ACCENT BAR */
+        .pd-accent {
+          height: 6pt;
+          background: #2e7d32;
+        }
+
+        /* BODY PADDING */
+        .pd-body {
+          padding: 16pt 20pt;
+        }
+
+        /* CLIENT / COMPANY BOX */
+        .pd-two-col {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12pt;
+          margin-bottom: 14pt;
+        }
+        .pd-box {
+          border: 1.5pt solid #e0e0e0;
+          border-radius: 6pt;
+          padding: 10pt 12pt;
+        }
+        .pd-box-label {
+          font-size: 7pt;
+          font-weight: 700;
+          color: #546e7a;
+          text-transform: uppercase;
+          letter-spacing: 0.5pt;
+          border-bottom: 1pt solid #e0e0e0;
+          padding-bottom: 5pt;
+          margin-bottom: 7pt;
+        }
+        .pd-box-name {
+          font-size: 13pt;
+          font-weight: 800;
+          color: #1a1a1a;
+          margin-bottom: 5pt;
+        }
+        .pd-box-row {
+          font-size: 8pt;
+          color: #333;
+          margin-bottom: 3pt;
+          display: flex;
+          align-items: flex-start;
+          gap: 4pt;
+        }
+        .pd-box-row .icon {
+          flex-shrink: 0;
+        }
+
+        /* RECOMMENDED SYSTEM BANNER */
+        .pd-sys-banner {
+          background: #fff8e1;
+          border: 1.5pt solid #ffc300;
+          border-radius: 6pt;
+          padding: 11pt 16pt;
+          text-align: center;
+          margin-bottom: 14pt;
+        }
+        .pd-sys-banner .sys-title {
+          font-size: 13pt;
+          font-weight: 800;
+          color: #ff7a00;
+          margin-bottom: 4pt;
+        }
+        .pd-sys-banner .sys-sub {
+          font-size: 8pt;
+          color: #546e7a;
+          font-style: italic;
+        }
+
+        /* SECTION HEADING */
+        .pd-section-label {
+          font-size: 9pt;
+          font-weight: 800;
+          color: #0a1628;
+          text-transform: uppercase;
+          letter-spacing: 0.6pt;
+          border-bottom: 2pt solid #2e7d32;
+          padding-bottom: 5pt;
+          margin-bottom: 10pt;
+        }
+
+        /* EQUIPMENT TABLE */
+        .pd-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 14pt;
+        }
+        .pd-table thead tr {
+          background: #0a1628;
+        }
+        .pd-table thead th {
+          color: #fff;
+          font-size: 8pt;
+          font-weight: 700;
+          padding: 7pt 9pt;
+          text-align: left;
+          text-transform: uppercase;
+          letter-spacing: 0.3pt;
+        }
+        .pd-table thead th.center {
+          text-align: center;
+        }
+        .pd-table thead th.right {
+          text-align: right;
+        }
+        .pd-table tbody tr {
+          border-bottom: 1pt solid #e0e0e0;
+        }
+        .pd-table tbody tr:nth-child(even) {
+          background: #f1f8e9;
+        }
+        .pd-table tbody td {
+          font-size: 8.5pt;
+          padding: 7pt 9pt;
+          vertical-align: middle;
+        }
+        .pd-table tbody td.center {
+          text-align: center;
+        }
+        .pd-table tbody td.right {
+          text-align: right;
+          font-weight: 600;
+        }
+        .pd-table tbody td .num-col {
+          text-align: center;
+          display: inline-block;
+          min-width: 20pt;
+        }
+        /* Row number cell */
+        .pd-table tbody td.rownum {
+          color: #546e7a;
+          font-size: 8pt;
+          text-align: center;
+          width: 18pt;
+        }
+        /* Total row */
+        .pd-table tfoot tr {
+          background: #2e7d32 !important;
+        }
+        .pd-table tfoot td {
+          padding: 8pt 9pt;
+          font-size: 10pt;
+          font-weight: 800;
+          color: #fff;
+          text-transform: uppercase;
+          border: none !important;
+        }
+        .pd-table tfoot td.right {
+          color: #ffc300;
+          font-size: 12pt;
+        }
+
+        /* PRICE NOTE */
+        .pd-price-note {
+          font-size: 7pt;
+          color: #888;
+          font-style: italic;
+          margin-bottom: 14pt;
+        }
+
+        /* SAVINGS SECTION */
+        .pd-savings-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10pt;
+          margin-bottom: 12pt;
+        }
+        .pd-sav-box {
+          border-radius: 6pt;
+          padding: 10pt 12pt;
+        }
+        .pd-sav-box.red {
+          background: #ffebee;
+          border: 1.5pt solid rgba(198, 40, 40, 0.2);
+        }
+        .pd-sav-box.green {
+          background: #e8f5e9;
+          border: 1.5pt solid rgba(46, 125, 50, 0.25);
+        }
+        .pd-sav-title {
+          font-size: 8pt;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.4pt;
+          margin-bottom: 6pt;
+        }
+        .pd-sav-title.red {
+          color: #c62828;
+        }
+        .pd-sav-title.green {
+          color: #2e7d32;
+        }
+        .pd-sav-row {
+          font-size: 8pt;
+          margin-bottom: 3pt;
+          color: #333;
+        }
+        .pd-sav-row span {
+          font-weight: 700;
+        }
+        .pd-sav-row span.red {
+          color: #c62828;
+        }
+        .pd-sav-row span.green {
+          color: #2e7d32;
+        }
+
+        /* ROI ROW */
+        .pd-roi-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 7pt;
+          margin-bottom: 12pt;
+        }
+        .pd-roi-box {
+          background: #e8f5e9;
+          border-radius: 5pt;
+          padding: 7pt;
+          text-align: center;
+        }
+        .pd-roi-box.orange {
+          background: #fff3e0;
+        }
+        .pd-roi-label {
+          font-size: 6.5pt;
+          font-weight: 700;
+          text-transform: uppercase;
+          color: #546e7a;
+          letter-spacing: 0.3pt;
+          margin-bottom: 4pt;
+        }
+        .pd-roi-val {
+          font-size: 11pt;
+          font-weight: 800;
+          color: #2e7d32;
+        }
+        .pd-roi-val.orange {
+          color: #ff7a00;
+        }
+
+        /* WARRANTY */
+        .pd-warranty {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 7pt;
+          margin-bottom: 14pt;
+        }
+        .pd-war-box {
+          background: #e8f5e9;
+          border-radius: 5pt;
+          padding: 9pt;
+          text-align: center;
+        }
+        .pd-war-icon {
+          font-size: 18pt;
+          margin-bottom: 3pt;
+        }
+        .pd-war-title {
+          font-size: 8.5pt;
+          font-weight: 800;
+          color: #2e7d32;
+        }
+        .pd-war-sub {
+          font-size: 7pt;
+          color: #546e7a;
+          margin-top: 1pt;
+        }
+
+        /* TERMS */
+        .pd-terms {
+          background: #f5f7fa;
+          border-radius: 5pt;
+          padding: 9pt 12pt;
+          margin-bottom: 12pt;
+        }
+        .pd-terms-title {
+          font-size: 8pt;
+          font-weight: 800;
+          color: #0a1628;
+          margin-bottom: 5pt;
+          text-transform: uppercase;
+        }
+        .pd-terms ul {
+          padding-left: 12pt;
+        }
+        .pd-terms ul li {
+          font-size: 7.5pt;
+          color: #546e7a;
+          margin-bottom: 2pt;
+        }
+
+        /* FOOTER */
+        .pd-footer {
+          background: #2e7d32;
+          padding: 10pt 20pt;
+          text-align: center;
+          margin-top: auto;
+        }
+        .pd-footer p {
+          font-size: 8pt;
+          color: rgba(255, 255, 255, 0.75);
+          margin-bottom: 2pt;
+        }
+        .pd-footer .tagline {
+          font-size: 8pt;
+          color: #ffc300;
+          font-style: italic;
+          font-weight: 600;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===================== SCREEN UI ===================== -->
+    <div class="hdr">
+      <img src="https://solamoenergy.com/wp-content/uploads/2026/05/Logo-2-1-1536x517.png" alt="Solamo Energy">
+      <div class="hdr-r">
+        <h1>Quotation Portal</h1>
+        <p>Internal Use — Solamo Energy Team Only</p>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <!-- LEFT COLUMN -->
+      <div>
+        <!-- CLIENT -->
+        <div class="panel">
+          <div class="ph gr">
+            <div class="ph-ic">👤</div>
+            <div>
+              <div class="ph-t">Client Details</div>
+              <div class="ph-s">Enter customer information</div>
+            </div>
+          </div>
+          <div class="pb">
+            <div class="row2">
+              <div class="fg">
+                <label>Client Name *</label><input type="text" id="cName" placeholder="Muhammad Ali" oninput="upd()">
+              </div>
+              <div class="fg">
+                <label>Phone / WhatsApp *</label><input type="tel" id="cPhone" placeholder="+92 300 0000000" oninput="upd()">
+              </div>
+            </div>
+            <div class="row2">
+              <div class="fg">
+                <label>Email</label><input type="email" id="cEmail" placeholder="email@domain.com" oninput="upd()">
+              </div>
+              <div class="fg">
+                <label>City</label><select id="cCity" onchange="
+                    generateQuoteRef();
+                    upd();
+                  ">
+                  <option>Karachi</option>
+                  <option>Lahore</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg">
+              <label>Area / Address</label><input type="text" id="cAddr" placeholder="DHA Phase 5, Karachi" oninput="upd()">
+            </div>
+            <div class="fg">
+              <label>Client Goal / Note (optional)</label><input type="text" id="cGoal" placeholder="e.g. Bill Reduction + 8-Hour Battery Backup" oninput="upd()">
+            </div>
+            <div class="row2">
+              <div class="fg">
+                <label>Quote Reference 🔒</label><input type="text" id="qRef" readonly="" tabindex="-1">
+              </div>
+              <div class="fg">
+                <label>Validity ⏱</label><select id="qValidity" onchange="upd()">
+                  <option value="12 Hours">12 Hours</option>
+                  <option value="24 Hours">24 Hours</option>
+                  <option value="2 Days">2 Days</option>
+                  <option value="3 Days">3 Days</option>
+                  <option value="5 Days">5 Days</option>
+                  <option value="7 Days">7 Days</option>
+                  <option value="10 Days">10 Days</option>
+                  <option value="14 Days">14 Days</option>
+                  <option value="15 Days">15 Days</option>
+                  <option value="20 Days">20 Days</option>
+                  <option value="30 Days">30 Days</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- APPLIANCES -->
+        <div class="panel">
+          <div class="ph nv">
+            <div class="ph-ic">🔌</div>
+            <div>
+              <div class="ph-t">Appliance Load Calculator</div>
+              <div class="ph-s">Auto-calculates recommended system size</div>
+            </div>
+          </div>
+          <div class="pb">
+            <div class="app-grid" id="appGrid"><div class="app-card" id="ac_fan"><div class="at"><div class="ae">🌀</div><div><div class="an">Ceiling Fan</div><div class="aw"><input type="number" class="w-input" id="w_fan" value="75" min="1" max="10000" onchange="cW('fan',this.value)" oninput="cW('fan',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('fan',-1)">−</button><div class="cv" id="q_fan">0</div><button class="cb" onclick="cQ('fan',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_fan" onchange="cH('fan',this.value)"><option value="4">4h</option><option value="6">6h</option><option value="8">8h</option><option value="10" selected="">10h</option><option value="12">12h</option><option value="16">16h</option><option value="24">24h</option></select></div>
+</div>
+<div class="kt" id="k_fan">0.00 kWh/day</div></div><div class="app-card" id="ac_lt"><div class="at"><div class="ae">💡</div><div><div class="an">LED Lights</div><div class="aw"><input type="number" class="w-input" id="w_lt" value="12" min="1" max="10000" onchange="cW('lt',this.value)" oninput="cW('lt',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('lt',-1)">−</button><div class="cv" id="q_lt">0</div><button class="cb" onclick="cQ('lt',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_lt" onchange="cH('lt',this.value)"><option value="2">2h</option><option value="4">4h</option><option value="6">6h</option><option value="8" selected="">8h</option><option value="10">10h</option><option value="12">12h</option></select></div>
+</div>
+<div class="kt" id="k_lt">0.00 kWh/day</div></div><div class="app-card" id="ac_ac1"><div class="at"><div class="ae">❄️</div><div><div class="an">AC (1 Ton)</div><div class="aw"><input type="number" class="w-input" id="w_ac1" value="1100" min="1" max="10000" onchange="cW('ac1',this.value)" oninput="cW('ac1',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('ac1',-1)">−</button><div class="cv" id="q_ac1">0</div><button class="cb" onclick="cQ('ac1',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_ac1" onchange="cH('ac1',this.value)"><option value="2">2h</option><option value="4">4h</option><option value="6">6h</option><option value="8" selected="">8h</option><option value="10">10h</option><option value="12">12h</option></select></div>
+</div>
+<div class="kt" id="k_ac1">0.00 kWh/day</div></div><div class="app-card" id="ac_ac15"><div class="at"><div class="ae">🌬️</div><div><div class="an">AC (1.5 Ton)</div><div class="aw"><input type="number" class="w-input" id="w_ac15" value="1600" min="1" max="10000" onchange="cW('ac15',this.value)" oninput="cW('ac15',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('ac15',-1)">−</button><div class="cv" id="q_ac15">0</div><button class="cb" onclick="cQ('ac15',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_ac15" onchange="cH('ac15',this.value)"><option value="2">2h</option><option value="4">4h</option><option value="6">6h</option><option value="8" selected="">8h</option><option value="10">10h</option><option value="12">12h</option></select></div>
+</div>
+<div class="kt" id="k_ac15">0.00 kWh/day</div></div><div class="app-card" id="ac_ac2"><div class="at"><div class="ae">🧊</div><div><div class="an">AC (2 Ton)</div><div class="aw"><input type="number" class="w-input" id="w_ac2" value="2200" min="1" max="10000" onchange="cW('ac2',this.value)" oninput="cW('ac2',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('ac2',-1)">−</button><div class="cv" id="q_ac2">0</div><button class="cb" onclick="cQ('ac2',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_ac2" onchange="cH('ac2',this.value)"><option value="2">2h</option><option value="4">4h</option><option value="6">6h</option><option value="8" selected="">8h</option><option value="10">10h</option><option value="12">12h</option></select></div>
+</div>
+<div class="kt" id="k_ac2">0.00 kWh/day</div></div><div class="app-card" id="ac_frg"><div class="at"><div class="ae">🧊</div><div><div class="an">Refrigerator</div><div class="aw"><input type="number" class="w-input" id="w_frg" value="150" min="1" max="10000" onchange="cW('frg',this.value)" oninput="cW('frg',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('frg',-1)">−</button><div class="cv" id="q_frg">0</div><button class="cb" onclick="cQ('frg',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_frg" onchange="cH('frg',this.value)"><option value="24" selected="">24h</option></select></div>
+</div>
+<div class="kt" id="k_frg">0.00 kWh/day</div></div><div class="app-card" id="ac_wsh"><div class="at"><div class="ae">🫧</div><div><div class="an">Washing Machine</div><div class="aw"><input type="number" class="w-input" id="w_wsh" value="500" min="1" max="10000" onchange="cW('wsh',this.value)" oninput="cW('wsh',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('wsh',-1)">−</button><div class="cv" id="q_wsh">0</div><button class="cb" onclick="cQ('wsh',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_wsh" onchange="cH('wsh',this.value)"><option value="1">1h</option><option value="2" selected="">2h</option><option value="3">3h</option><option value="4">4h</option></select></div>
+</div>
+<div class="kt" id="k_wsh">0.00 kWh/day</div></div><div class="app-card" id="ac_mot"><div class="at"><div class="ae">💧</div><div><div class="an">Water Motor</div><div class="aw"><input type="number" class="w-input" id="w_mot" value="750" min="1" max="10000" onchange="cW('mot',this.value)" oninput="cW('mot',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('mot',-1)">−</button><div class="cv" id="q_mot">0</div><button class="cb" onclick="cQ('mot',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_mot" onchange="cH('mot',this.value)"><option value="1">1h</option><option value="2" selected="">2h</option><option value="3">3h</option><option value="4">4h</option><option value="6">6h</option></select></div>
+</div>
+<div class="kt" id="k_mot">0.00 kWh/day</div></div><div class="app-card" id="ac_tv"><div class="at"><div class="ae">📺</div><div><div class="an">TV / LED</div><div class="aw"><input type="number" class="w-input" id="w_tv" value="100" min="1" max="10000" onchange="cW('tv',this.value)" oninput="cW('tv',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('tv',-1)">−</button><div class="cv" id="q_tv">0</div><button class="cb" onclick="cQ('tv',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_tv" onchange="cH('tv',this.value)"><option value="2">2h</option><option value="4">4h</option><option value="6" selected="">6h</option><option value="8">8h</option></select></div>
+</div>
+<div class="kt" id="k_tv">0.00 kWh/day</div></div><div class="app-card" id="ac_irn"><div class="at"><div class="ae">👔</div><div><div class="an">Iron</div><div class="aw"><input type="number" class="w-input" id="w_irn" value="1000" min="1" max="10000" onchange="cW('irn',this.value)" oninput="cW('irn',this.value)">W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('irn',-1)">−</button><div class="cv" id="q_irn">0</div><button class="cb" onclick="cQ('irn',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_irn" onchange="cH('irn',this.value)"><option value="0.5">0.5h</option><option value="1" selected="">1h</option><option value="2">2h</option></select></div>
+</div>
+<div class="kt" id="k_irn">0.00 kWh/day</div></div></div>
+            <div class="live">
+              <div class="ls">
+                <div class="ls-l">Daily Usage</div>
+                <div class="ls-v" id="lK">0.0</div>
+                <div class="ls-u">kWh/day</div>
+              </div>
+              <div class="ls">
+                <div class="ls-l">Monthly Units</div>
+                <div class="ls-v" id="lU">0</div>
+                <div class="ls-u">units/mo</div>
+              </div>
+              <div class="ls">
+                <div class="ls-l">Est. Bill</div>
+                <div class="ls-v" id="lB">0</div>
+                <div class="ls-u">PKR/mo</div>
+              </div>
+              <div class="ls">
+                <div class="ls-l">System Size</div>
+                <div class="ls-v" id="lS">—</div>
+                <div class="ls-u">recommended</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM INFO -->
+        <div class="panel">
+          <div class="ph or">
+            <div class="ph-ic">☀️</div>
+            <div>
+              <div class="ph-t">System Details</div>
+              <div class="ph-s">Shown in quotation header</div>
+            </div>
+          </div>
+          <div class="pb">
+            <div class="row2">
+              <div class="fg">
+                <label>System Size</label><input type="text" id="sSize" placeholder="5kW" oninput="upd()">
+              </div>
+              <div class="fg">
+                <label>System Type</label><select id="sType" onchange="upd()">
+                  <option>Hybrid Solar System</option>
+                  <option>On-Grid Solar System</option>
+                  <option>Off-Grid Solar System</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg">
+              <label>System Description (shown on quote)</label><input type="text" id="sDesc" placeholder="3kW Hybrid covers full daytime load with 5kWh battery providing 8-hour backup for fans, lights and fridge" oninput="upd()">
+            </div>
+          </div>
+        </div>
+
+        <!-- LINE ITEMS -->
+        <div class="panel">
+          <div class="ph nv">
+            <div class="ph-ic">📋</div>
+            <div>
+              <div class="ph-t">Pricing Line Items</div>
+              <div class="ph-s">
+                Add, remove, and edit all cost items freely
+              </div>
+            </div>
+          </div>
+          <div class="pb">
+            <div class="note">
+              Har item manually enter karein. Description, Qty, aur Unit Price
+              daalein — Total auto-calculate hoga.
+            </div>
+            <table class="li-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th style="width: 10%; text-align: center">Qty</th>
+                  <th style="width: 22%; text-align: right">
+                    Unit Price (PKR)
+                  </th>
+                  <th style="width: 20%; text-align: right">Total (PKR)</th>
+                  <th style="width: 36px"></th>
+                </tr>
+              </thead>
+              <tbody id="lineItems"><tr id="row_1">
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="Solar Panels" oninput="calcRowTotal(1);upd()"></td>
+      <td class="td-qty"><input type="number" min="0" value="1" oninput="calcRowTotal(1);upd()"></td>
+      <td class="td-up"><input type="number" min="0" value="" placeholder="0" oninput="calcRowTotal(1);upd()"></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_1">—</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(1)" title="Remove">✕</button></td></tr><tr id="row_2">
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="Inverter — Itel" oninput="calcRowTotal(2);upd()"></td>
+      <td class="td-qty"><input type="number" min="0" value="1" oninput="calcRowTotal(2);upd()"></td>
+      <td class="td-up"><input type="number" min="0" value="140000" placeholder="0" oninput="calcRowTotal(2);upd()"></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_2">PKR 140,000</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(2)" title="Remove">✕</button></td></tr><tr id="row_3">
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="Mounting Structure" oninput="calcRowTotal(3);upd()"></td>
+      <td class="td-qty"><input type="number" min="0" value="1" oninput="calcRowTotal(3);upd()"></td>
+      <td class="td-up"><input type="number" min="0" value="" placeholder="0" oninput="calcRowTotal(3);upd()"></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_3">—</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(3)" title="Remove">✕</button></td></tr><tr id="row_4">
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="Wiring &amp; Accessories — Pakistan Cable + Fast Cable" oninput="calcRowTotal(4);upd()"></td>
+      <td class="td-qty"><input type="number" min="0" value="1" oninput="calcRowTotal(4);upd()"></td>
+      <td class="td-up"><input type="number" min="0" value="60000" placeholder="0" oninput="calcRowTotal(4);upd()"></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_4">PKR 60,000</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(4)" title="Remove">✕</button></td></tr><tr id="row_5">
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="AC Protection &amp; DB Box" oninput="calcRowTotal(5);upd()"></td>
+      <td class="td-qty"><input type="number" min="0" value="1" oninput="calcRowTotal(5);upd()"></td>
+      <td class="td-up"><input type="number" min="0" value="18000" placeholder="0" oninput="calcRowTotal(5);upd()"></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_5">PKR 18,000</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(5)" title="Remove">✕</button></td></tr><tr id="row_6">
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="Installation Charges" oninput="calcRowTotal(6);upd()"></td>
+      <td class="td-qty"><input type="number" min="0" value="1" oninput="calcRowTotal(6);upd()"></td>
+      <td class="td-up"><input type="number" min="0" value="" placeholder="0" oninput="calcRowTotal(6);upd()"></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_6">—</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(6)" title="Remove">✕</button></td></tr><tr id="row_7">
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="Transport Charges" oninput="calcRowTotal(7);upd()"></td>
+      <td class="td-qty"><input type="number" min="0" value="1" oninput="calcRowTotal(7);upd()"></td>
+      <td class="td-up"><input type="number" min="0" value="8000" placeholder="0" oninput="calcRowTotal(7);upd()"></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_7">PKR 8,000</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(7)" title="Remove">✕</button></td></tr></tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow()">➕ Add Item</button>
+            <div class="tot-bar">
+              <span>TOTAL INVESTMENT</span><span id="totD">PKR 226,000</span>
+            </div>
+
+            <div class="slabel">Savings &amp; ROI</div>
+            <div class="row2">
+              <div class="fg">
+                <label>Current Monthly Bill</label><input type="text" id="curB" placeholder="PKR 30,000" oninput="upd()">
+              </div>
+              <div class="fg">
+                <label>New Bill After Solar</label><input type="text" id="newB" placeholder="PKR 2,500" oninput="upd()">
+              </div>
+            </div>
+            <div class="row2">
+              <div class="fg">
+                <label>Monthly Savings</label><input type="text" id="mSave" placeholder="PKR 27,500" oninput="upd()">
+              </div>
+              <div class="fg">
+                <label>Annual Savings</label><input type="text" id="aSave" placeholder="PKR 3,30,000" oninput="upd()">
+              </div>
+            </div>
+            <div class="row2">
+              <div class="fg">
+                <label>Payback Period</label><input type="text" id="pay" placeholder="~2.5 Years" oninput="upd()">
+              </div>
+              <div class="fg">
+                <label>Free Electricity (Years)</label><input type="text" id="freeY" placeholder="22+ Years" oninput="upd()">
+              </div>
+            </div>
+
+            <div class="slabel">Terms &amp; Notes (optional)</div>
+            <div class="fg">
+              <textarea id="terms" placeholder="e.g. Prices valid for 12 Hours. Installation includes all labour. WAPDA/HESCO net metering application included." oninput="upd()" style="height: 80px"></textarea>
+            </div>
+
+            <div class="brow">
+              <button class="btn btn-g" onclick="upd()">
+                ⚡ Update Preview
+              </button>
+              <button class="btn btn-o" onclick="doPrint()">
+                🖨️ Print / Save PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end left col -->
+
+      <!-- RIGHT PREVIEW (screen only) -->
+      <div class="prev-wrap">
+        <div class="prev-label">👁️ Live Quotation Preview</div>
+        <div style="
+            background: #fff;
+            border-radius: 0 0 14px 14px;
+            box-shadow: 0 4px 24px rgba(46, 125, 50, 0.09);
+            overflow: hidden;
+            font-family: &quot;Sora&quot;, sans-serif;
+            font-size: 9px;
+          ">
+          <!-- Compact screen preview -->
+          <div style="
+              background: #0a1628;
+              padding: 12px 16px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            ">
+            <img src="https://solamoenergy.com/wp-content/uploads/2026/05/Logo-2-1-1536x517.png" style="height: 32px; object-fit: contain" alt="Solamo">
+            <div style="text-align: right">
+              <div style="
+                  font-size: 11px;
+                  font-weight: 800;
+                  color: #fff;
+                  letter-spacing: 0.5px;
+                ">
+                SOLAR SYSTEM QUOTATION
+              </div>
+              <div style="
+                  font-size: 8px;
+                  color: rgba(255, 255, 255, 0.5);
+                  margin-top: 2px;
+                " id="pvRef">Ref: SE-KHI-540 | Date: 8 October 2026</div>
+              <div style="
+                  font-size: 8px;
+                  color: #ffc300;
+                  font-weight: 700;
+                  margin-top: 1px;
+                " id="pvValid">Valid For: 12 Hours</div>
+            </div>
+          </div>
+          <div style="height: 3px; background: #2e7d32"></div>
+          <div style="padding: 12px 16px">
+            <div style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+                margin-bottom: 11px;
+              ">
+              <div style="
+                  border: 1.5px solid #e0e0e0;
+                  border-radius: 6px;
+                  padding: 9px 11px;
+                ">
+                <div style="
+                    font-size: 7px;
+                    font-weight: 700;
+                    color: #546e7a;
+                    text-transform: uppercase;
+                    letter-spacing: 0.4px;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 4px;
+                    margin-bottom: 5px;
+                  ">
+                  PREPARED FOR
+                </div>
+                <div style="
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #1a1a1a;
+                    margin-bottom: 4px;
+                  " id="pvN">test</div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px" id="pvPh">📞 test</div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px" id="pvEm">✉️ test</div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px" id="pvAd">📍 test, Karachi</div>
+                <div style="font-size: 8px; color: #333" id="pvGoal">🎯 test</div>
+              </div>
+              <div style="
+                  border: 1.5px solid #e0e0e0;
+                  border-radius: 6px;
+                  padding: 9px 11px;
+                ">
+                <div style="
+                    font-size: 7px;
+                    font-weight: 700;
+                    color: #546e7a;
+                    text-transform: uppercase;
+                    letter-spacing: 0.4px;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 4px;
+                    margin-bottom: 5px;
+                  ">
+                  PREPARED BY
+                </div>
+                <div style="
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #1a1a1a;
+                    margin-bottom: 4px;
+                  ">
+                  Solamo Energy
+                </div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px">
+                  📞 +92 314 1349717
+                </div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px">
+                  ✉️ info@solamoenergy.com
+                </div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px">
+                  🌐 solamoenergy.com
+                </div>
+                <div style="font-size: 8px; color: #333">
+                  📍 Karachi | Lahore, Pakistan
+                </div>
+              </div>
+            </div>
+
+            <div style="
+                background: #fff8e1;
+                border: 1.5px solid #ffc300;
+                border-radius: 6px;
+                padding: 9px 14px;
+                text-align: center;
+                margin-bottom: 11px;
+              ">
+              <div style="
+                  font-size: 11px;
+                  font-weight: 800;
+                  color: #ff7a00;
+                  margin-bottom: 3px;
+                " id="pvSys">RECOMMENDED SYSTEM: X kW Hybrid Solar System</div>
+              <div style="font-size: 8px; color: #546e7a; font-style: italic" id="pvSDesc">System description</div>
+            </div>
+
+            <div style="
+                font-size: 8px;
+                font-weight: 800;
+                color: #0a1628;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 2px solid #2e7d32;
+                padding-bottom: 4px;
+                margin-bottom: 8px;
+              ">
+              2. Equipment Specification
+            </div>
+
+            <table style="
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 9px;
+                font-size: 8px;
+              ">
+              <thead>
+                <tr style="background: #0a1628">
+                  <th style="
+                      color: #fff;
+                      padding: 5px 7px;
+                      text-align: center;
+                      width: 18px;
+                    ">
+                    #
+                  </th>
+                  <th style="color: #fff; padding: 5px 7px; text-align: left">
+                    Component
+                  </th>
+                  <th style="color: #fff; padding: 5px 7px; text-align: center">
+                    Qty
+                  </th>
+                  <th style="color: #fff; padding: 5px 7px; text-align: right">
+                    Price
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="pvTB">
+      <tr style="">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">1</td>
+        <td>Solar Panels</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right;font-weight:600">Included</td>
+      </tr>
+      <tr style="background:#f1f8e9">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">2</td>
+        <td>Inverter — Itel</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right;font-weight:600">PKR 140,000</td>
+      </tr>
+      <tr style="">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">3</td>
+        <td>Mounting Structure</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right;font-weight:600">Included</td>
+      </tr>
+      <tr style="background:#f1f8e9">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">4</td>
+        <td>Wiring &amp; Accessories — Pakistan Cable + Fast Cable</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right;font-weight:600">PKR 60,000</td>
+      </tr>
+      <tr style="">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">5</td>
+        <td>AC Protection &amp; DB Box</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right;font-weight:600">PKR 18,000</td>
+      </tr>
+      <tr style="background:#f1f8e9">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">6</td>
+        <td>Installation Charges</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right;font-weight:600">Included</td>
+      </tr>
+      <tr style="">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">7</td>
+        <td>Transport Charges</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right;font-weight:600">PKR 8,000</td>
+      </tr></tbody>
+              <tfoot>
+                <tr style="background: #2e7d32">
+                  <td colspan="2" style="
+                      padding: 6px 7px;
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #fff;
+                      text-transform: uppercase;
+                    ">
+                    TOTAL INVESTMENT
+                  </td>
+                  <td colspan="2" style="
+                      padding: 6px 7px;
+                      font-size: 11px;
+                      font-weight: 900;
+                      color: white;
+                      text-align: right;
+                      background-color: #ff7a00;
+                    " id="pvTot">PKR 226,000</td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <div style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 9px;
+              ">
+              <div style="
+                  background: #ffebee;
+                  border: 1.5px solid rgba(198, 40, 40, 0.2);
+                  border-radius: 5px;
+                  padding: 8px 10px;
+                ">
+                <div style="
+                    font-size: 7px;
+                    font-weight: 800;
+                    color: #c62828;
+                    text-transform: uppercase;
+                    margin-bottom: 4px;
+                  ">
+                  ❌ Without Solar
+                </div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px">
+                  Current Bill:
+                  <span style="font-weight: 700; color: #c62828" id="pvCB">—</span>
+                </div>
+                <div style="font-size: 8px; color: #333">
+                  Annual Cost:
+                  <span style="font-weight: 700; color: #c62828" id="pvAC">—</span>
+                </div>
+              </div>
+              <div style="
+                  background: #e8f5e9;
+                  border: 1.5px solid rgba(46, 125, 50, 0.25);
+                  border-radius: 5px;
+                  padding: 8px 10px;
+                ">
+                <div style="
+                    font-size: 7px;
+                    font-weight: 800;
+                    color: #2e7d32;
+                    text-transform: uppercase;
+                    margin-bottom: 4px;
+                  ">
+                  ✅ With Solamo Solar
+                </div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px">
+                  New Bill:
+                  <span style="font-weight: 700; color: #2e7d32" id="pvNB">—</span>
+                </div>
+                <div style="font-size: 8px; color: #333; margin-bottom: 2px">
+                  Monthly Saving:
+                  <span style="font-weight: 700; color: #2e7d32" id="pvMS">—</span>
+                </div>
+                <div style="font-size: 8px; color: #333">
+                  Annual Saving:
+                  <span style="font-weight: 700; color: #2e7d32" id="pvAS">—</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="
+                display: none;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+                margin-bottom: 9px;
+              ">
+              <div style="
+                  background: #e8f5e9;
+                  border-radius: 5px;
+                  padding: 6px;
+                  text-align: center;
+                ">
+                <div style="
+                    font-size: 6px;
+                    font-weight: 700;
+                    color: #546e7a;
+                    text-transform: uppercase;
+                    margin-bottom: 2px;
+                  ">
+                  Investment
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #2e7d32" id="pvRI">PKR 226,000</div>
+              </div>
+              <div style="
+                  background: #fff3e0;
+                  border-radius: 5px;
+                  padding: 6px;
+                  text-align: center;
+                ">
+                <div style="
+                    font-size: 6px;
+                    font-weight: 700;
+                    color: #546e7a;
+                    text-transform: uppercase;
+                    margin-bottom: 2px;
+                  ">
+                  Payback
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #ff7a00" id="pvPay">—</div>
+              </div>
+              <div style="
+                  background: #e8f5e9;
+                  border-radius: 5px;
+                  padding: 6px;
+                  text-align: center;
+                ">
+                <div style="
+                    font-size: 6px;
+                    font-weight: 700;
+                    color: #546e7a;
+                    text-transform: uppercase;
+                    margin-bottom: 2px;
+                  ">
+                  System Life
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #2e7d32">
+                  25 Yrs
+                </div>
+              </div>
+              <div style="
+                  background: #e8f5e9;
+                  border-radius: 5px;
+                  padding: 6px;
+                  text-align: center;
+                ">
+                <div style="
+                    font-size: 6px;
+                    font-weight: 700;
+                    color: #546e7a;
+                    text-transform: uppercase;
+                    margin-bottom: 2px;
+                  ">
+                  Free Electric
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #2e7d32" id="pvFY">—</div>
+              </div>
+            </div>
+          </div>
+          <div style="background: #2e7d32; padding: 8px 16px; text-align: center">
+            <p style="font-size: 8px; color: rgba(255, 255, 255, 0.75)">
+              +92 314 1349717 &nbsp;|&nbsp; info@solamoenergy.com &nbsp;|&nbsp;
+              solamoenergy.com &nbsp;|&nbsp; Karachi &nbsp;|&nbsp; Lahore
+            </p>
+            <p style="
+                font-size: 8px;
+                color: #ffc300;
+                font-style: italic;
+                font-weight: 600;
+                margin-top: 2px;
+              ">
+              Built for Pakistan. Powered by the Sun.
+            </p>
+          </div>
+        </div>
+        <div class="psec">
+          <button class="btn btn-g" onclick="doPrint()" style="flex: 1">
+            🖨️ Print Quotation
+          </button>
+          <button class="btn btn-o" onclick="resetForm()" style="flex: 1">
+            🔄 New Quotation
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== PRINT DOCUMENT (hidden on screen, shown on print) ===================== -->
+    <div id="printDoc">
+      <div class="pd-header">
+        <img src="https://solamoenergy.com/wp-content/uploads/2026/05/Logo-2-1-1536x517.png" alt="Solamo Energy">
+        <div class="pd-header-right">
+          <div class="title">Solar System Quotation</div>
+          <div class="meta" id="pd-ref">Quote Ref: SE-KHI-540  |  Date: 8 October 2026</div>
+          <div class="valid" id="pd-valid">Valid For: 12 Hours</div>
+        </div>
+      </div>
+      <div class="pd-accent"></div>
+
+      <div class="pd-body">
+        <!-- Client / Company -->
+        <div class="pd-two-col">
+          <div class="pd-box">
+            <div class="pd-box-label">Prepared For</div>
+            <div class="pd-box-name" id="pd-name">test</div>
+            <div class="pd-box-row" id="pd-phone-row" style="display: flex;">
+              <span class="icon">📞</span><span id="pd-phone">test</span>
+            </div>
+            <div class="pd-box-row" id="pd-email-row" style="display: flex;">
+              <span class="icon">✉️</span><span id="pd-email">test</span>
+            </div>
+            <div class="pd-box-row" id="pd-addr-row" style="display: flex;">
+              <span class="icon">📍</span><span id="pd-addr">test, Karachi</span>
+            </div>
+            <div class="pd-box-row" id="pd-goal-row" style="display: flex;">
+              <span class="icon">🎯</span><span id="pd-goal">test</span>
+            </div>
+          </div>
+          <div class="pd-box">
+            <div class="pd-box-label">Prepared By</div>
+            <div class="pd-box-name">Solamo Energy</div>
+            <div class="pd-box-row">
+              <span class="icon">📞</span><span>+92 314 1349717</span>
+            </div>
+            <div class="pd-box-row">
+              <span class="icon">✉️</span><span>info@solamoenergy.com</span>
+            </div>
+            <div class="pd-box-row">
+              <span class="icon">🌐</span><span>solamoenergy.com</span>
+            </div>
+            <div class="pd-box-row">
+              <span class="icon">📍</span><span>Karachi | Lahore, Pakistan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommended System Banner -->
+        <div class="pd-sys-banner" id="pd-sys-banner">
+          <div class="sys-title" id="pd-sys-title">RECOMMENDED SYSTEM: X kW Hybrid Solar System</div>
+          <div class="sys-sub" id="pd-sys-desc" style="display: none;">System description</div>
+        </div>
+
+        <!-- Equipment Table -->
+        <div class="pd-section-label">2. Equipment Specification</div>
+        <table class="pd-table">
+          <thead>
+            <tr>
+              <th style="width: 20pt; text-align: center">#</th>
+              <th>Component</th>
+              <th class="center" style="width: 50pt">Quantity</th>
+              <th class="right" style="width: 90pt">Unit Price</th>
+              <th colspan="2" class="right" style="width: 70pt">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="pd-tbody">
+      <tr>
+        <td style="text-align:center;color:#546e7a;">1</td>
+        <td>Solar Panels</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right">Included</td>
+        <td style="text-align:right;font-weight:700">Included</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;color:#546e7a;">2</td>
+        <td>Inverter — Itel</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right">PKR 140,000</td>
+        <td style="text-align:right;font-weight:700">PKR 140,000</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;color:#546e7a;">3</td>
+        <td>Mounting Structure</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right">Included</td>
+        <td style="text-align:right;font-weight:700">Included</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;color:#546e7a;">4</td>
+        <td>Wiring &amp; Accessories — Pakistan Cable + Fast Cable</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right">PKR 60,000</td>
+        <td style="text-align:right;font-weight:700">PKR 60,000</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;color:#546e7a;">5</td>
+        <td>AC Protection &amp; DB Box</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right">PKR 18,000</td>
+        <td style="text-align:right;font-weight:700">PKR 18,000</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;color:#546e7a;">6</td>
+        <td>Installation Charges</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right">Included</td>
+        <td style="text-align:right;font-weight:700">Included</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;color:#546e7a;">7</td>
+        <td>Transport Charges</td>
+        <td style="text-align:center">1</td>
+        <td style="text-align:right">PKR 8,000</td>
+        <td style="text-align:right;font-weight:700">PKR 8,000</td>
+      </tr></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">TOTAL INVESTMENT</td>
+              <td class="right" id="pd-tot">PKR 226,000</td>
+            </tr>
+          </tfoot>
+        </table>
+        <div class="pd-price-note">
+          * Prices may vary slightly based on site assessment. All prices
+          include professional installation.
+        </div>
+
+        <!-- Savings -->
+        <div class="pd-section-label" id="pd-financial-label" style="display: none;">
+          3. Financial Analysis
+        </div>
+        <div class="pd-savings-grid" id="pd-financial-grid" style="display: none;">
+          <div class="pd-sav-box red">
+            <div class="pd-sav-title red">❌ Without Solar (Current)</div>
+            <div class="pd-sav-row">
+              Current Monthly Bill: <span class="red" id="pd-cb">—</span>
+            </div>
+            <div class="pd-sav-row">
+              Annual Electricity Cost: <span class="red" id="pd-ac">—</span>
+            </div>
+          </div>
+          <div class="pd-sav-box green">
+            <div class="pd-sav-title green">✅ With Solamo Solar</div>
+            <div class="pd-sav-row">
+              New Bill After Solar: <span class="green" id="pd-nb">—</span>
+            </div>
+            <div class="pd-sav-row">
+              Monthly Saving: <span class="green" id="pd-ms">—</span>
+            </div>
+            <div class="pd-sav-row">
+              Annual Saving: <span class="green" id="pd-as">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROI -->
+        <div class="pd-roi-grid" style="display: none">
+          <div class="pd-roi-box">
+            <div class="pd-roi-label" style="background-color: red; width: 50% !important">
+              Total Investment
+            </div>
+            <div class="pd-roi-val" id="pd-ri">PKR 226,000</div>
+          </div>
+          <div class="pd-roi-box orange">
+            <div class="pd-roi-label">Payback Period</div>
+            <div class="pd-roi-val orange" id="pd-pay">—</div>
+          </div>
+          <div class="pd-roi-box">
+            <div class="pd-roi-label">System Life</div>
+            <div class="pd-roi-val">25 Years</div>
+          </div>
+          <div class="pd-roi-box">
+            <div class="pd-roi-label">Free Electricity</div>
+            <div class="pd-roi-val" id="pd-fy">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-footer">
+        <p>
+          +92 314 1349717 &nbsp;|&nbsp; info@solamoenergy.com &nbsp;|&nbsp;
+          solamoenergy.com &nbsp;|&nbsp; Karachi &nbsp;|&nbsp; Lahore
+        </p>
+        <div class="tagline">Built for Pakistan. Powered by the Sun.</div>
+      </div>
+    </div>
+
+    <script>
+      // ===== EMAILJS INIT =====
+      emailjs.init("GvWr65-NjEmpfJ_aG");
+
+      const APPS = [
+        {
+          id: "fan",
+          name: "Ceiling Fan",
+          emoji: "🌀",
+          w: 75,
+          max: 10,
+          hrs: [4, 6, 8, 10, 12, 16, 24],
+          def: 10,
+        },
+        {
+          id: "lt",
+          name: "LED Lights",
+          emoji: "💡",
+          w: 12,
+          max: 20,
+          hrs: [2, 4, 6, 8, 10, 12],
+          def: 8,
+        },
+        {
+          id: "ac1",
+          name: "AC (1 Ton)",
+          emoji: "❄️",
+          w: 1100,
+          max: 6,
+          hrs: [2, 4, 6, 8, 10, 12],
+          def: 8,
+        },
+        {
+          id: "ac15",
+          name: "AC (1.5 Ton)",
+          emoji: "🌬️",
+          w: 1600,
+          max: 6,
+          hrs: [2, 4, 6, 8, 10, 12],
+          def: 8,
+        },
+        {
+          id: "ac2",
+          name: "AC (2 Ton)",
+          emoji: "🧊",
+          w: 2200,
+          max: 4,
+          hrs: [2, 4, 6, 8, 10, 12],
+          def: 8,
+        },
+        {
+          id: "frg",
+          name: "Refrigerator",
+          emoji: "🧊",
+          w: 150,
+          max: 2,
+          hrs: [24],
+          def: 24,
+        },
+        {
+          id: "wsh",
+          name: "Washing Machine",
+          emoji: "🫧",
+          w: 500,
+          max: 2,
+          hrs: [1, 2, 3, 4],
+          def: 2,
+        },
+        {
+          id: "mot",
+          name: "Water Motor",
+          emoji: "💧",
+          w: 750,
+          max: 2,
+          hrs: [1, 2, 3, 4, 6],
+          def: 2,
+        },
+        {
+          id: "tv",
+          name: "TV / LED",
+          emoji: "📺",
+          w: 100,
+          max: 5,
+          hrs: [2, 4, 6, 8],
+          def: 6,
+        },
+        {
+          id: "irn",
+          name: "Iron",
+          emoji: "👔",
+          w: 1000,
+          max: 2,
+          hrs: [0.5, 1, 2],
+          def: 1,
+        },
+      ];
+      const KE = 50,
+        PSUN = 5,
+        EFF = 0.8;
+      let qty = {},
+        hrs = {};
+      let rowId = 0;
+
+      /* ===== AUTO-GENERATE QUOTE REFERENCE ===== */
+      function generateQuoteRef() {
+        const city = document.getElementById("cCity").value;
+        const cityCode =
+          city === "Karachi" ? "KHI" : city === "Lahore" ? "LHR" : "OTH";
+        const rand = Math.floor(100 + Math.random() * 900);
+        const ref = "SE-" + cityCode + "-" + rand;
+        const qRefEl = document.getElementById("qRef");
+        if (qRefEl) qRefEl.value = ref;
+        return ref;
+      }
+
+      /* ===== CHANGED: fmtPKR now shows full number with commas, no Lakh/Crore ===== */
+      function fmtPKR(n) {
+        if (!n || n === 0) return "—";
+        return "PKR " + Math.round(n).toLocaleString("en-PK");
+      }
+
+      function buildApps() {
+        const g = document.getElementById("appGrid");
+        APPS.forEach((a) => {
+          qty[a.id] = 0;
+          hrs[a.id] = a.def;
+          const opts = a.hrs
+            .map(
+              (h) =>
+                `<option value="h"{h === a.def ? " selected" : ""}>${h}h</option>`,
+            )
+            .join("");
+          const d = document.createElement("div");
+          d.className = "app-card";
+          d.id = "ac_" + a.id;
+          d.innerHTML = `<div class="at"><div class="ae">a.emoji</div><div><divclass="an">{a.name}</div><div class="aw"><input type="number" class="w-input" id="w_a.id"value="{a.w}" min="1" max="10000" onchange="cW('a.id',this.value)"oninput="cW('{a.id}',this.value)" />W</div></div></div>
+<div class="ac">
+  <div><label>Qty</label><div class="ctr"><button class="cb" onclick="cQ('${a.id}',-1)">−</button><div class="cv" id="q_${a.id}">0</div><button class="cb" onclick="cQ('${a.id}',1)">+</button></div></div>
+  <div><label>Hrs/Day</label><select class="hsl" id="h_a.id"onchange="cH('{a.id}',this.value)">${opts}</select></div>
+</div>
+<div class="kt" id="k_${a.id}">0.00 kWh/day</div>`;
+          g.appendChild(d);
+        });
+      }
+
+      function cW(id, v) {
+        const a = APPS.find((x) => x.id === id);
+        a.w = Math.max(1, parseInt(v) || a.w);
+        uK(id);
+        uLive();
+      }
+      function cQ(id, d) {
+        const a = APPS.find((x) => x.id === id);
+        qty[id] = Math.max(0, Math.min(a.max, qty[id] + d));
+        document.getElementById("q_" + id).textContent = qty[id];
+        document.getElementById("ac_" + id).classList.toggle("on", qty[id] > 0);
+        uK(id);
+        uLive();
+      }
+      function cH(id, v) {
+        hrs[id] = parseFloat(v);
+        uK(id);
+        uLive();
+      }
+      function uK(id) {
+        const a = APPS.find((x) => x.id === id);
+        const k = (a.w * qty[id] * hrs[id]) / 1000;
+        document.getElementById("k_" + id).textContent =
+          k.toFixed(2) + " kWh/day";
+      }
+      function tKwh() {
+        return APPS.reduce(
+          (s, a) => s + (a.w * qty[a.id] * hrs[a.id]) / 1000,
+          0,
+        );
+      }
+      function sKw(k) {
+        if (!k) return 0;
+        const r = k / (PSUN * EFF);
+        const sz = [3, 5, 6, 8, 10, 12, 15, 20, 25, 30];
+        return sz.find((s) => s >= r) || Math.ceil(r / 5) * 5;
+      }
+
+      function uLive() {
+        const k = tKwh(),
+          m = k * 30,
+          b = m * KE,
+          s = sKw(k);
+        document.getElementById("lK").textContent = k.toFixed(1);
+        document.getElementById("lU").textContent = Math.round(m);
+        document.getElementById("lB").textContent =
+          Math.round(b).toLocaleString();
+        document.getElementById("lS").textContent = s > 0 ? s + "kW" : "—";
+        if (s > 0) document.getElementById("sSize").value = s + "kW";
+        upd();
+      }
+
+      function addRow(desc = "", q = 1, up = 0) {
+        const tbody = document.getElementById("lineItems");
+        const id = ++rowId;
+        const tr = document.createElement("tr");
+        tr.id = "row_" + id;
+        tr.innerHTML = `
+      <td class="td-desc"><input type="text" placeholder="Item description..." value="desc"oninput="calcRowTotal({id});upd()"/></td>
+      <td class="td-qty"><input type="number" min="0" value="q"oninput="calcRowTotal({id});upd()"/></td>
+      <td class="td-up"><input type="number" min="0" value="up||"""placeholder="0"oninput="calcRowTotal({id});upd()"/></td>
+      <td class="td-tot"><span class="td-tot-val" id="rtot_${id}">—</span></td>
+      <td class="td-del"><button class="del-btn" onclick="delRow(${id})" title="Remove">✕</button></td>`;
+        tbody.appendChild(tr);
+        calcRowTotal(id);
+        upd();
+      }
+
+      function calcRowTotal(id) {
+        const row = document.getElementById("row_" + id);
+        if (!row) return 0;
+        const inputs = row.querySelectorAll("input");
+        const q = parseFloat(inputs[1].value) || 0;
+        const u = parseFloat(inputs[2].value) || 0;
+        const tot = q * u;
+        document.getElementById("rtot_" + id).textContent =
+          tot > 0 ? fmtPKR(tot) : "—";
+        calcGrandTotal();
+        return tot;
+      }
+
+      function calcGrandTotal() {
+        const rows = document
+          .getElementById("lineItems")
+          .querySelectorAll("tr");
+        let total = 0;
+        rows.forEach((row) => {
+          const inputs = row.querySelectorAll("input");
+          const q = parseFloat(inputs[1].value) || 0;
+          const u = parseFloat(inputs[2].value) || 0;
+          total += q * u;
+        });
+        document.getElementById("totD").textContent = fmtPKR(total) || "PKR 0";
+        return total;
+      }
+
+      function delRow(id) {
+        const row = document.getElementById("row_" + id);
+        if (row) {
+          row.remove();
+          calcGrandTotal();
+          upd();
+        }
+      }
+
+      function getLineRows() {
+        const rows = document
+          .getElementById("lineItems")
+          .querySelectorAll("tr");
+        const result = [];
+        rows.forEach((row) => {
+          const inputs = row.querySelectorAll("input");
+          const desc = inputs[0].value || "Item";
+          const q = parseFloat(inputs[1].value) || 0;
+          const u = parseFloat(inputs[2].value) || 0;
+          result.push({ desc, qty: q, up: u, tot: q * u });
+        });
+        return result;
+      }
+
+      function upd() {
+        const name = document.getElementById("cName").value || "Client Name";
+        const phone = document.getElementById("cPhone").value || "Phone Number";
+        const email =
+          document.getElementById("cEmail").value || "Email Address";
+        const addr = document.getElementById("cAddr").value || "Address";
+        const city = document.getElementById("cCity").value;
+        const goal = document.getElementById("cGoal").value || "";
+        const ref = document.getElementById("qRef").value || "SE-KHI-XXX";
+        const sz = document.getElementById("sSize").value || "X kW";
+        const stype = document.getElementById("sType").value;
+        const sdesc =
+          document.getElementById("sDesc").value || "System description";
+        const termsText = document.getElementById("terms").value || "";
+        const validity =
+          document.getElementById("qValidity").value || "12 Hours";
+        const descFull = termsText.trim() ? termsText.trim() : sdesc;
+        const dateStr = new Date().toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        // ---- Screen preview ----
+        document.getElementById("pvRef").textContent =
+          `Ref: ${ref} | Date: ${dateStr}`;
+        document.getElementById("pvValid").textContent =
+          `Valid For: ${validity}`;
+        document.getElementById("pvN").textContent = name;
+        document.getElementById("pvPh").textContent = "📞 " + phone;
+        document.getElementById("pvEm").textContent = "✉️ " + email;
+        document.getElementById("pvAd").textContent =
+          "📍 " + addr + ", " + city;
+        document.getElementById("pvGoal").textContent = goal
+          ? "🎯 " + goal
+          : "";
+        document.getElementById("pvSys").textContent =
+          "RECOMMENDED SYSTEM: " + sz + " " + stype;
+        document.getElementById("pvSDesc").textContent = descFull;
+
+        const lineRows = getLineRows();
+        const tot = lineRows.reduce((s, r) => s + r.tot, 0);
+
+        document.getElementById("pvTB").innerHTML =
+          lineRows
+            .map(
+              (r, i) => `
+      <tr style="${i % 2 === 1 ? "background:#f1f8e9" : ""}">
+        <td style="text-align:center;color:#546e7a;font-size:8px;">${i + 1}</td>
+        <td>${r.desc}</td>
+        <td style="text-align:center">${r.qty}</td>
+        <td style="text-align:right;font-weight:600">${r.tot > 0 ? fmtPKR(r.tot) : r.up > 0 ? fmtPKR(r.up) : "Included"}</td>
+      </tr>`,
+            )
+            .join("") ||
+          `<tr><td colspan="4" style="text-align:center;color:#aaa;padding:10px;font-size:10px">No items added yet</td></tr>`;
+
+        document.getElementById("pvTot").textContent = fmtPKR(tot) || "PKR 0";
+
+        const curVal = document.getElementById("curB").value || "—";
+        const curNum =
+          parseInt(
+            (document.getElementById("curB").value || "0").replace(
+              /[^0-9]/g,
+              "",
+            ),
+          ) || 0;
+        document.getElementById("pvCB").textContent = curVal;
+        document.getElementById("pvAC").textContent =
+          curNum > 0 ? fmtPKR(curNum * 12) : "—";
+        document.getElementById("pvNB").textContent =
+          document.getElementById("newB").value || "—";
+        document.getElementById("pvMS").textContent =
+          document.getElementById("mSave").value || "—";
+        document.getElementById("pvAS").textContent =
+          document.getElementById("aSave").value || "—";
+        document.getElementById("pvRI").textContent = fmtPKR(tot) || "—";
+        document.getElementById("pvPay").textContent =
+          document.getElementById("pay").value || "—";
+        document.getElementById("pvFY").textContent =
+          document.getElementById("freeY").value || "—";
+
+        // ---- Print doc ----
+        document.getElementById("pd-ref").textContent =
+          `Quote Ref: ${ref}  |  Date: ${dateStr}`;
+        document.getElementById("pd-valid").textContent =
+          `Valid For: ${validity}`;
+        document.getElementById("pd-name").textContent = name;
+
+        const phoneVal = document.getElementById("cPhone").value;
+        const emailVal = document.getElementById("cEmail").value;
+        const addrVal = document.getElementById("cAddr").value;
+
+        document.getElementById("pd-phone").textContent = phoneVal;
+        document.getElementById("pd-phone-row").style.display = phoneVal
+          ? "flex"
+          : "none";
+        document.getElementById("pd-email").textContent = emailVal;
+        document.getElementById("pd-email-row").style.display = emailVal
+          ? "flex"
+          : "none";
+        document.getElementById("pd-addr").textContent = addrVal
+          ? addrVal + ", " + city
+          : city;
+        document.getElementById("pd-addr-row").style.display =
+          addrVal || city ? "flex" : "none";
+
+        const goalRow = document.getElementById("pd-goal-row");
+        if (goal) {
+          document.getElementById("pd-goal").textContent = goal;
+          goalRow.style.display = "flex";
+        } else {
+          goalRow.style.display = "none";
+        }
+
+        document.getElementById("pd-sys-title").textContent =
+          "RECOMMENDED SYSTEM: " + sz + " " + stype;
+        const pdSysDesc = document.getElementById("pd-sys-desc");
+        pdSysDesc.textContent = descFull;
+        pdSysDesc.style.display =
+          descFull && descFull !== "System description" ? "block" : "none";
+
+        const curBVal = document.getElementById("curB").value;
+        const newBVal = document.getElementById("newB").value;
+        const mSaveVal = document.getElementById("mSave").value;
+        const aSaveVal = document.getElementById("aSave").value;
+        const hasSavings = curBVal || newBVal || mSaveVal || aSaveVal;
+        document.getElementById("pd-financial-label").style.display = hasSavings
+          ? "block"
+          : "none";
+        document.getElementById("pd-financial-grid").style.display = hasSavings
+          ? "grid"
+          : "none";
+
+        document.getElementById("pd-tbody").innerHTML =
+          lineRows
+            .map(
+              (r, i) => `
+      <tr>
+        <td style="text-align:center;color:#546e7a;">${i + 1}</td>
+        <td>${r.desc}</td>
+        <td style="text-align:center">${r.qty}</td>
+        <td style="text-align:right">${r.up > 0 ? fmtPKR(r.up) : "Included"}</td>
+        <td style="text-align:right;font-weight:700">${r.tot > 0 ? fmtPKR(r.tot) : "Included"}</td>
+      </tr>`,
+            )
+            .join("") ||
+          `<tr><td colspan="5" style="text-align:center;color:#aaa;padding:10pt">No items added</td></tr>`;
+
+        document.getElementById("pd-tot").textContent = fmtPKR(tot) || "PKR 0";
+        document.getElementById("pd-ri").textContent = fmtPKR(tot) || "—";
+        document.getElementById("pd-cb").textContent = curVal;
+        document.getElementById("pd-ac").textContent =
+          curNum > 0 ? fmtPKR(curNum * 12) : "—";
+        document.getElementById("pd-nb").textContent =
+          document.getElementById("newB").value || "—";
+        document.getElementById("pd-ms").textContent =
+          document.getElementById("mSave").value || "—";
+        document.getElementById("pd-as").textContent =
+          document.getElementById("aSave").value || "—";
+        document.getElementById("pd-pay").textContent =
+          document.getElementById("pay").value || "—";
+        document.getElementById("pd-fy").textContent =
+          document.getElementById("freeY").value || "—";
+      }
+
+      /* ===== SEND EMAIL VIA EMAILJS ===== */
+      function sendQuoteEmail() {
+        const lineRows = getLineRows();
+        const tot = lineRows.reduce((s, r) => s + r.tot, 0);
+        const dateStr = new Date().toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        const itemsText = lineRows
+          .map(
+            (r, i) =>
+              `${i + 1}. ${r.desc} | Qty: ${r.qty} | Unit: ${r.up > 0 ? fmtPKR(r.up) : "Included"} | Total: ${r.tot > 0 ? fmtPKR(r.tot) : "Included"}`,
+          )
+          .join("\n");
+
+        const params = {
+          quote_ref: document.getElementById("qRef").value || "N/A",
+          quote_date: dateStr,
+          validity: document.getElementById("qValidity").value || "N/A",
+          client_name: document.getElementById("cName").value || "N/A",
+          client_phone: document.getElementById("cPhone").value || "N/A",
+          client_email: document.getElementById("cEmail").value || "N/A",
+          client_city: document.getElementById("cCity").value || "N/A",
+          client_addr: document.getElementById("cAddr").value || "N/A",
+          client_goal: document.getElementById("cGoal").value || "N/A",
+          system_size: document.getElementById("sSize").value || "N/A",
+          system_type: document.getElementById("sType").value || "N/A",
+          system_desc: document.getElementById("sDesc").value || "N/A",
+          items_list: itemsText || "No items",
+          total_amount: fmtPKR(tot) || "PKR 0",
+          cur_bill: document.getElementById("curB").value || "N/A",
+          new_bill: document.getElementById("newB").value || "N/A",
+          monthly_save: document.getElementById("mSave").value || "N/A",
+          annual_save: document.getElementById("aSave").value || "N/A",
+          payback: document.getElementById("pay").value || "N/A",
+          free_years: document.getElementById("freeY").value || "N/A",
+          terms: document.getElementById("terms").value || "N/A",
+        };
+
+        emailjs
+          .send("service_nk2ad6o", "template_83nk8bt", params)
+          .then(() => console.log("Quote email sent ✓"))
+          .catch((err) => console.error("EmailJS error:", err));
+      }
+
+      function doPrint() {
+        const n = document.getElementById("cName").value;
+        if (!n) {
+          alert("Please enter client name before printing.");
+          return;
+        }
+        upd();
+        sendQuoteEmail();
+        window.print();
+      }
+
+      function resetForm() {
+        if (
+          !confirm("Start a new quotation? All current data will be cleared.")
+        )
+          return;
+        document
+          .querySelectorAll("input:not([readonly])")
+          .forEach((i) => (i.value = ""));
+        document
+          .querySelectorAll("select")
+          .forEach((s) => (s.selectedIndex = 0));
+        document.getElementById("lineItems").innerHTML = "";
+        rowId = 0;
+        const DEFAULT_W = {
+          fan: 75,
+          lt: 12,
+          ac1: 1100,
+          ac15: 1600,
+          ac2: 2200,
+          frg: 150,
+          wsh: 500,
+          mot: 750,
+          tv: 100,
+          irn: 1000,
+        };
+        APPS.forEach((a) => {
+          qty[a.id] = 0;
+          hrs[a.id] = a.def;
+          a.w = DEFAULT_W[a.id] || a.w;
+          document.getElementById("q_" + a.id).textContent = "0";
+          document.getElementById("w_" + a.id).value = a.w;
+          document.getElementById("ac_" + a.id).classList.remove("on");
+          uK(a.id);
+        });
+        document.getElementById("totD").textContent = "PKR 0";
+        generateQuoteRef();
+        uLive();
+        upd();
+      }
+
+      const defaultItems = [
+        { desc: "Solar Panels", qty: 1, up: 0 },
+        { desc: "Inverter — Itel", qty: 1, up: 140000 },
+        { desc: "Mounting Structure", qty: 1, up: 0 },
+        {
+          desc: "Wiring & Accessories — Pakistan Cable + Fast Cable",
+          qty: 1,
+          up: 60000,
+        },
+        { desc: "AC Protection & DB Box", qty: 1, up: 18000 },
+        { desc: "Installation Charges", qty: 1, up: 0 },
+        { desc: "Transport Charges", qty: 1, up: 8000 },
+      ];
+
+      buildApps();
+      defaultItems.forEach((i) => addRow(i.desc, i.qty, i.up));
+      setTimeout(function () {
+        generateQuoteRef();
+        uLive();
+        upd();
+      }, 100);
+    </script>
+  
+
+</body></html>
+

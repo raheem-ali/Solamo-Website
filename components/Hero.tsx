@@ -66,7 +66,7 @@ export default function Hero() {
           loop
           playsInline
           className="w-full h-full object-cover opacity-75"
-          src="http://solamoenergy.com/wp-content/uploads/2026/05/Karachi-1.mp4"
+          src="https://pixabay.com/videos/download/video-297799_medium.mp4"
           onError={(e) =>
             console.error("Hero video failed to load:", e.currentTarget.error)
           }

@@ -152,7 +152,7 @@ export default function SolamoFooter() {
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-4">
             <Image
-              src="https://solamoenergy.com/wp-content/uploads/2026/05/Logo-2-1-1536x517.png"
+              src="/images/logo.webp?v=2"
               alt="Solamo Energy"
               width={120}
               height={40}

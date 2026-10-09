@@ -20,7 +20,9 @@ import {
   Flame,
 } from "lucide-react";
 
+// @ts-ignore Swiper CSS is handled by the app's bundler.
 import "swiper/css";
+// @ts-ignore Swiper CSS is handled by the app's bundler.
 import "swiper/css/pagination";
 
 // =============================================================
@@ -90,45 +92,32 @@ export default function SolamoHero() {
   const heroSliderRef = useRef<SwiperRef>(null);
 
   const categories = [
-    { title: "Deals", icon: ShoppingBag, href: "/shop", bg: "bg-[#ffe9df]" },
-    { title: "Solar Panels", icon: Sun, href: "/shop", bg: "bg-[#ffe9df]" },
-    { title: "Inverters", icon: Zap, href: "/shop", bg: "bg-[#eee7ff]" },
+    { title: "Solar Panels", icon: Sun, href: "/solar-panels", bg: "bg-[#ffe9df]" },
     {
       title: "Batteries",
       icon: BatteryCharging,
-      href: "/shop",
+      href: "/batteries",
       bg: "bg-[#e5f5e8]",
     },
     {
       title: "Power Banks",
       icon: Smartphone,
-      href: "/shop",
+      href: "/power-banks",
       bg: "bg-[#fff1d4]",
     },
     {
-      title: "Cables & Wiring",
-      icon: Cable,
-      href: "/shop",
+      title: "Inverters",
+      icon: Zap,
+      href: "/inverters",
       bg: "bg-[#e8f1ff]",
     },
     {
-      title: "Breakers & Protection",
+      title: "Power Banks",
       icon: ShieldAlert,
-      href: "/shop",
+      href: "/power-banks",
       bg: "bg-[#f4eafa]",
     },
-    {
-      title: "Accessories",
-      icon: Package,
-      href: "/shop",
-      bg: "bg-[#e6f4f0]",
-    },
-    {
-      title: "Fire Extinguisher",
-      icon: Flame,
-      href: "/shop",
-      bg: "bg-[#fff1f2]",
-    },
+    
   ];
 
   const scrollCategories = (direction: "left" | "right") => {

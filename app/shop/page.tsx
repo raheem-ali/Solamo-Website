@@ -5,7 +5,6 @@ import BrandAdBanner from "@/components/BrandAdBanner";
 import SolamoFlashdeals from "@/components/Solamoflashdeals";
 import SolamoMarquee from "@/components/SolamoMarquee";
 import SolamoProductCarousel from "@/components/SolamoProductCarousel";
-import { dummyProductsData } from "@/lib/dummy-products";
 import SolamoBrands from "@/components/SolamoBrands";
 import SolamoWhySolamo from "@/components/SolamoWhySolamo";
 import SolamoCtaBanner from "@/components/SolamoCtaBanner";
@@ -23,8 +22,6 @@ export default function SolamoHomePage() {
       <BrandAdBanner video="/ads/banner-1.mp4.mp4" /> {/* Ad Slot 1 */}
       <SolamoFlashdeals /> {/* noon: Deals & Offers */}
       <SolamoMarquee /> {/* MarqueeSection */}
-      <BrandAdBanner video="/ads/banner-2.mp4.mp4" /> {/* Ad Slot: After Marquee */}
-      {/* Real Product Sections */}
       <SolamoProductCarousel
         title="Batteries"
         subtitle="Solar batteries & energy storage"
@@ -46,44 +43,13 @@ export default function SolamoHomePage() {
         categoryFilter="Solar Panel"
         badgeText="PANEL"
         viewAllHref="category/solar-panels"
-      />
-      {/* Dummy Product Sections (Temporary until real listings are available) */}
-      <SolamoProductCarousel
-        title="Charge Controllers"
-        subtitle="Solar DC cables & high-performance wiring"
-        categoryFilter="Charge Controllers"
-        badgeText="CABLES"
-        viewAllHref="category/charge-controllers"
-      />
-      <BrandAdBanner video="/ads/banner-2.mp4.mp4" /> {/* Ad Slot: After Cables & Wiring */}
+      />     
       <SolamoProductCarousel
         title="Power Banks"
         subtitle="DC breakers, SPDs & electrical safety"
         categoryFilter="Power Banks"
         badgeText="BREAKER"
         viewAllHref="category/power-banks"
-      />
-      <SolamoProductCarousel
-        title="Mounting Structures"
-        subtitle="Mounting hardware, connectors & monitoring tools"
-        categoryFilter="Mounting Structures"
-        badgeText="ACCESSORY"
-        viewAllHref="category/mounting-structures"
-      />
-      <BrandAdBanner video="/ads/banner-1.mp4.mp4" /> {/* Ad Slot: After Accessories */}
-      <SolamoProductCarousel
-        title="Cables & Accessories"
-        subtitle="Portable power stations & solar generators"
-        badgeText="POWER BANK"
-        categoryFilter="Cables & Accessories"
-        viewAllHref="category/cables-and-accessories"
-      />
-      <SolamoProductCarousel
-        title="Fire Extinguisher"
-        subtitle="Fire safety equipment for solar & electrical installations"
-        badgeText="FIRE SAFETY"
-        viewAllHref="category/fire-extinguishers"
-        dummyProducts={dummyProductsData.fireExtinguishers}
       />
       <BrandAdBanner video="/ads/banner-2.mp4.mp4" /> {/* Ad Slot: After Fire Extinguisher */}
       <SolamoBrands /> {/* noon: Brand/Store highlights (with product counts) */}
