@@ -50,6 +50,7 @@ interface ApiProduct {
   brand_city?: string | null;
   tenant_city?: string | null;
   tenant_logo?: string | null;
+  tenant_profile_image?: string | null;
   category_id: number | null;
   category_name: string | null;
   category_slug: string | null;
@@ -66,6 +67,14 @@ const slugify = (s: string) =>
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+
+// Turns a relative path (uploads/...) into a full URL on the API host
+const API_ORIGIN = API_URL.replace(/\/api\/?$/, "");
+const absUrl = (v?: string | null) => {
+  if (!v) return null;
+  if (/^(https?:)?\/\//i.test(v) || v.startsWith("data:")) return v;
+  return `${API_ORIGIN}/${v.replace(/^\/+/, "")}`;
+};
 
 function waDigits(num?: string | null) {
   if (!num) return null;
@@ -469,6 +478,8 @@ export default function ProductDetailPage() {
   const categoryHref = categoryRouteMap[categoryName.toLowerCase()] || "/shop";
 
   const brandHref = `/brand/${params.brand}`;
+  const sellerImage = absUrl(product.tenant_profile_image || product.tenant_logo);
+  const vendorHref = `/vendor/${slugify(product.tenant_name)}`; // abc.com/vendor/shop-name
   const productHref = (c: Card) => `/${firstSegment}/${c.brandSlug}/${c.id}`;
 
   const waNumber = waDigits(product.tenant_whatsapp) || DEFAULT_WHATSAPP;
@@ -516,6 +527,10 @@ export default function ProductDetailPage() {
               <span>/</span>
               <a href="/shop" className="shrink-0 hover:text-[#5f9200]">
                 Shop
+              </a>
+              <span>/</span>
+              <a href={vendorHref} className="shrink-0 hover:text-[#5f9200]">
+                {product.tenant_name}
               </a>
               <span>/</span>
               <a href={brandHref} className="shrink-0 hover:text-[#5f9200]">
@@ -699,15 +714,26 @@ export default function ProductDetailPage() {
               {/* RIGHT SIDEBAR */}
               <div ref={buyBoxRef}>
                 <aside className="lg:sticky lg:top-24 flex flex-col rounded-[8px] border border-[#e5e8e1] bg-white text-[#1f2937] overflow-hidden shadow-sm">
-                  {/* Seller (the shop that owns this product) */}
-                  <div className="p-4 border-b border-[#e5e8e1] flex items-center gap-3">
-                    <SellerAvatar src={product.tenant_logo || product.brand_logo || null} name={product.tenant_name} />
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[14px] font-medium text-[#1f2937] truncate">
-                        Sold by <span className="font-bold">{product.tenant_name}</span>
+                  {/* Seller (the shop that owns this product) — links to the vendor page */}
+                  <div className="p-4 border-b border-[#e5e8e1]">
+                    <a href={vendorHref} className="flex items-center gap-3 group">
+                      <SellerAvatar src={sellerImage} name={product.tenant_name} />
+                      <div className="min-w-0 flex-1">
+                        <div className="text-[14px] font-medium text-[#1f2937] truncate">
+                          Sold by{" "}
+                          <span className="font-bold group-hover:text-[#4D7C0F] group-hover:underline">
+                            {product.tenant_name}
+                          </span>
+                        </div>
+                        <div className="text-[13px] font-medium text-[#4D7C0F] mt-0.5">Trusted Partner ★</div>
                       </div>
-                      <div className="text-[13px] font-medium text-[#4D7C0F] mt-0.5">Trusted Partner ★</div>
-                    </div>
+                    </a>
+                    <a
+                      href={vendorHref}
+                      className="mt-3 flex h-[36px] w-full items-center justify-center rounded-[6px] border border-[#d8ddd3] text-[13px] font-bold text-[#4D7C0F] transition-colors hover:bg-[#f2f9e6]"
+                    >
+                      Visit Store &gt;
+                    </a>
                   </div>
 
                   <div className="px-4 py-3 border-b border-[#e5e8e1] space-y-2.5">
